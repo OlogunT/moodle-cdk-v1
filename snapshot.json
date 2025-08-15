@@ -1,0 +1,31 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== Snapshot Start ==='",
+    "date",
+    "echo '[df -h]'",
+    "df -h",
+    "echo '[mount | grep efs]'",
+    "mount | grep efs || true",
+    "echo '[services]'",
+    "systemctl is-active httpd || true",
+    "systemctl is-active php-fpm || true",
+    "echo '[paths]'",
+    "ls -la /var/www/html || true",
+    "ls -la /var/www/html/moodle 2>/dev/null | head -50 || echo 'moodle dir missing'",
+    "echo '[logs: httpd error_log tail]'",
+    "tail -n 50 /var/log/httpd/error_log || true",
+    "echo '[logs: moodle_error.log tail]'",
+    "tail -n 50 /var/log/httpd/moodle_error.log || true",
+    "echo '[user-data log tail]'",
+    "tail -n 50 /var/log/user-data.log || true",
+    "echo '[custom converge logs]'",
+    "tail -n 50 /var/log/moodle-converge.log || true",
+    "tail -n 50 /var/log/moodle-finalize.log || true",
+    "echo '[health check]'",
+    "if [ -f /var/www/html/moodle/health.php ]; then curl -sI http://localhost/health.php | head -1 || true; else echo 'health.php not present'; fi",
+    "echo '[config.php presence]'",
+    "if [ -f /var/www/html/moodle/config.php ]; then echo 'config.php present'; else echo 'config.php missing'; fi",
+    "echo '=== Snapshot End ==='"
+  ]
+}

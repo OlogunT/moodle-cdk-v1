@@ -1,0 +1,12 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP5-STATUS ==='",
+    "CFG=/var/www/html/moodle/config.php",
+    "if [ -f $CFG ]; then echo CONFIG_PRESENT; else echo CONFIG_MISSING; fi",
+    "systemctl is-active httpd || true",
+    "systemctl is-active php-fpm || true",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '=== DONE ==='"
+  ]
+}

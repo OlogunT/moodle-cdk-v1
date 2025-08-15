@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "set +e",
+    "echo --- SERVICES ---",
+    "systemctl is-active httpd || true",
+    "systemctl is-active php-fpm || true",
+    "echo --- VHOSTS ---",
+    "apachectl -t -D DUMP_VHOSTS 2>&1 || httpd -S 2>&1 || true",
+    "echo --- MOODLE CONF ---",
+    "ls -l /etc/httpd/conf.d/moodle.conf || true",
+    "sed -n '1,120p' /etc/httpd/conf.d/moodle.conf || true",
+    "echo --- HEALTH ---",
+    "curl -s -o /dev/null -w '%{http_code}\n' http://localhost/health || true",
+    "echo --- MOODLE CFG ---",
+    "grep -E 'wwwroot|reverseproxy|sslproxy|cookiesecure|loginhttps' /app/moodle/config.php || true"
+  ]
+}
+

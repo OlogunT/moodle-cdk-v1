@@ -1,0 +1,17 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP5-CHECK: verify moodle install & health ==='",
+    "CFG=/var/www/html/moodle/config.php",
+    "if [ -f $CFG ]; then echo 'CONFIG_PRESENT'; else echo 'CONFIG_MISSING'; fi",
+    "if [ -f $CFG ]; then head -n 5 $CFG || true; fi",
+    "if [ ! -f /var/www/html/moodle/health.php ]; then printf '%s\n' '<?php' 'http_response_code(200);' 'echo "OK";' '?>' > /var/www/html/moodle/health.php; chown apache:apache /var/www/html/moodle/health.php; fi",
+    "systemctl restart httpd php-fpm || true",
+    "sleep 2",
+    "echo '--- curl local health ---'",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '--- curl local login ---'",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '=== STEP5-CHECK DONE ==='"
+  ]
+}

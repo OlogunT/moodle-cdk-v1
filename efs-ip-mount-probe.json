@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== EFS Direct-IP NFSv4.1 Mount Probe ==='",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)",
+    "REGION=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo ca-central-1)",
+    "APP_EFS_ID=fs-0c60c5879a0dcecb1",
+    "DATA_EFS_ID=fs-075a2be536c08840c",
+    "APP_IP=$(getent hosts ${APP_EFS_ID}.efs.${REGION}.amazonaws.com | awk '{print $1}' | head -1)",
+    "DATA_IP=$(getent hosts ${DATA_EFS_ID}.efs.${REGION}.amazonaws.com | awk '{print $1}' | head -1)",
+    "echo APP_IP=$APP_IP DATA_IP=$DATA_IP",
+    "mkdir -p /mnt/efs/probe",
+    "mount -v -t nfs4 -o nfsvers=4.1 ${DATA_IP}:/ /mnt/efs/probe && echo 'NFS mount (data IP) OK' || echo 'NFS mount (data IP) FAILED'",
+    "umount /mnt/efs/probe >/dev/null 2>&1 || true",
+    "mount -v -t nfs4 -o nfsvers=4.1 ${APP_IP}:/ /mnt/efs/probe && echo 'NFS mount (app IP) OK' || echo 'NFS mount (app IP) FAILED'",
+    "umount /mnt/efs/probe >/dev/null 2>&1 || true",
+    "echo 'dmesg tail:'",
+    "dmesg | tail -n 50 || true",
+    "echo '=== EFS Direct-IP Probe Complete ==='"
+  ]
+}

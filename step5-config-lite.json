@@ -1,0 +1,28 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP5-CONFIG-LITE: write config.php and finalize ==='",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)",
+    "REGION=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo ca-central-1)",
+    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region $REGION --query \"SecretList[?contains(Name, 'MoodleDbSecret')].ARN\" --output text | head -1 || true)",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region \"$REGION\" --query SecretString --output text || echo '{}')",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username || echo '')",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password || echo '')",
+    "DB_ENDPOINT=$(aws cloudformation describe-stacks --region \"$REGION\" --stack-name MoodleCdkStack --query \"Stacks[0].Outputs[?OutputKey=='DatabaseEndpoint'].OutputValue\" --output text || true)",
+    "ALB_URL=$(aws cloudformation describe-stacks --region \"$REGION\" --stack-name MoodleCdkStack --query \"Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue\" --output text || echo '')",
+    "if [ -z \"$ALB_URL\" ] || [ \"$ALB_URL\" = \"None\" ]; then ALB_URL=\"http://$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)\"; fi",
+    "CFG=/var/www/html/moodle/config.php",
+    "if [ ! -f \"$CFG\" ]; then printf '%s\n' '<?php' 'unset($CFG); $CFG = new stdClass();' '$CFG->dbtype = \'mariadb\';' '$CFG->dblibrary = \'native\';' "\$CFG->dbhost = \"$DB_ENDPOINT\";" '$CFG->dbname = \'moodle\';' "\$CFG->dbuser = \"$DB_USER\";" "\$CFG->dbpass = \"$DB_PASS\";" '$CFG->dbport = 3306;' '$CFG->prefix = \'mdl_\';' '$CFG->dboptions = array (' "  'dbpersist' => 0," "  'dbsocket' => ''," "  'dbcollation' => 'utf8mb4_bin'," ');' "\$CFG->wwwroot = \"$ALB_URL\";" "\$CFG->dataroot = '/mnt/efs/data/moodledata';" '$CFG->directorypermissions = 0777;' '$CFG->admin = \'admin\';' "require_once(__DIR__ . '/lib/setup.php');" > \"$CFG\"; fi",
+    "chown apache:apache /var/www/html/moodle/config.php || true",
+    "systemctl restart httpd php-fpm || true",
+    "sudo -u apache php /var/www/html/moodle/admin/cli/upgrade.php --non-interactive || true",
+    "printf '%s\n' '<?php' 'http_response_code(200);' 'echo \"OK\";' '?>' > /var/www/html/moodle/health.php",
+    "chown apache:apache /var/www/html/moodle/health.php || true",
+    "sleep 3",
+    "echo '--- curl local health ---'",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '--- curl local login ---'",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '=== STEP5-CONFIG-LITE DONE ==='"
+  ]
+}

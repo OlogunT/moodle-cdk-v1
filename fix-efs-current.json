@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "echo 'Checking EFS mount helper configuration...'",
+    "which mount.efs",
+    "ls -la /sbin/mount.efs",
+    "echo 'Testing DNS resolution...'",
+    "nslookup fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com",
+    "echo 'Mounting EFS using direct DNS names...'",
+    "mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com:/ /data",
+    "mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 fs-0c60c5879a0dcecb1.efs.ca-central-1.amazonaws.com:/ /app",
+    "chown apache:apache /data /app",
+    "chmod 755 /data /app",
+    "echo 'EFS mounted successfully'",
+    "df -h | grep efs"
+  ]
+}

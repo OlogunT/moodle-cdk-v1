@@ -1,0 +1,12 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP2: paths/permissions ==='",
+    "mkdir -p /mnt/efs/data/moodledata",
+    "chown -R apache:apache /mnt/efs/data/moodledata",
+    "chmod -R 777 /mnt/efs/data/moodledata",
+    "ln -sfn /mnt/efs/app /var/www/html",
+    "ls -la /var/www/html || true",
+    "echo '=== STEP2 DONE ==='"
+  ]
+}

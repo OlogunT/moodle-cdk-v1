@@ -1,0 +1,20 @@
+{
+  "commands": [
+    "echo 'Testing new instance with dynamic discovery...'",
+    "TOKEN=$(curl -X PUT 'http://169.254.169.254/latest/api/token' -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600' -s)",
+    "REGION=$(curl -H \"X-aws-ec2-metadata-token: $TOKEN\" -s http://169.254.169.254/latest/meta-data/placement/region)",
+    "INSTANCE_ID=$(curl -H \"X-aws-ec2-metadata-token: $TOKEN\" -s http://169.254.169.254/latest/meta-data/instance-id)",
+    "echo \"Region: $REGION\"",
+    "echo \"Instance ID: $INSTANCE_ID\"",
+    "echo 'Checking if services are running...'",
+    "systemctl status httpd --no-pager",
+    "systemctl status php-fpm --no-pager",
+    "echo 'Checking if EFS is mounted...'",
+    "mountpoint /data && echo 'Data EFS mounted' || echo 'Data EFS not mounted'",
+    "mountpoint /app && echo 'App EFS mounted' || echo 'App EFS not mounted'",
+    "echo 'Checking if Moodle is installed...'",
+    "ls -la /app/moodle/config.php 2>/dev/null && echo 'Moodle config exists' || echo 'Moodle config missing'",
+    "echo 'Testing local web server...'",
+    "curl -I http://localhost/ 2>/dev/null | head -1 || echo 'Local web server not responding'"
+  ]
+}

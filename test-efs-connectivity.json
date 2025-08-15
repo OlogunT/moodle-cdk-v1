@@ -1,0 +1,25 @@
+{
+  "commands": [
+    "echo 'Testing EFS connectivity...'",
+    "echo 'Current network configuration:'",
+    "ip route show",
+    "echo 'Testing DNS resolution:'",
+    "nslookup fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com",
+    "echo 'Testing port 2049 connectivity:'",
+    "nc -zv fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com 2049",
+    "echo 'Testing with telnet:'",
+    "timeout 5 telnet fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com 2049 || echo 'Telnet test completed'",
+    "echo 'Checking if NFS client is installed:'",
+    "which mount.nfs4",
+    "rpm -qa | grep nfs",
+    "echo 'Installing NFS utilities if missing:'",
+    "dnf install -y nfs-utils",
+    "echo 'Testing mount with verbose output:'",
+    "mkdir -p /data /app",
+    "mount -v -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com:/ /data",
+    "echo 'Mount result:'",
+    "echo $?",
+    "df -h | grep efs || echo 'No EFS mounts found'",
+    "echo 'EFS connectivity test complete!'"
+  ]
+}

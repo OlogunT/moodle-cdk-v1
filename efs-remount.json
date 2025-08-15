@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== EFS Remount (TLS/IAM) ==='",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)",
+    "REGION=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo ca-central-1)",
+    "APP_EFS_ID=fs-0c60c5879a0dcecb1",
+    "DATA_EFS_ID=fs-075a2be536c08840c",
+    "dnf install -y amazon-efs-utils >/dev/null 2>&1 || true",
+    "mkdir -p /mnt/efs/app /mnt/efs/data",
+    "mountpoint -q /mnt/efs/app || mount -t efs -o tls,iam ${APP_EFS_ID}:/ /mnt/efs/app",
+    "mountpoint -q /mnt/efs/data || mount -t efs -o tls,iam ${DATA_EFS_ID}:/ /mnt/efs/data",
+    "mountpoint -q /mnt/efs/app && echo APP_OK || echo APP_FAIL",
+    "mountpoint -q /mnt/efs/data && echo DATA_OK || echo DATA_FAIL",
+    "ln -sfn /mnt/efs/app /var/www/html",
+    "echo '=== Done EFS Remount ==='"
+  ]
+}

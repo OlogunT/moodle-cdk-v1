@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP5a: Configure PHP for Moodle ==='",
+    "PHPINI=/etc/php.ini",
+    "test -f $PHPINI || PHPINI=$(php --ini | awk -F: '/Loaded Configuration File/{print $2}' | xargs || echo /etc/php.ini)",
+    "echo Using PHP ini: $PHPINI",
+    "grep -q '^max_input_vars' $PHPINI && sed -i 's/^max_input_vars.*/max_input_vars = 5000/' $PHPINI || echo 'max_input_vars = 5000' >> $PHPINI",
+    "grep -q '^post_max_size' $PHPINI && sed -i 's/^post_max_size.*/post_max_size = 128M/' $PHPINI || true",
+    "grep -q '^upload_max_filesize' $PHPINI && sed -i 's/^upload_max_filesize.*/upload_max_filesize = 128M/' $PHPINI || true",
+    "grep -q '^max_execution_time' $PHPINI && sed -i 's/^max_execution_time.*/max_execution_time = 300/' $PHPINI || true",
+    "systemctl restart php-fpm httpd || true",
+    "php -i | grep -i max_input_vars || true",
+    "echo '=== STEP5a DONE ==='"
+  ]
+}

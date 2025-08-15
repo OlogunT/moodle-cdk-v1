@@ -1,0 +1,17 @@
+{
+  "commands": [
+    "cd /tmp",
+    "export REGION=ca-central-1",
+    "export DB_ENDPOINT=moodlecdkstack-moodledatabase37183653-gxqtqhm9exgm.crx38jxk1vhe.ca-central-1.rds.amazonaws.com",
+    "export DB_SECRET_ARN=arn:aws:secretsmanager:ca-central-1:483382415631:secret:MoodleDbSecret-*",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region \"$REGION\" --query SecretString --output text)",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username)",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password)",
+    "echo Testing database connection...",
+    "mysql -h \"$DB_ENDPOINT\" -u \"$DB_USER\" -p\"$DB_PASS\" -e \"SELECT 1;\"",
+    "if [ ! -d \"/app/moodle\" ]; then echo Downloading Moodle...; cd /app; git clone -b main --depth 1 https://github.com/moodle/moodle.git; chown -R apache:apache /app/moodle; fi",
+    "mkdir -p /data/moodledata",
+    "chown apache:apache /data/moodledata",
+    "chmod 777 /data/moodledata"
+  ]
+}

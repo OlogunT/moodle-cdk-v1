@@ -1,0 +1,10 @@
+{
+  "commands": [
+    "sudo mount -t efs fs-075a2be536c08840c:/ /data",
+    "sudo mount -t efs fs-0c60c5879a0dcecb1:/ /app", 
+    "sudo chown apache:apache /data /app",
+    "sudo chmod 755 /data /app",
+    "echo 'EFS mounted successfully'",
+    "df -h | grep efs"
+  ]
+}

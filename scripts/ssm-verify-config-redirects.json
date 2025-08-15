@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "set +e",
+    "REGION=${REGION:-$(curl -s http://169.254.169.254/latest/meta-data/placement/region || echo 'ca-central-1')}",
+    "STACK=${STACK:-MoodleCdkStack}",
+    "URL=$(aws cloudformation describe-stacks --region \"$REGION\" --stack-name \"$STACK\" --query \"Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue\" --output text 2>/dev/null)",
+    "echo URL=$URL",
+    "echo --- CFG ORDER ---",
+    "awk '/reverseproxy|sslproxy|cookiesecure|loginhttps|getremoteaddrconf|require_once.*lib\\/setup\\.php/ {print NR \" : \" $0}' /app/moodle/config.php || true",
+    "echo --- LOCALHOST ---",
+    "curl -sIL --max-redirs 10 -c /tmp/cj -b /tmp/cj http://localhost/ | grep -E '^(HTTP/|Location:)' || true",
+    "curl -sL --max-redirs 10 -c /tmp/cj -b /tmp/cj -o /dev/null -w '%{http_code} %{url_effective} %{num_redirects}\n' http://localhost/ || true",
+    "echo --- ALB ---",
+    "curl -sIL --max-redirs 10 -c /tmp/cj -b /tmp/cj \"$URL/\" | grep -E '^(HTTP/|Location:)' || true",
+    "curl -sL --max-redirs 10 -c /tmp/cj -b /tmp/cj -o /dev/null -w '%{http_code} %{url_effective} %{num_redirects}\n' \"$URL/\" || true"
+  ]
+}
+

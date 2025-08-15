@@ -1,0 +1,43 @@
+{
+  "Parameters": {
+    "commands": [
+    "set -euxo pipefail",
+    "echo '=== COMPREHENSIVE DIAGNOSTIC ==='",
+    "echo '--- Apache Status ---'",
+    "systemctl status httpd --no-pager || true",
+    "echo '--- Apache Config Files ---'",
+    "ls -la /etc/httpd/conf.d/ || true",
+    "echo '--- Current Apache VHost ---'",
+    "cat /etc/httpd/conf.d/moodle.conf || true",
+    "echo '--- Document Root Contents ---'",
+    "ls -la /app/moodle/ | head -10 || true",
+    "ls -la /var/www/html/moodle/ | head -10 || true",
+    "echo '--- Local Apache Test ---'",
+    "curl -sI http://localhost/ | head -5 || true",
+    "curl -sI http://localhost/index.php | head -5 || true",
+    "curl -sI http://localhost/health.php | head -5 || true",
+    "echo '--- Check for redirects ---'",
+    "curl -sL http://localhost/ | head -10 || true",
+    "echo '--- Check Moodle Config ---'",
+    "for CFG in /var/www/html/moodle/config.php /app/moodle/config.php; do",
+    "  if [ -f \"$CFG\" ]; then",
+    "    echo CFG_PATH=$CFG",
+    "    LINE=$(grep -E \\\"\\$CFG->wwwroot\\s*=\\s*['\\\"]\\S+['\\\"]\\\" \"$CFG\" | head -1 || true)",
+    "    echo LINE=$LINE",
+    "    URL=$(echo \"$LINE\" | sed -E \"s/.*wwwroot\\s*=\\s*['\\\"]([^'\\\"]+)['\\\"].*/\\1/\")",
+    "    echo EXTRACTED_URL=$URL",
+    "    echo -n 'TRAILING_SLASH='; [[ $URL == */ ]] && echo yes || echo no",
+    "  else",
+    "    echo \"MISSING: $CFG\"",
+    "  fi",
+    "done",
+    "echo '--- Apache Error Logs ---'",
+    "tail -10 /var/log/httpd/error_log || true",
+    "tail -10 /var/log/httpd/moodle_error.log || true",
+    "echo '--- Check for .htaccess files ---'",
+    "find /app/moodle -name '.htaccess' -exec echo 'Found: {}' \\; -exec cat {} \\; || true",
+    "find /var/www/html/moodle -name '.htaccess' -exec echo 'Found: {}' \\; -exec cat {} \\; || true",
+    "echo '=== DONE ==='"
+    ]
+  }
+}

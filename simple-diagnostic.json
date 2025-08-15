@@ -1,0 +1,20 @@
+{
+  "Parameters": {
+    "commands": [
+      "echo '=== SIMPLE DIAGNOSTIC ==='",
+      "echo '--- Check Apache Config ---'",
+      "cat /etc/httpd/conf.d/moodle.conf",
+      "echo '--- Check Moodle Config ---'",
+      "grep wwwroot /app/moodle/config.php || echo 'No config in /app/moodle'",
+      "grep wwwroot /var/www/html/moodle/config.php || echo 'No config in /var/www/html'",
+      "echo '--- Test Local Access ---'",
+      "curl -sI http://localhost/ | head -3",
+      "echo '--- Check for .htaccess ---'",
+      "find /app/moodle -name '.htaccess' || echo 'No .htaccess found'",
+      "echo '--- Check Document Root ---'",
+      "ls -la /app/moodle/index.php || echo 'No index.php in /app/moodle'",
+      "ls -la /var/www/html/moodle/index.php || echo 'No index.php in /var/www/html/moodle'",
+      "echo '=== END DIAGNOSTIC ==='"
+    ]
+  }
+}

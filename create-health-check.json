@@ -1,0 +1,25 @@
+{
+  "commands": [
+    "echo 'Creating health check endpoint...'",
+    "cat > /app/moodle/health.php << 'EOF'",
+    "<?php",
+    "// Simple health check for ALB",
+    "http_response_code(200);",
+    "echo 'OK';",
+    "?>",
+    "EOF",
+    "chown apache:apache /app/moodle/health.php",
+    "chmod 644 /app/moodle/health.php",
+    "echo 'Testing health check endpoint...'",
+    "curl -I http://localhost/health.php",
+    "curl http://localhost/health.php",
+    "echo ''",
+    "echo 'Testing Moodle index page...'",
+    "curl -I http://localhost/index.php",
+    "echo 'Checking if Moodle config exists...'",
+    "ls -la /app/moodle/config.php",
+    "echo 'Testing Moodle login page...'",
+    "curl -I http://localhost/login/index.php",
+    "echo 'Health check endpoint created successfully!'"
+  ]
+}

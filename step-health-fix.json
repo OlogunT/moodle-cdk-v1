@@ -1,0 +1,22 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== HEALTH FIX: verify vhost + create health.php ==='",
+    "httpd -v || apachectl -v || true",
+    "(httpd -S || apachectl -S) 2>/dev/null | sed -n '1,120p' || true",
+    "DOCROOT=$(grep -R "^DocumentRoot" -n /etc/httpd/conf /etc/httpd/conf.d 2>/dev/null | head -1 | awk '{print $2}' | tr -d '"') || true",
+    "echo DocumentRoot=$DOCROOT || true",
+    "mkdir -p /var/www/html/moodle || true",
+    "mkdir -p /app/moodle || true",
+    "printf '%s\n' '<?php' 'http_response_code(200);' 'echo "OK";' '?>' > /var/www/html/moodle/health.php",
+    "cp -f /var/www/html/moodle/health.php /app/moodle/health.php || true",
+    "chown apache:apache /var/www/html/moodle/health.php /app/moodle/health.php || true",
+    "systemctl restart httpd php-fpm || true",
+    "sleep 2",
+    "echo '--- curl local health ---'",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '--- curl local login ---'",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '=== HEALTH FIX DONE ==='"
+  ]
+}

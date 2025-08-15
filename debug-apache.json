@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "echo 'Checking Apache status...'",
+    "systemctl status httpd --no-pager",
+    "echo 'Checking Apache configuration...'",
+    "httpd -t",
+    "echo 'Checking Moodle files...'",
+    "ls -la /app/moodle/",
+    "ls -la /app/moodle/index.php",
+    "echo 'Testing local access...'",
+    "curl -I http://localhost/",
+    "curl -I http://localhost/index.php",
+    "echo 'Checking Apache error logs...'",
+    "tail -10 /var/log/httpd/error_log",
+    "echo 'Checking Moodle error logs...'",
+    "tail -10 /var/log/httpd/moodle_error.log"
+  ]
+}

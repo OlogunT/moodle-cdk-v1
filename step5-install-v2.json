@@ -1,0 +1,25 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP5: DB creds + CLI install ==='",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)",
+    "REGION=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo ca-central-1)",
+    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region $REGION --query \"SecretList[?contains(Name, 'MoodleDbSecret')].ARN\" --output text | head -1 || true)",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region \"$REGION\" --query SecretString --output text || echo '{}')",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username || echo '')",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password || echo '')",
+    "DB_ENDPOINT=$(aws cloudformation describe-stacks --region \"$REGION\" --stack-name MoodleCdkStack --query \"Stacks[0].Outputs[?OutputKey=='DatabaseEndpoint'].OutputValue\" --output text || true)",
+    "ALB_URL=$(aws cloudformation describe-stacks --region \"$REGION\" --stack-name MoodleCdkStack --query \"Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue\" --output text || echo '')",
+    "if [ -z \"$ALB_URL\" ] || [ \"$ALB_URL\" = \"None\" ]; then ALB_URL=\"http://$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)\"; fi",
+    "echo Using: DB=$DB_ENDPOINT USER=$DB_USER ALB=$ALB_URL",
+    "cd /var/www/html/moodle",
+    "if [ ! -f config.php ]; then sudo -u apache php admin/cli/install.php --lang=en --wwwroot=\"$ALB_URL\" --dataroot=/mnt/efs/data/moodledata --dbtype=mariadb --dbhost=\"$DB_ENDPOINT\" --dbname=moodle --dbuser=\"$DB_USER\" --dbpass=\"$DB_PASS\" --dbport=3306 --prefix=mdl_ --fullname='Touchstone Institute' --shortname=TSI --adminuser=moodle-admin --adminpass='TempPass123!' --adminemail='it@tsin.ca' --non-interactive --agree-license; fi",
+    "echo '<?php http_response_code(200); echo \"OK\"; ?>' > /var/www/html/moodle/health.php",
+    "chown apache:apache /var/www/html/moodle/health.php",
+    "systemctl restart httpd php-fpm || true",
+    "sleep 3",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '=== STEP5 DONE ==='"
+  ]
+}

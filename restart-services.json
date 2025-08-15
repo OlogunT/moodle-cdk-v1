@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "echo 'Checking Apache configuration...'",
+    "httpd -t",
+    "echo 'Restarting services...'",
+    "systemctl restart httpd php-fpm",
+    "systemctl status httpd --no-pager",
+    "systemctl status php-fpm --no-pager",
+    "echo 'Checking if Moodle files exist...'",
+    "ls -la /app/moodle/",
+    "ls -la /app/moodle/index.php",
+    "echo 'Testing local access...'",
+    "curl -I http://localhost/",
+    "curl -I http://localhost/index.php"
+  ]
+}

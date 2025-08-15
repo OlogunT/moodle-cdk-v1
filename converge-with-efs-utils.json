@@ -1,0 +1,22 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== Converge with efs-utils (TLS/IAM) ==='",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)",
+    "REGION=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo ca-central-1)",
+    "APP_EFS_ID=fs-0c60c5879a0dcecb1",
+    "DATA_EFS_ID=fs-075a2be536c08840c",
+    "dnf install -y amazon-efs-utils nfs-utils httpd git php php-fpm php-mysqlnd jq mariadb105 >/dev/null 2>&1 || true",
+    "systemctl enable httpd php-fpm || true",
+    "mkdir -p /mnt/efs/app /mnt/efs/data",
+    "mount -t efs -o tls,iam ${APP_EFS_ID}:/ /mnt/efs/app",
+    "mount -t efs -o tls,iam ${DATA_EFS_ID}:/ /mnt/efs/data",
+    "ln -sfn /mnt/efs/app /var/www/html",
+    "mkdir -p /mnt/efs/data/moodledata",
+    "chown -R apache:apache /mnt/efs/app /mnt/efs/data/moodledata",
+    "chmod -R 755 /mnt/efs/app",
+    "chmod -R 777 /mnt/efs/data/moodledata",
+    "systemctl restart httpd php-fpm || true",
+    "echo 'OK'"
+  ]
+}

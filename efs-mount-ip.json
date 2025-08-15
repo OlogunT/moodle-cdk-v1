@@ -1,0 +1,10 @@
+{
+  "commands": [
+    "sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 fs-075a2be536c08840c.efs.ca-central-1.amazonaws.com:/ /data",
+    "sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 fs-0c60c5879a0dcecb1.efs.ca-central-1.amazonaws.com:/ /app",
+    "sudo chown apache:apache /data /app",
+    "sudo chmod 755 /data /app",
+    "echo 'EFS mounted successfully'",
+    "df -h | grep efs"
+  ]
+}

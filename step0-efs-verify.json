@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP0: EFS verify/remount (TLS/IAM) ==='",
+    "dnf install -y amazon-efs-utils >/dev/null 2>&1 || true",
+    "mkdir -p /mnt/efs/app /mnt/efs/data",
+    "# Try mount -a (fstab entries should be present from user data)",
+    "mount -a || true",
+    "mount | grep -E ' /mnt/efs/(app|data) ' || true",
+    "mountpoint -q /mnt/efs/app && echo APP_OK || (echo APP_NOT_MOUNTED; false)",
+    "mountpoint -q /mnt/efs/data && echo DATA_OK || (echo DATA_NOT_MOUNTED; false)",
+    "echo '=== STEP0 DONE ==='"
+  ]
+}

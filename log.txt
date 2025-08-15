@@ -1,0 +1,3 @@
+/var/lib/amazon/ssm/i-05c6cc052780c68e5/document/orchestration/6e7c475d-57fc-4b0c-ae0e-4f3223b0dce7/awsrunShellScript/0.awsrunShellScript/_script.sh: line 28: syntax error near unexpected token `('
+/var/lib/amazon/ssm/i-05c6cc052780c68e5/document/orchestration/6e7c475d-57fc-4b0c-ae0e-4f3223b0dce7/awsrunShellScript/0.awsrunShellScript/_script.sh: line 28: `    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region \"$REGION\" --query \"SecretList[?contains(Name, `Moodle`) || contains(Name, `Db`) || contains(Name, `DB`)].ARN\" --output text 2>/dev/null | head -1)",'
+failed to run commands: exit status 2

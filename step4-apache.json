@@ -1,0 +1,12 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP4: apache vhost ==='",
+    "printf '%s\n' '<VirtualHost *:80>' '    DocumentRoot /var/www/html/moodle' '    DirectoryIndex index.php index.html' '    <Directory /var/www/html/moodle>' '        Options -Indexes +FollowSymLinks' '        AllowOverride All' '        Require all granted' '    </Directory>' '    ErrorLog /var/log/httpd/moodle_error.log' '    CustomLog /var/log/httpd/moodle_access.log combined' '</VirtualHost>' > /etc/httpd/conf.d/moodle.conf",
+    "[ -f /etc/httpd/conf.d/welcome.conf ] && mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.disabled || true",
+    "systemctl restart httpd php-fpm || true",
+    "sleep 2",
+    "curl -sI http://localhost/ | head -1 || true",
+    "echo '=== STEP4 DONE ==='"
+  ]
+}

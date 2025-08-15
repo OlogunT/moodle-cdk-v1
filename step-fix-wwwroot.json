@@ -1,0 +1,25 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== FIX WWWROOT START ==='",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)",
+    "REGION=\"${AWS_REGION:-$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo ca-central-1)}\"",
+    "ALB_URL=$(aws cloudformation describe-stacks --stack-name MoodleCdkStack --region \"$REGION\" --query \"Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue\" --output text 2>/dev/null || true)",
+    "if [ -z \"$ALB_URL\" ] || [ \"$ALB_URL\" = \"None\" ]; then DNS=$(aws elbv2 describe-load-balancers --region \"$REGION\" --query \"LoadBalancers[?starts_with(LoadBalancerName, 'Moodle')].DNSName\" --output text 2>/dev/null | awk '{print $1}'); if [ -n \"$DNS\" ]; then ALB_URL=\"http://$DNS\"; fi; fi",
+    "if [ -z \"$ALB_URL\" ]; then ALB_URL=\"http://$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)\"; fi",
+    "echo Using ALB_URL=$ALB_URL",
+    "cat >/root/fix_wwwroot.php <<'PHP'\n<?php\n$cfgFile = file_exists('/app/moodle/config.php') ? '/app/moodle/config.php' : '/var/www/html/moodle/config.php';\n$url = getenv('FIX_URL');\n$src = @file_get_contents($cfgFile);\nif ($src === false) { fwrite(STDERR, \"Cannot read $cfgFile\\n\"); exit(1); }\nif (preg_match('/\\$CFG->wwwroot\\s*=\\s*[\\\'\\\"][^\\\'\\\"]+[\\\'\\\"];?/', $src)) {\n  $src = preg_replace('/\\$CFG->wwwroot\\s*=\\s*[\\\'\\\"][^\\\'\\\"]+[\\\'\\\"];?/', '$CFG->wwwroot = \"'.$url.'\";', $src, 1);\n} else {\n  $src .= PHP_EOL.'$CFG->wwwroot = \"'.$url.'\";'.PHP_EOL;\n}\nif (@file_put_contents($cfgFile, $src) === false) { fwrite(STDERR, \"Cannot write $cfgFile\\n\"); exit(2); }\necho \"Updated wwwroot in $cfgFile to $url\\n\";\n?>\nPHP",
+    "export FIX_URL=\"$ALB_URL\"",
+    "php /root/fix_wwwroot.php",
+    "chown apache:apache /app/moodle/config.php 2>/dev/null || true",
+    "chown apache:apache /var/www/html/moodle/config.php 2>/dev/null || true",
+    "echo '--- purge caches ---'",
+    "sudo -u apache php /app/moodle/admin/cli/purge_caches.php --non-interactive 2>/dev/null || true",
+    "echo '--- restart services ---'",
+    "systemctl restart httpd php-fpm || true",
+    "sleep 3",
+    "echo '--- local health ---'",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '=== FIX WWWROOT DONE ==='"
+  ]
+}

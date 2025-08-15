@@ -1,0 +1,31 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== Converge Lite Start ==='",
+    "APP_EFS_ID=fs-0c60c5879a0dcecb1",
+    "DATA_EFS_ID=fs-075a2be536c08840c",
+    "AWS_REGION=ca-central-1",
+    "mkdir -p /mnt/efs/app /mnt/efs/data",
+    "echo ${APP_EFS_ID}.efs.${AWS_REGION}.amazonaws.com:/ /mnt/efs/app nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,intr,timeo=600,retrans=2 0 0 >> /etc/fstab",
+    "echo ${DATA_EFS_ID}.efs.${AWS_REGION}.amazonaws.com:/ /mnt/efs/data nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,intr,timeo=600,retrans=2 0 0 >> /etc/fstab",
+    "mount -a",
+    "mountpoint -q /mnt/efs/app",
+    "mountpoint -q /mnt/efs/data",
+    "rm -rf /var/www/html || true",
+    "ln -s /mnt/efs/app /var/www/html",
+    "dnf install -y git httpd php php-fpm php-mysqlnd jq mariadb105 || true",
+    "systemctl enable httpd php-fpm || true",
+    "systemctl start httpd php-fpm || true",
+    "test -d /var/www/html/moodle || (cd /var/www/html && git clone https://github.com/moodle/moodle.git moodle && cd moodle && git branch --track MOODLE_500_STABLE origin/MOODLE_500_STABLE && git checkout MOODLE_500_STABLE)",
+    "chown -R apache:apache /var/www/html/moodle",
+    "mkdir -p /mnt/efs/data/moodledata",
+    "chown -R apache:apache /mnt/efs/data/moodledata",
+    "chmod -R 777 /mnt/efs/data/moodledata",
+    "echo '<?php http_response_code(200); echo 'OK'; ?>' > /var/www/html/moodle/health.php",
+    "chown apache:apache /var/www/html/moodle/health.php",
+    "systemctl restart httpd php-fpm || true",
+    "sleep 3",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '=== Converge Lite Complete ==='"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "set +e",
+    "mkdir -p /app /data",
+    "echo MOUNTS:",
+    "cat /proc/mounts | cut -d ' ' -f1,2,3 | sed -n '1,200p'",
+    "echo MP:",
+    "if mountpoint -q /app; then echo app:mounted; else echo app:not; fi",
+    "if mountpoint -q /data; then echo data:mounted; else echo data:not; fi",
+    "echo DF:",
+    "df -h /app /data || true"
+  ]
+}
+

@@ -1,0 +1,12 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP1: packages/services ==='",
+    "dnf install -y git httpd php php-fpm php-cli php-common php-mysqlnd jq mariadb105 >/dev/null 2>&1 || true",
+    "systemctl enable httpd php-fpm || true",
+    "systemctl start httpd php-fpm || true",
+    "systemctl is-active httpd && echo HTTPD_ACTIVE || echo HTTPD_INACTIVE",
+    "systemctl is-active php-fpm && echo PHPFPM_ACTIVE || echo PHPFPM_INACTIVE",
+    "echo '=== STEP1 DONE ==='"
+  ]
+}

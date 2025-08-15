@@ -1,0 +1,8 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "echo '=== Get Instance IAM Role ==='",
+    "ROLE=$(curl -sS http://169.254.169.254/latest/meta-data/iam/security-credentials/ || true)",
+    "echo ROLE:$ROLE"
+  ]
+}

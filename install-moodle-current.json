@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "cd /app/moodle",
+    "export REGION=ca-central-1",
+    "export DB_ENDPOINT=moodlecdkstack-moodledatabase37183653-gxqtqhm9exgm.crx38jxk1vhe.ca-central-1.rds.amazonaws.com",
+    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region ca-central-1 --query 'SecretList[?contains(Name, `MoodleDbSecret`)].ARN' --output text)",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region \"$REGION\" --query SecretString --output text)",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username)",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password)",
+    "ALB_URL=http://Moodle-Moodl-3wp8ysl2Xtuu-1534359783.ca-central-1.elb.amazonaws.com",
+    "echo 'Installing Moodle via CLI...'",
+    "sudo -u apache php admin/cli/install.php --lang=en --wwwroot=\"$ALB_URL\" --dataroot=\"/data/moodledata\" --dbtype=mariadb --dbhost=\"$DB_ENDPOINT\" --dbname=moodle --dbuser=\"$DB_USER\" --dbpass=\"$DB_PASS\" --dbport=3306 --prefix=mdl_ --fullname=\"Touchstone Institute\" --shortname=\"TSI\" --adminuser=\"moodle-admin\" --adminpass=\"TempPass123!\" --adminemail=\"it@tsin.ca\" --non-interactive --agree-license",
+    "echo 'Moodle installation completed!'",
+    "chown -R apache:apache /app/moodle /data/moodledata",
+    "find /app/moodle -type f -exec chmod 644 {} \\;",
+    "find /app/moodle -type d -exec chmod 755 {} \\;",
+    "chmod -R 777 /data/moodledata",
+    "systemctl restart httpd php-fpm",
+    "echo 'Installation complete and services restarted'"
+  ]
+}

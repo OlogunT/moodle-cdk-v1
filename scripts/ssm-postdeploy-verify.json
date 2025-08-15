@@ -1,0 +1,22 @@
+{
+  "commands": [
+    "set +e",
+    "LOG=/var/log/moodle-postdeploy-verify.log; exec > >(tee -a \"$LOG\") 2>&1",
+    "echo '=== SERVICES ===' $(date -u)",
+    "systemctl is-active httpd || true",
+    "systemctl is-active php-fpm || true",
+    "echo '=== PHP LIMITS ==='",
+    "php -r 'echo "max_input_vars=".ini_get("max_input_vars")."\n";' || true",
+    "php -r 'echo "memory_limit=".ini_get("memory_limit")."\n";' || true",
+    "php -r 'echo "post_max_size=".ini_get("post_max_size")."\n";' || true",
+    "php -r 'echo "upload_max_filesize=".ini_get("upload_max_filesize")."\n";' || true",
+    "echo '=== HEALTH ==='",
+    "curl -s -o /dev/null -w '%{http_code}\n' http://localhost/health || true",
+    "echo '=== CONFIG ORDER ==='",
+    "awk '/wwwroot|reverseproxy|sslproxy|cookiesecure|loginhttps|getremoteaddrconf|require_once.*lib\\/setup\\.php/ {print NR \" : \" $0}' /app/moodle/config.php || true",
+    "echo '=== INSTALL LOG (last 120) ==='",
+    "tail -n 120 /var/log/moodle-install.log || true",
+    "echo '=== DONE ==='"
+  ]
+}
+

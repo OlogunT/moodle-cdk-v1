@@ -1,0 +1,15 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== STEP3: clone Moodle ==='",
+    "test -d /var/www/html/moodle || (cd /var/www/html && git clone https://github.com/moodle/moodle.git moodle)",
+    "cd /var/www/html/moodle",
+    "git fetch origin || true",
+    "git branch --track MOODLE_500_STABLE origin/MOODLE_500_STABLE 2>/dev/null || true",
+    "git checkout MOODLE_500_STABLE",
+    "chown -R apache:apache /var/www/html/moodle",
+    "ls -la /var/www/html | head -50",
+    "ls -la /var/www/html/moodle | head -50",
+    "echo '=== STEP3 DONE ==='"
+  ]
+}

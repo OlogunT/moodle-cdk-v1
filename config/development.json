@@ -1,0 +1,46 @@
+{
+  "environment": "development",
+  "region": "ca-central-1",
+  "vpc": {
+    "maxAzs": 2,
+    "natGateways": 2
+  },
+  "database": {
+    "engine": "mariadb",
+    "version": "10.11",
+    "instanceClass": "db.t3.micro",
+    "multiAz": true,
+    "backupRetentionDays": 7,
+    "storageEncrypted": true,
+    "deletionProtection": false
+  },
+  "compute": {
+    "instanceType": "t3.medium",
+    "minCapacity": 1,
+    "maxCapacity": 1,
+    "desiredCapacity": 1
+  },
+  "moodle": {
+    "version": "main",
+    "adminUser": "moodle-admin",
+    "adminEmail": "it@tsin.ca",
+    "siteName": "Touchstone Institute",
+    "siteShortName": "TSI",
+    "defaultPassword": "TempPass123!",
+    "phpVersion": "8.3"
+  },
+  "monitoring": {
+    "logRetentionDays": 7,
+    "enableDetailedMonitoring": true
+  },
+  "security": {
+    "requireImdsv2": true,
+    "enableCloudTrail": false,
+    "enableGuardDuty": false
+  },
+  "storage": {
+    "efsLifecyclePolicy": "AFTER_30_DAYS",
+    "efsPerformanceMode": "generalPurpose",
+    "efsThroughputMode": "bursting"
+  }
+}

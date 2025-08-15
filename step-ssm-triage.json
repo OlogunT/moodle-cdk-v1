@@ -1,0 +1,28 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== TRIAGE: Moodle 500 investigation ==='",
+    "date",
+    "echo 'Hostname:' $(hostname)",
+    "echo '--- Check health.php presence and perms ---'",
+    "ls -l /app/moodle/health.php || true",
+    "if [ ! -f /app/moodle/health.php ]; then printf '%s\n' '<?php' 'http_response_code(200);' 'echo "OK";' '?>' > /app/moodle/health.php; chown apache:apache /app/moodle/health.php; chmod 644 /app/moodle/health.php; fi",
+    "echo '--- Local health HEAD ---'",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '--- Local login HEAD ---'",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '--- httpd error_log tail ---'",
+    "tail -n 60 /var/log/httpd/error_log || true",
+    "echo '--- php-fpm www-error.log tail ---'",
+    "tail -n 60 /var/log/php-fpm/www-error.log || true",
+    "echo '--- Restart via moodle service ---'",
+    "systemctl daemon-reload || true",
+    "if systemctl list-unit-files | grep -q '^moodle.service'; then systemctl start moodle || true; else systemctl restart httpd php-fpm || true; fi",
+    "sleep 5",
+    "echo '--- Local health after restart ---'",
+    "curl -sI http://localhost/health.php | head -1 || true",
+    "echo '--- Local login after restart ---'",
+    "curl -sI http://localhost/login/index.php | head -1 || true",
+    "echo '=== TRIAGE DONE ==='"
+  ]
+}

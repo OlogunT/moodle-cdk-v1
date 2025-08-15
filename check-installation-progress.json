@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "echo 'Checking Moodle installation progress...'",
+    "echo 'User data log (last 20 lines):'",
+    "tail -20 /var/log/user-data.log",
+    "echo ''",
+    "echo 'EFS mount status:'",
+    "df -h | grep efs || echo 'No EFS mounts found'",
+    "echo ''",
+    "echo 'Service status:'",
+    "systemctl is-active httpd || echo 'Apache not active'",
+    "systemctl is-active php-fpm || echo 'PHP-FPM not active'",
+    "echo ''",
+    "echo 'Moodle files:'",
+    "ls -la /app/moodle/index.php 2>/dev/null && echo 'Moodle downloaded' || echo 'Moodle not downloaded'",
+    "ls -la /app/moodle/config.php 2>/dev/null && echo 'Moodle configured' || echo 'Moodle not configured'",
+    "echo ''",
+    "echo 'Health check endpoint:'",
+    "curl -I http://localhost/health.php 2>/dev/null || echo 'Health endpoint not accessible'"
+  ]
+}
