@@ -1,3 +1,32 @@
-/var/lib/amazon/ssm/i-05c6cc052780c68e5/document/orchestration/6e7c475d-57fc-4b0c-ae0e-4f3223b0dce7/awsrunShellScript/0.awsrunShellScript/_script.sh: line 28: syntax error near unexpected token `('
-/var/lib/amazon/ssm/i-05c6cc052780c68e5/document/orchestration/6e7c475d-57fc-4b0c-ae0e-4f3223b0dce7/awsrunShellScript/0.awsrunShellScript/_script.sh: line 28: `    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region \"$REGION\" --query \"SecretList[?contains(Name, `Moodle`) || contains(Name, `Db`) || contains(Name, `DB`)].ARN\" --output text 2>/dev/null | head -1)",'
-failed to run commands: exit status 2
+Coding error detected, it must be fixed by a programmer: Deprecation: core_courseformat\base::set_section_number has been deprecated since 4.4. Use base::set_sectionnum instead. See MDL-80248 for more information.
+Debug info:
+Error code: codingerror
+Stack trace:
+line 273 of /lib/classes/deprecation.php: core\exception\coding_exception thrown
+line 150 of /lib/classes/deprecation.php: call to core\deprecation::emit_deprecation_notice()
+line 667 of /course/format/classes/base.php: call to core\deprecation::emit_deprecation()
+line 113 of /course/format/menutopic/lib.php: call to core_courseformat\base->set_section_number()
+line 204 of /course/format/classes/base.php: call to format_menutopic->__construct()
+line 38 of /course/format/lib.php: call to core_courseformat\base::instance()
+line 1177 of /lib/pagelib.php: call to course_get_format()
+line 2422 of /lib/moodlelib.php: call to moodle_page->set_course()
+line 85 of /course/view.php: call to require_login()
+Coding error detected, it must be fixed by a programmer: Deprecation: core_courseformat\base::set_section_number has been deprecated since 4.4. Use base::set_sectionnum instead. See MDL-80248 for more information.
+Debug info:
+Error code: codingerror
+Stack trace:
+line 273 of /lib/classes/deprecation.php: core\exception\coding_exception thrown
+line 150 of /lib/classes/deprecation.php: call to core\deprecation::emit_deprecation_notice()
+line 667 of /course/format/classes/base.php: call to core\deprecation::emit_deprecation()
+line 113 of /course/format/menutopic/lib.php: call to core_courseformat\base->set_section_number()
+line 204 of /course/format/classes/base.php: call to format_menutopic->__construct()
+line 38 of /course/format/lib.php: call to core_courseformat\base::instance()
+line 3552 of /course/lib.php: call to course_get_format()
+line 55 of /theme/boost/layout/drawers.php: call to core_course_drawer()
+line 959 of /lib/classes/output/core_renderer.php: call to include()
+line 875 of /lib/classes/output/core_renderer.php: call to core\output\core_renderer->render_page_layout()
+line 2615 of /lib/classes/output/core_renderer.php: call to core\output\core_renderer->header()
+line ? of unknownfile: call to core\output\core_renderer->fatal_error()
+line 109 of /lib/classes/output/bootstrap_renderer.php: call to call_user_func_array()
+line 178 of /lib/setuplib.php: call to core\output\bootstrap_renderer->__call()
+line ? of unknownfile: call to default_exception_handler()

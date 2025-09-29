@@ -1,0 +1,43 @@
+{
+    "CommandInvocations": [
+        {
+            "CommandId": "5c2206a6-b91d-4f29-8381-291e6b88962b",
+            "InstanceId": "i-0eab4573101db727a",
+            "InstanceName": "ip-10-0-3-155.ca-central-1.compute.internal",
+            "Comment": "",
+            "DocumentName": "AWS-RunShellScript",
+            "DocumentVersion": "$DEFAULT",
+            "RequestedDateTime": "2025-09-29T16:57:53.559000-04:00",
+            "Status": "Success",
+            "StatusDetails": "Success",
+            "StandardOutputUrl": "",
+            "StandardErrorUrl": "",
+            "CommandPlugins": [
+                {
+                    "Name": "aws:runShellScript",
+                    "Status": "Success",
+                    "StatusDetails": "Success",
+                    "ResponseCode": 0,
+                    "ResponseStartDateTime": "2025-09-29T16:57:53.675000-04:00",
+                    "ResponseFinishDateTime": "2025-09-29T16:57:54.204000-04:00",
+                    "Output": "Completed 812 Bytes/812 Bytes (12.7 KiB/s) with 1 file(s) remaining\rdownload: s3://moodle-scripts-483382415631-ca-central-1/check-smtp-config.sh to ../../tmp/check-smtp-config.sh\n=== Checking Moodle SMTP Configuration ===\n\nDatabase: $CFG->dbname    = \"moodle\"; @ $CFG->dbhost    = \"moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com\";\n\nSMTP Configuration in Database:\n\nChecking config.php for SMTP settings:\nNo SMTP settings in config.php (this is normal - settings are in database)\n\n----------ERROR-------\nERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost    = \"moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.' (-2)\n",
+                    "StandardOutputUrl": "",
+                    "StandardErrorUrl": "",
+                    "OutputS3Region": "ca-central-1",
+                    "OutputS3BucketName": "",
+                    "OutputS3KeyPrefix": ""
+                }
+            ],
+            "ServiceRole": "",
+            "NotificationConfig": {
+                "NotificationArn": "",
+                "NotificationEvents": [],
+                "NotificationType": ""
+            },
+            "CloudWatchOutputConfig": {
+                "CloudWatchLogGroupName": "",
+                "CloudWatchOutputEnabled": false
+            }
+        }
+    ]
+}

@@ -1,0 +1,23 @@
+{
+    "CommandInvocations": [
+        {
+            "CommandId": "b4495367-319a-4a53-9c98-f3846c3127b4",
+            "InstanceId": "i-0eab4573101db727a",
+            "InstanceName": "ip-10-0-3-155.ca-central-1.compute.internal",
+            "Comment": "",
+            "DocumentName": "AWS-RunShellScript",
+            "DocumentVersion": "$DEFAULT",
+            "RequestedDateTime": "2025-09-29T17:01:08.896000-04:00",
+            "Status": "Failed",
+            "StatusDetails": "Failed",
+            "StandardOutputUrl": "",
+            "StandardErrorUrl": "",
+            "CommandPlugins": [
+                {
+                    "Name": "aws:runShellScript",
+                    "Status": "Failed",
+                    "StatusDetails": "Failed",
+                    "ResponseCode": 1,
+                    "ResponseStartDateTime": "2025-09-29T17:01:09.024000-04:00",
+                    "ResponseFinishDateTime": "2025-09-29T17:01:16.177000-04:00",
+                    "Output": 
