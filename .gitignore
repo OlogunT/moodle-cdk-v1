@@ -8,7 +8,7 @@ node_modules/
 # TypeScript compiled output
 *.js
 *.d.ts
-lib/
+# lib/ - Removed to track CDK stack source files
 
 # IDE files
 .vscode/
