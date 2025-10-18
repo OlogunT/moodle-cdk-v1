@@ -1,0 +1,27 @@
+{
+  "commands": [
+    "echo '=== VERIFICATION TEST ==='",
+    "echo ''",
+    "echo '1. Verify changes applied:'",
+    "grep -n 'set_sectionnum' /app/moodle/course/format/menutopic/lib.php | head -3",
+    "grep -n 'set_sectionnum' /app/moodle/course/format/topcoll/classes/output/format_renderer_migration_toolbox.php | head -3",
+    "echo ''",
+    "echo '2. PHP syntax check:'",
+    "php -l /app/moodle/course/format/menutopic/lib.php",
+    "php -l /app/moodle/course/format/topcoll/classes/output/format_renderer_migration_toolbox.php",
+    "echo ''",
+    "echo '3. Services status:'",
+    "systemctl is-active httpd",
+    "systemctl is-active php-fpm",
+    "echo ''",
+    "echo '4. Test site:'",
+    "curl -sL -w 'HTTP: %{http_code}\\n' -o /dev/null http://localhost/",
+    "curl -sL -w 'HTTP: %{http_code}\\n' -o /dev/null http://localhost/course/index.php?categoryid=34",
+    "echo ''",
+    "echo '5. Check for deprecation warning:'",
+    "curl -sL http://localhost/course/index.php?categoryid=34 2>&1 | grep -i 'set_section_number has been deprecated' && echo 'STILL HAS WARNING' || echo 'NO WARNING - FIXED!'",
+    "echo ''",
+    "date"
+  ]
+}
+

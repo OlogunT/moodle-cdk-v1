@@ -1,0 +1,3495 @@
+{
+ "Description": "Moodle 5 deployment with MariaDB RDS, EFS, and Auto Scaling",
+ "Resources": {
+  "MoodleVpc895D09D1": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/Resource"
+   }
+  },
+  "MoodleVpcPublicSubnet1Subnet47E239D7": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ca-central-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "MoodleVpcPublicSubnet1RouteTable81E6DEDE": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "MoodleVpcPublicSubnet1RouteTableAssociationB8D8EA28": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet1RouteTable81E6DEDE"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPublicSubnet1DefaultRoute909064EA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MoodleVpcIGWEB666E00"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet1RouteTable81E6DEDE"
+    }
+   },
+   "DependsOn": [
+    "MoodleVpcVPCGWAF2FED52"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "MoodleVpcPublicSubnet1EIP57558D09": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet1/EIP"
+   }
+  },
+  "MoodleVpcPublicSubnet1NATGatewayFCF3D029": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MoodleVpcPublicSubnet1EIP57558D09",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MoodleVpcPublicSubnet1DefaultRoute909064EA",
+    "MoodleVpcPublicSubnet1RouteTableAssociationB8D8EA28"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "MoodleVpcPublicSubnet2Subnet804EDB4A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ca-central-1b",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "MoodleVpcPublicSubnet2RouteTable78D40B03": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "MoodleVpcPublicSubnet2RouteTableAssociationADE317AD": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet2RouteTable78D40B03"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPublicSubnet2DefaultRouteA4B6773B": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MoodleVpcIGWEB666E00"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet2RouteTable78D40B03"
+    }
+   },
+   "DependsOn": [
+    "MoodleVpcVPCGWAF2FED52"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "MoodleVpcPublicSubnet2EIP19B04F70": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet2/EIP"
+   }
+  },
+  "MoodleVpcPublicSubnet2NATGatewayE3FF8FC8": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MoodleVpcPublicSubnet2EIP19B04F70",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PublicSubnet2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MoodleVpcPublicSubnet2DefaultRouteA4B6773B",
+    "MoodleVpcPublicSubnet2RouteTableAssociationADE317AD"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PublicSubnet2/NATGateway"
+   }
+  },
+  "MoodleVpcPrivateSubnet1SubnetF81FBA56": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ca-central-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "MoodleVpcPrivateSubnet1RouteTableD2EE0C83": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "MoodleVpcPrivateSubnet1RouteTableAssociation52975B8D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet1RouteTableD2EE0C83"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPrivateSubnet1DefaultRoute4CA1C383": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MoodleVpcPublicSubnet1NATGatewayFCF3D029"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet1RouteTableD2EE0C83"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "MoodleVpcPrivateSubnet2SubnetA94BEFA2": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ca-central-1b",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "MoodleVpcPrivateSubnet2RouteTable55AD31E3": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "MoodleVpcPrivateSubnet2RouteTableAssociationD98E67BE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet2RouteTable55AD31E3"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPrivateSubnet2DefaultRoute69672EB8": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MoodleVpcPublicSubnet2NATGatewayE3FF8FC8"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet2RouteTable55AD31E3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "MoodleVpcDatabaseSubnet1Subnet6BD38C84": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ca-central-1a",
+    "CidrBlock": "10.0.4.0/28",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Database"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/DatabaseSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/DatabaseSubnet1/Subnet"
+   }
+  },
+  "MoodleVpcDatabaseSubnet1RouteTable71A48809": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/DatabaseSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/DatabaseSubnet1/RouteTable"
+   }
+  },
+  "MoodleVpcDatabaseSubnet1RouteTableAssociation3B57BC51": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcDatabaseSubnet1RouteTable71A48809"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcDatabaseSubnet1Subnet6BD38C84"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/DatabaseSubnet1/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcDatabaseSubnet2Subnet8185DD38": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ca-central-1b",
+    "CidrBlock": "10.0.4.16/28",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Database"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/DatabaseSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/DatabaseSubnet2/Subnet"
+   }
+  },
+  "MoodleVpcDatabaseSubnet2RouteTableEF2237FC": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc/DatabaseSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/DatabaseSubnet2/RouteTable"
+   }
+  },
+  "MoodleVpcDatabaseSubnet2RouteTableAssociationE2922A0B": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcDatabaseSubnet2RouteTableEF2237FC"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcDatabaseSubnet2Subnet8185DD38"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/DatabaseSubnet2/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcIGWEB666E00": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleVpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/IGW"
+   }
+  },
+  "MoodleVpcVPCGWAF2FED52": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "MoodleVpcIGWEB666E00"
+    },
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/VPCGW"
+   }
+  },
+  "MoodleVpcRestrictDefaultSecurityGroupCustomResource4E08D705": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleVpc895D09D1",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "483382415631"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleVpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:ca-central-1:483382415631:security-group/",
+             {
+              "Fn::GetAtt": [
+               "MoodleVpc895D09D1",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-483382415631-ca-central-1",
+     "S3Key": "7f18a11296f35510ee16538afec983ed6312e12afbf81b777089a9f8e34e2474.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7f18a11296f35510ee16538afec983ed6312e12afbf81b777089a9f8e34e2474",
+    "aws:asset:property": "Code"
+   }
+  },
+  "MoodleLogGroup62054BB4": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/aws/ec2/moodle",
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleLogGroup/Resource"
+   }
+  },
+  "SystemLogGroupA7250254": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/aws/ec2/system",
+    "RetentionInDays": 7
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/SystemLogGroup/Resource"
+   }
+  },
+  "MoodleScriptsBucket85A3D600": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketName": "moodle-scripts-483382415631-ca-central-1",
+    "Tags": [
+     {
+      "Key": "aws-cdk:auto-delete-objects",
+      "Value": "true"
+     },
+     {
+      "Key": "aws-cdk:cr-owned:1ff7de26",
+      "Value": "true"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleScriptsBucket/Resource"
+   }
+  },
+  "MoodleScriptsBucketPolicy64796874": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "MoodleScriptsBucket85A3D600"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:PutBucketPolicy"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::GetAtt": [
+          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+          "Arn"
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MoodleScriptsBucket85A3D600",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MoodleScriptsBucket85A3D600",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleScriptsBucket/Policy/Resource"
+   }
+  },
+  "MoodleScriptsBucketAutoDeleteObjectsCustomResource1DED9FC4": {
+   "Type": "Custom::S3AutoDeleteObjects",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+      "Arn"
+     ]
+    },
+    "BucketName": {
+     "Ref": "MoodleScriptsBucket85A3D600"
+    }
+   },
+   "DependsOn": [
+    "MoodleScriptsBucketPolicy64796874"
+   ],
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleScriptsBucket/AutoDeleteObjectsCustomResource/Default"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+   }
+  },
+  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-483382415631-ca-central-1",
+     "S3Key": "b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Description": {
+     "Fn::Join": [
+      "",
+      [
+       "Lambda function for auto-deleting objects in ",
+       {
+        "Ref": "MoodleScriptsBucket85A3D600"
+       },
+       " S3 bucket."
+      ]
+     ]
+    }
+   },
+   "DependsOn": [
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.b7f33614a69548d6bafe224d751a7ef238cde19097415e553fe8b63a4c8fd8a6",
+    "aws:asset:property": "Code"
+   }
+  },
+  "DeployMoodleScriptsAwsCliLayer45F6A477": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": "cdk-hnb659fds-assets-483382415631-ca-central-1",
+     "S3Key": "e543e9362c3209e1c795f92eea48d3399c123da2baf8843269c1f91267cc2799.zip"
+    },
+    "Description": "/opt/awscli/aws"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/DeployMoodleScripts/AwsCliLayer/Resource",
+    "aws:asset:path": "asset.e543e9362c3209e1c795f92eea48d3399c123da2baf8843269c1f91267cc2799.zip",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "DeployMoodleScriptsCustomResource4E3F7999": {
+   "Type": "Custom::CDKBucketDeployment",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+      "Arn"
+     ]
+    },
+    "SourceBucketNames": [
+     "cdk-hnb659fds-assets-483382415631-ca-central-1"
+    ],
+    "SourceObjectKeys": [
+     "6e63ba7c6a1dcb99579e0df9552665ea2925099090a7c688d6a553ca2a9699aa.zip"
+    ],
+    "DestinationBucketName": {
+     "Ref": "MoodleScriptsBucket85A3D600"
+    },
+    "Prune": true
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/DeployMoodleScripts/CustomResource/Default"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:s3:::cdk-hnb659fds-assets-483382415631-ca-central-1",
+        "arn:aws:s3:::cdk-hnb659fds-assets-483382415631-ca-central-1/*"
+       ]
+      },
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MoodleScriptsBucket85A3D600",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MoodleScriptsBucket85A3D600",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "Roles": [
+     {
+      "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-483382415631-ca-central-1",
+     "S3Key": "9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem"
+     }
+    },
+    "Handler": "index.handler",
+    "Layers": [
+     {
+      "Ref": "DeployMoodleScriptsAwsCliLayer45F6A477"
+     }
+    ],
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource",
+    "aws:asset:path": "asset.9eb41a5505d37607ac419321497a4f8c21cf0ee1f9b4a6b29aa04301aea5c7fd",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "MoodleDbSecret9F733EF4": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "MariaDB credentials for Moodle",
+    "GenerateSecretString": {
+     "ExcludeCharacters": "\"@/\\'",
+     "GenerateStringKey": "password",
+     "PasswordLength": 32,
+     "SecretStringTemplate": "{\"username\":\"moodleuser\"}"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDbSecret/Resource"
+   }
+  },
+  "MoodleDbSecretAttachment0B6721B6": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "MoodleDbSecret9F733EF4"
+    },
+    "TargetId": {
+     "Ref": "MoodleDatabase37183653"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDbSecret/Attachment/Resource"
+   }
+  },
+  "AlbSecurityGroup86A59E99": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Application Load Balancer",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTP traffic",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTPS traffic",
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbSecurityGroup/Resource"
+   }
+  },
+  "MoodleSecurityGroupA6EC1C93": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Moodle EC2 instances",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleSecurityGroup/Resource"
+   }
+  },
+  "MoodleSecurityGroupfromMoodleCdkStackAlbSecurityGroup4068AB8880B1FF4BE9": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow HTTP from ALB",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSecurityGroup86A59E99",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleSecurityGroup/from MoodleCdkStackAlbSecurityGroup4068AB88:80"
+   }
+  },
+  "DbSecurityGroupE9D701AD": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for MariaDB RDS",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/DbSecurityGroup/Resource"
+   }
+  },
+  "DbSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D63306D3999766": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow MySQL from Moodle",
+    "FromPort": 3306,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "DbSecurityGroupE9D701AD",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "ToPort": 3306
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/DbSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:3306"
+   }
+  },
+  "EfsSecurityGroupEC5F36AC": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for EFS",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroup/Resource"
+   }
+  },
+  "EfsSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D62049BA0E4D85": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow NFS from Moodle",
+    "FromPort": 2049,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "EfsSecurityGroupEC5F36AC",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "ToPort": 2049
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:2049"
+   }
+  },
+  "MoodleDataEfs150A3916": {
+   "Type": "AWS::EFS::FileSystem",
+   "Properties": {
+    "Encrypted": true,
+    "FileSystemPolicy": {
+     "Statement": [
+      {
+       "Action": [
+        "elasticfilesystem:ClientMount",
+        "elasticfilesystem:ClientWrite"
+       ],
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": true
+        },
+        "StringEquals": {
+         "aws:SourceVpc": {
+          "Ref": "MoodleVpc895D09D1"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "elasticfilesystem:ClientRootAccess",
+        "elasticfilesystem:ClientWrite"
+       ],
+       "Condition": {
+        "Bool": {
+         "elasticfilesystem:AccessedViaMountTarget": "true"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "FileSystemTags": [
+     {
+      "Key": "BackupEnabled",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleDataEfs"
+     }
+    ],
+    "LifecyclePolicies": [
+     {
+      "TransitionToIA": "AFTER_30_DAYS"
+     }
+    ],
+    "PerformanceMode": "generalPurpose",
+    "ThroughputMode": "bursting"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDataEfs/Resource"
+   }
+  },
+  "MoodleDataEfsEfsMountTarget12AF50447": {
+   "Type": "AWS::EFS::MountTarget",
+   "Properties": {
+    "FileSystemId": {
+     "Ref": "MoodleDataEfs150A3916"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "EfsSecurityGroupEC5F36AC",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDataEfs/EfsMountTarget1"
+   }
+  },
+  "MoodleDataEfsEfsMountTarget20AACC501": {
+   "Type": "AWS::EFS::MountTarget",
+   "Properties": {
+    "FileSystemId": {
+     "Ref": "MoodleDataEfs150A3916"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "EfsSecurityGroupEC5F36AC",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDataEfs/EfsMountTarget2"
+   }
+  },
+  "MoodleAppEfs3E48A780": {
+   "Type": "AWS::EFS::FileSystem",
+   "Properties": {
+    "Encrypted": true,
+    "FileSystemPolicy": {
+     "Statement": [
+      {
+       "Action": [
+        "elasticfilesystem:ClientMount",
+        "elasticfilesystem:ClientWrite"
+       ],
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": true
+        },
+        "StringEquals": {
+         "aws:SourceVpc": {
+          "Ref": "MoodleVpc895D09D1"
+         }
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "elasticfilesystem:ClientRootAccess",
+        "elasticfilesystem:ClientWrite"
+       ],
+       "Condition": {
+        "Bool": {
+         "elasticfilesystem:AccessedViaMountTarget": "true"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "FileSystemTags": [
+     {
+      "Key": "BackupEnabled",
+      "Value": "true"
+     },
+     {
+      "Key": "Name",
+      "Value": "MoodleCdkStack/MoodleAppEfs"
+     }
+    ],
+    "LifecyclePolicies": [
+     {
+      "TransitionToIA": "AFTER_30_DAYS"
+     }
+    ],
+    "PerformanceMode": "generalPurpose",
+    "ThroughputMode": "bursting"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAppEfs/Resource"
+   }
+  },
+  "MoodleAppEfsEfsMountTarget1911752D0": {
+   "Type": "AWS::EFS::MountTarget",
+   "Properties": {
+    "FileSystemId": {
+     "Ref": "MoodleAppEfs3E48A780"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "EfsSecurityGroupEC5F36AC",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAppEfs/EfsMountTarget1"
+   }
+  },
+  "MoodleAppEfsEfsMountTarget26B5299BA": {
+   "Type": "AWS::EFS::MountTarget",
+   "Properties": {
+    "FileSystemId": {
+     "Ref": "MoodleAppEfs3E48A780"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "EfsSecurityGroupEC5F36AC",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAppEfs/EfsMountTarget2"
+   }
+  },
+  "SesVpcEndpointSecurityGroup94CDE0B9": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for SES SMTP VPC Endpoint",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": {
+       "Fn::GetAtt": [
+        "MoodleVpc895D09D1",
+        "CidrBlock"
+       ]
+      },
+      "Description": {
+       "Fn::Join": [
+        "",
+        [
+         "from ",
+         {
+          "Fn::GetAtt": [
+           "MoodleVpc895D09D1",
+           "CidrBlock"
+          ]
+         },
+         ":587"
+        ]
+       ]
+      },
+      "FromPort": 587,
+      "IpProtocol": "tcp",
+      "ToPort": 587
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/SesVpcEndpointSecurityGroup/Resource"
+   },
+   "Condition": "CreateSesEndpointCondition"
+  },
+  "SesVpcEndpointSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D65875F334710": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow SMTP STARTTLS from Moodle instances",
+    "FromPort": 587,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "SesVpcEndpointSecurityGroup94CDE0B9",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "ToPort": 587
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/SesVpcEndpointSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:587"
+   }
+  },
+  "SesVpcEndpointSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D646529FAE806": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow SMTP TLS from Moodle instances",
+    "FromPort": 465,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "SesVpcEndpointSecurityGroup94CDE0B9",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "ToPort": 465
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/SesVpcEndpointSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:465"
+   }
+  },
+  "SesSmtpVpcEndpoint87304B05": {
+   "Type": "AWS::EC2::VPCEndpoint",
+   "Properties": {
+    "PrivateDnsEnabled": true,
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "SesVpcEndpointSecurityGroup94CDE0B9",
+       "GroupId"
+      ]
+     }
+    ],
+    "ServiceName": "com.amazonaws.ca-central-1.email-smtp",
+    "SubnetIds": [
+     {
+      "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+     },
+     {
+      "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+     }
+    ],
+    "VpcEndpointType": "Interface",
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/SesSmtpVpcEndpoint/Resource"
+   },
+   "Condition": "CreateSesEndpointCondition"
+  },
+  "EfsSecurityGroupFixerFunctionServiceRole43370271": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixerFunction/ServiceRole/Resource"
+   }
+  },
+  "EfsSecurityGroupFixerFunctionServiceRoleDefaultPolicyEB09CF00": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeMountTargets",
+        "elasticfilesystem:ModifyMountTargetSecurityGroups"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "EfsSecurityGroupFixerFunctionServiceRoleDefaultPolicyEB09CF00",
+    "Roles": [
+     {
+      "Ref": "EfsSecurityGroupFixerFunctionServiceRole43370271"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixerFunction/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "EfsSecurityGroupFixerFunctionC644ADB6": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "ZipFile": "\nimport boto3\nimport json\nimport logging\n\nlogger = logging.getLogger()\nlogger.setLevel(logging.INFO)\n\ndef handler(event, context):\n    logger.info(f\"Event: {json.dumps(event)}\")\n\n    request_type = event['RequestType']\n    if request_type == 'Delete':\n        return {'PhysicalResourceId': 'efs-security-group-fixer'}\n\n    props = event['ResourceProperties']\n    app_fs_id = props['AppFileSystemId']\n    data_fs_id = props['DataFileSystemId']\n    security_group_id = props['SecurityGroupId']\n    region = props['Region']\n\n    efs_client = boto3.client('efs', region_name=region)\n\n    try:\n        def wait_and_update(fs_id: str, label: str):\n            # Wait for mount targets to exist (up to ~5 minutes)\n            import time\n            deadline = time.time() + 300\n            targets = []\n            while time.time() < deadline:\n                resp = efs_client.describe_mount_targets(FileSystemId=fs_id)\n                targets = resp.get('MountTargets', [])\n                if targets:\n                    break\n                logger.info(f\"[{label}] No mount targets yet, retrying in 10s...\")\n                time.sleep(10)\n            if not targets:\n                raise Exception(f\"[{label}] No mount targets found for filesystem {fs_id}\")\n            for target in targets:\n                mt_id = target['MountTargetId']\n                logger.info(f\"[{label}] Updating security groups for mount target: {mt_id}\")\n                efs_client.modify_mount_target_security_groups(\n                    MountTargetId=mt_id,\n                    SecurityGroups=[security_group_id]\n                )\n\n        wait_and_update(app_fs_id, 'APP')\n        wait_and_update(data_fs_id, 'DATA')\n\n        logger.info(\"Successfully updated all EFS mount target security groups\")\n        return {'PhysicalResourceId': 'efs-security-group-fixer'}\n\n    except Exception as e:\n        logger.error(f\"Error updating EFS mount target security groups: {str(e)}\")\n        raise e\n"
+    },
+    "Handler": "index.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "EfsSecurityGroupFixerFunctionServiceRole43370271",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.9",
+    "Timeout": 300
+   },
+   "DependsOn": [
+    "EfsSecurityGroupFixerFunctionServiceRoleDefaultPolicyEB09CF00",
+    "EfsSecurityGroupFixerFunctionServiceRole43370271"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixerFunction/Resource"
+   }
+  },
+  "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleF6968A6E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixerProvider/framework-onEvent/ServiceRole/Resource"
+   }
+  },
+  "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleDefaultPolicy869B6809": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "EfsSecurityGroupFixerFunctionC644ADB6",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "EfsSecurityGroupFixerFunctionC644ADB6",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleDefaultPolicy869B6809",
+    "Roles": [
+     {
+      "Ref": "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleF6968A6E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixerProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "EfsSecurityGroupFixerProviderframeworkonEvent444EFD2A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-483382415631-ca-central-1",
+     "S3Key": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip"
+    },
+    "Description": "AWS CDK resource provider framework - onEvent (MoodleCdkStack/EfsSecurityGroupFixerProvider)",
+    "Environment": {
+     "Variables": {
+      "USER_ON_EVENT_FUNCTION_ARN": {
+       "Fn::GetAtt": [
+        "EfsSecurityGroupFixerFunctionC644ADB6",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "framework.onEvent",
+    "Role": {
+     "Fn::GetAtt": [
+      "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleF6968A6E",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleDefaultPolicy869B6809",
+    "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleF6968A6E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixerProvider/framework-onEvent/Resource",
+    "aws:asset:path": "asset.7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "EfsSecurityGroupFixer": {
+   "Type": "AWS::CloudFormation::CustomResource",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "EfsSecurityGroupFixerProviderframeworkonEvent444EFD2A",
+      "Arn"
+     ]
+    },
+    "AppFileSystemId": {
+     "Ref": "MoodleAppEfs3E48A780"
+    },
+    "DataFileSystemId": {
+     "Ref": "MoodleDataEfs150A3916"
+    },
+    "SecurityGroupId": {
+     "Fn::GetAtt": [
+      "EfsSecurityGroupEC5F36AC",
+      "GroupId"
+     ]
+    },
+    "Region": "ca-central-1"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/EfsSecurityGroupFixer/Default"
+   }
+  },
+  "MoodleDbSubnetGroup": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for Moodle MariaDB",
+    "SubnetIds": [
+     {
+      "Ref": "MoodleVpcDatabaseSubnet1Subnet6BD38C84"
+     },
+     {
+      "Ref": "MoodleVpcDatabaseSubnet2Subnet8185DD38"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDbSubnetGroup/Default"
+   }
+  },
+  "MoodleDatabase37183653": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "100",
+    "BackupRetentionPeriod": 7,
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.m7i.xlarge",
+    "DBName": "moodle",
+    "DBSubnetGroupName": {
+     "Ref": "MoodleDbSubnetGroup"
+    },
+    "DeletionProtection": false,
+    "EnableCloudwatchLogsExports": [
+     "error",
+     "general"
+    ],
+    "Engine": "mariadb",
+    "EngineVersion": "10.11",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "MoodleDbSecret9F733EF4"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "MoodleDbSecret9F733EF4"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "MultiAZ": true,
+    "StorageEncrypted": true,
+    "StorageType": "gp2",
+    "Tags": [
+     {
+      "Key": "BackupEnabled",
+      "Value": "true"
+     }
+    ],
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "DbSecurityGroupE9D701AD",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleDatabase/Resource"
+   }
+  },
+  "RedisSecurityGroupB05951F6": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Redis (ElastiCache) allowing access from Moodle EC2",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/RedisSecurityGroup/Resource"
+   },
+   "Condition": "UseInternalRedisCond"
+  },
+  "RedisIngressFromMoodle": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow Redis from Moodle (internal)",
+    "FromPort": 6379,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "RedisSecurityGroupB05951F6",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "ToPort": 6379
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/RedisIngressFromMoodle"
+   },
+   "Condition": "UseInternalRedisCond"
+  },
+  "ExternalRedisIngressFromMoodle": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow Redis from Moodle (external)",
+    "FromPort": 6379,
+    "GroupId": {
+     "Ref": "ExternalRedisSecurityGroupId"
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleSecurityGroupA6EC1C93",
+      "GroupId"
+     ]
+    },
+    "ToPort": 6379
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ExternalRedisIngressFromMoodle"
+   },
+   "Condition": "UseExternalRedisCond"
+  },
+  "RedisSubnetGroup": {
+   "Type": "AWS::ElastiCache::SubnetGroup",
+   "Properties": {
+    "CacheSubnetGroupName": "MoodleCdkStack-redis-subnet-group",
+    "Description": "Subnet group for Moodle Redis",
+    "SubnetIds": [
+     {
+      "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+     },
+     {
+      "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/RedisSubnetGroup"
+   },
+   "Condition": "UseInternalRedisCond"
+  },
+  "MoodleRedis": {
+   "Type": "AWS::ElastiCache::CacheCluster",
+   "Properties": {
+    "CacheNodeType": "cache.t4g.micro",
+    "CacheSubnetGroupName": "MoodleCdkStack-redis-subnet-group",
+    "Engine": "redis",
+    "NumCacheNodes": 1,
+    "VpcSecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "RedisSecurityGroupB05951F6",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "DependsOn": [
+    "RedisSubnetGroup"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleRedis"
+   },
+   "Condition": "UseInternalRedisCond"
+  },
+  "MoodleEc2Role099677A4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ec2.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "IAM role for Moodle EC2 instances",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/CloudWatchAgentServerPolicy"
+       ]
+      ]
+     },
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/AmazonSSMManagedInstanceCore"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleEc2Role/Resource"
+   }
+  },
+  "MoodleEc2RoleDefaultPolicyFAFECB36": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeAutoScalingInstances",
+        "autoscaling:SetInstanceProtection",
+        "cloudformation:DescribeStacks",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DescribeTags",
+        "elasticfilesystem:ClientMount",
+        "elasticfilesystem:ClientWrite",
+        "elasticfilesystem:DescribeFileSystems",
+        "elasticfilesystem:DescribeMountTargetSecurityGroups",
+        "elasticfilesystem:DescribeMountTargets",
+        "elasticfilesystem:DescribeTags",
+        "elasticloadbalancing:DescribeLoadBalancers",
+        "rds:DescribeDBInstances",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:ListSecrets",
+        "ssm:GetParameter",
+        "ssm:GetParameters"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "elasticfilesystem:ClientMount",
+        "elasticfilesystem:ClientWrite"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MoodleAppEfs3E48A780",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "MoodleDataEfs150A3916",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        "arn:aws:secretsmanager:ca-central-1:483382415631:secret:moodle/ses/*",
+        {
+         "Ref": "MoodleCertificateSecretFB69B387"
+        },
+        {
+         "Ref": "MoodleDbSecret9F733EF4"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MoodleLogGroup62054BB4",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "SystemLogGroupA7250254",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MoodleLogGroup62054BB4",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "SystemLogGroupA7250254",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "ses:SendBulkTemplatedEmail",
+        "ses:SendEmail",
+        "ses:SendRawEmail",
+        "ses:SendTemplatedEmail"
+       ],
+       "Condition": {
+        "StringEquals": {
+         "ses:FromAddress": [
+          "noreply@tsin.ca",
+          "noreply@learning.tsin.ca",
+          "it@tsin.ca"
+         ]
+        }
+       },
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "MoodleScriptsBucket85A3D600",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "MoodleScriptsBucket85A3D600",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MoodleEc2RoleDefaultPolicyFAFECB36",
+    "Roles": [
+     {
+      "Ref": "MoodleEc2Role099677A4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleEc2Role/DefaultPolicy/Resource"
+   }
+  },
+  "MoodleAlb6AA528A0": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "AlbSecurityGroup86A59E99",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+     },
+     {
+      "Ref": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "MoodleVpcPublicSubnet1DefaultRoute909064EA",
+    "MoodleVpcPublicSubnet1RouteTableAssociationB8D8EA28",
+    "MoodleVpcPublicSubnet2DefaultRouteA4B6773B",
+    "MoodleVpcPublicSubnet2RouteTableAssociationADE317AD"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAlb/Resource"
+   }
+  },
+  "MoodleAlbMoodleListener967B9F98": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "RedirectConfig": {
+       "Port": "443",
+       "Protocol": "HTTPS",
+       "StatusCode": "HTTP_301"
+      },
+      "Type": "redirect"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "MoodleAlb6AA528A0"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAlb/MoodleListener/Resource"
+   }
+  },
+  "MoodleTargetGroup38954ADA": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckEnabled": true,
+    "HealthCheckIntervalSeconds": 10,
+    "HealthCheckPath": "/health.php",
+    "HealthCheckTimeoutSeconds": 5,
+    "HealthyThresholdCount": 2,
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "deregistration_delay.timeout_seconds",
+      "Value": "300"
+     },
+     {
+      "Key": "stickiness.enabled",
+      "Value": "true"
+     },
+     {
+      "Key": "stickiness.type",
+      "Value": "lb_cookie"
+     },
+     {
+      "Key": "stickiness.lb_cookie.duration_seconds",
+      "Value": "7200"
+     }
+    ],
+    "TargetType": "instance",
+    "UnhealthyThresholdCount": 2,
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleTargetGroup/Resource"
+   }
+  },
+  "MoodleCertificateSecretFB69B387": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "Description": "ACM certificate details (ARN and domain) for Moodle ALB",
+    "SecretString": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"certificateArn\":\"",
+       {
+        "Ref": "CertificateArn"
+       },
+       "\",\"domain\":\"",
+       {
+        "Ref": "CustomDomainName"
+       },
+       "\"}"
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleCertificateSecret/Resource"
+   }
+  },
+  "HealthOnHttpRule8C83BDBF": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "MoodleTargetGroup38954ADA"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/health"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Ref": "MoodleAlbMoodleListener967B9F98"
+    },
+    "Priority": 9
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/HealthOnHttpRule/Resource"
+   }
+  },
+  "AlbHttpsListenerResetFnServiceRoleF8819787": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerResetFn/ServiceRole/Resource"
+   }
+  },
+  "AlbHttpsListenerResetFnServiceRoleDefaultPolicy82BE53D1": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "elasticloadbalancing:DeleteListener",
+        "elasticloadbalancing:DescribeListeners"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AlbHttpsListenerResetFnServiceRoleDefaultPolicy82BE53D1",
+    "Roles": [
+     {
+      "Ref": "AlbHttpsListenerResetFnServiceRoleF8819787"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerResetFn/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AlbHttpsListenerResetFn1ECC1CAC": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "ZipFile": "import json\nimport boto3\nimport logging\nimport os\n\nlogger = logging.getLogger()\nlogger.setLevel(logging.INFO)\nelbv2 = boto3.client('elbv2')\n\n\ndef _delete_https_listeners(lb_arn: str):\n    paginator = elbv2.get_paginator('describe_listeners')\n    deleted = []\n    for page in paginator.paginate(LoadBalancerArn=lb_arn):\n        for l in page.get('Listeners', []):\n            if l.get('Port') == 443:\n                arn = l['ListenerArn']\n                logger.info(f\"Deleting existing HTTPS listener: {arn}\")\n                try:\n                    elbv2.delete_listener(ListenerArn=arn)\n                    deleted.append(arn)\n                except Exception as e:\n                    # If already gone, continue idempotently\n                    if 'ListenerNotFound' in str(e):\n                        logger.info(f\"Listener already deleted: {arn}\")\n                        continue\n                    raise\n    return deleted\n\n\ndef on_event(event, context):\n    logger.info(json.dumps(event))\n    request_type = event.get('RequestType')\n    props = event.get('ResourceProperties', {})\n    lb_arn = props.get('LoadBalancerArn')\n    if not lb_arn:\n        raise Exception('LoadBalancerArn is required')\n\n    physical_id = f\"alb-https-listener-reset-{lb_arn.split('/')[-1]}\"\n\n    if request_type in ('Create', 'Update'):\n        deleted = _delete_https_listeners(lb_arn)\n        return {\n            'PhysicalResourceId': physical_id,\n            'Data': {'Deleted': deleted}\n        }\n    elif request_type == 'Delete':\n        # Nothing to do on delete\n        return {'PhysicalResourceId': physical_id}\n    else:\n        raise Exception(f\"Unknown RequestType: {request_type}\")\n"
+    },
+    "Handler": "index.on_event",
+    "Role": {
+     "Fn::GetAtt": [
+      "AlbHttpsListenerResetFnServiceRoleF8819787",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.11",
+    "Timeout": 300
+   },
+   "DependsOn": [
+    "AlbHttpsListenerResetFnServiceRoleDefaultPolicy82BE53D1",
+    "AlbHttpsListenerResetFnServiceRoleF8819787"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerResetFn/Resource"
+   }
+  },
+  "AlbHttpsListenerResetProviderframeworkonEventServiceRole4C1DD04B": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerResetProvider/framework-onEvent/ServiceRole/Resource"
+   }
+  },
+  "AlbHttpsListenerResetProviderframeworkonEventServiceRoleDefaultPolicy270B7FB0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "lambda:InvokeFunction",
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "AlbHttpsListenerResetFn1ECC1CAC",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "AlbHttpsListenerResetFn1ECC1CAC",
+             "Arn"
+            ]
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "AlbHttpsListenerResetProviderframeworkonEventServiceRoleDefaultPolicy270B7FB0",
+    "Roles": [
+     {
+      "Ref": "AlbHttpsListenerResetProviderframeworkonEventServiceRole4C1DD04B"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerResetProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "AlbHttpsListenerResetProviderframeworkonEventC4CE2E44": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-483382415631-ca-central-1",
+     "S3Key": "7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94.zip"
+    },
+    "Description": "AWS CDK resource provider framework - onEvent (MoodleCdkStack/AlbHttpsListenerResetProvider)",
+    "Environment": {
+     "Variables": {
+      "USER_ON_EVENT_FUNCTION_ARN": {
+       "Fn::GetAtt": [
+        "AlbHttpsListenerResetFn1ECC1CAC",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "Handler": "framework.onEvent",
+    "Role": {
+     "Fn::GetAtt": [
+      "AlbHttpsListenerResetProviderframeworkonEventServiceRole4C1DD04B",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 900
+   },
+   "DependsOn": [
+    "AlbHttpsListenerResetProviderframeworkonEventServiceRoleDefaultPolicy270B7FB0",
+    "AlbHttpsListenerResetProviderframeworkonEventServiceRole4C1DD04B"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerResetProvider/framework-onEvent/Resource",
+    "aws:asset:path": "asset.7382a0addb9f34974a1ea6c6c9b063882af874828f366f5c93b2b7b64db15c94",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "AlbHttpsListenerReset": {
+   "Type": "AWS::CloudFormation::CustomResource",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "AlbHttpsListenerResetProviderframeworkonEventC4CE2E44",
+      "Arn"
+     ]
+    },
+    "LoadBalancerArn": {
+     "Ref": "MoodleAlb6AA528A0"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/AlbHttpsListenerReset/Default"
+   }
+  },
+  "MoodleHttpsListener74CE89F0": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "Certificates": [
+     {
+      "CertificateArn": {
+       "Ref": "CertificateArn"
+      }
+     }
+    ],
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "MoodleTargetGroup38954ADA"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "MoodleAlb6AA528A0"
+    },
+    "Port": 443,
+    "Protocol": "HTTPS"
+   },
+   "DependsOn": [
+    "AlbHttpsListenerReset"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleHttpsListener/Resource"
+   }
+  },
+  "MoodleLaunchTemplateProfileFC008913": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "MoodleEc2Role099677A4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleLaunchTemplate/Profile"
+   }
+  },
+  "MoodleLaunchTemplateF282F2EC": {
+   "Type": "AWS::EC2::LaunchTemplate",
+   "Properties": {
+    "LaunchTemplateData": {
+     "IamInstanceProfile": {
+      "Arn": {
+       "Fn::GetAtt": [
+        "MoodleLaunchTemplateProfileFC008913",
+        "Arn"
+       ]
+      }
+     },
+     "ImageId": {
+      "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+     },
+     "InstanceType": "m7i.xlarge",
+     "MetadataOptions": {
+      "HttpPutResponseHopLimit": 2,
+      "HttpTokens": "required"
+     },
+     "SecurityGroupIds": [
+      {
+       "Fn::GetAtt": [
+        "MoodleSecurityGroupA6EC1C93",
+        "GroupId"
+       ]
+      }
+     ],
+     "TagSpecifications": [
+      {
+       "ResourceType": "instance",
+       "Tags": [
+        {
+         "Key": "Name",
+         "Value": "MoodleCdkStack/MoodleLaunchTemplate"
+        }
+       ]
+      },
+      {
+       "ResourceType": "volume",
+       "Tags": [
+        {
+         "Key": "Name",
+         "Value": "MoodleCdkStack/MoodleLaunchTemplate"
+        }
+       ]
+      }
+     ],
+     "UserData": {
+      "Fn::Base64": {
+       "Fn::Join": [
+        "",
+        [
+         "#!/bin/bash\n#!/bin/bash\nset -euo pipefail\n\n# Logging setup\nexec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1\necho \"Starting Moodle installation script at $(date)\"\n\n# Set environment variables for the intelligent installation script\nexport APP_EFS_ID=\"",
+         {
+          "Ref": "MoodleAppEfs3E48A780"
+         },
+         "\"\nexport DATA_EFS_ID=\"",
+         {
+          "Ref": "MoodleDataEfs150A3916"
+         },
+         "\"\nexport DB_ENDPOINT=\"",
+         {
+          "Fn::GetAtt": [
+           "MoodleDatabase37183653",
+           "Endpoint.Address"
+          ]
+         },
+         "\"\nexport DB_SECRET_ARN=\"",
+         {
+          "Ref": "MoodleDbSecret9F733EF4"
+         },
+         "\"\nexport AWS_REGION=\"ca-central-1\"\nexport REGION=\"ca-central-1\"\nexport MOODLE_SITE_NAME=\"Touchstone Institute\"\nexport MOODLE_ADMIN_USER=\"moodle-admin\"\nexport MOODLE_ADMIN_EMAIL=\"it@tsin.ca\"\nexport EFS_SG_ID=\"",
+         {
+          "Fn::GetAtt": [
+           "EfsSecurityGroupEC5F36AC",
+           "GroupId"
+          ]
+         },
+         "\"\nexport MOODLE_WWWROOT=\"https://",
+         {
+          "Ref": "CustomDomainName"
+         },
+         "\"\nexport MULTI_INSTANCE_SAFE=1\nexport ALLOW_DESTRUCTIVE=0\necho \"UserData params: APP_EFS_ID=$APP_EFS_ID DATA_EFS_ID=$DATA_EFS_ID REGION=$REGION MULTI_INSTANCE_SAFE=$MULTI_INSTANCE_SAFE\"\n\n# Enable scale-in protection at the start (failsafe will remove later)\nTOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H X-aws-ec2-metadata-token-ttl-seconds:21600 || true)\nINSTANCE_ID=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/instance-id || true)\nASG_NAME=$(aws autoscaling describe-auto-scaling-instances --instance-ids \"$INSTANCE_ID\" --region \"$REGION\" --query \"AutoScalingInstances[0].AutoScalingGroupName\" --output text 2>/dev/null || echo \"\")\nif [ -n \"$ASG_NAME\" ]; then aws autoscaling set-instance-protection --instance-ids \"$INSTANCE_ID\" --auto-scaling-group-name \"$ASG_NAME\" --protected-from-scale-in --region \"$REGION\" || true; fi\n\n# Basic system setup\nyum update -y\nyum install -y amazon-cloudwatch-agent git mariadb105 jq\n\n# Install Apache and PHP\nyum install -y httpd php php-mysqlnd php-gd php-xml php-mbstring php-json php-zip php-curl php-intl php-soap php-ldap php-opcache php-fpm php-redis\n\n# Configure PHP-FPM for production load\necho \"Configuring PHP-FPM for production...\"\ncat > /etc/php-fpm.d/www.conf <<'EOFPHP'\n[www]\nuser = apache\ngroup = apache\nlisten = /run/php-fpm/www.sock\nlisten.owner = apache\nlisten.group = apache\nlisten.mode = 0660\n\n; Process pool management - optimized for production\npm = dynamic\npm.max_children = 50\npm.start_servers = 10\npm.min_spare_servers = 5\npm.max_spare_servers = 20\npm.max_requests = 1000\n\n; Timeouts\nrequest_terminate_timeout = 300\nrequest_slowlog_timeout = 10s\n\n; Logging\nslowlog = /var/log/php-fpm/www-slow.log\ncatch_workers_output = yes\n\n; Status monitoring\npm.status_path = /php-fpm-status\nping.path = /php-fpm-ping\nping.response = pong\n\n; Security\nphp_admin_value[error_log] = /var/log/php-fpm/www-error.log\nphp_admin_flag[log_errors] = on\nEOFPHP\n\n# Create PHP-FPM log directory\nmkdir -p /var/log/php-fpm\nchown apache:apache /var/log/php-fpm\n\n# Configure PHP settings for Moodle\ncat > /etc/php.d/99-moodle.ini <<'EOFPHPINI'\nmax_execution_time = 300\nmax_input_time = 300\nmemory_limit = 256M\npost_max_size = 512M\nupload_max_filesize = 512M\nmax_input_vars = 5000\nEOFPHPINI\n\n# Ensure Moodle vhost with PHP-FPM proxy and timeout settings\ncat > /etc/httpd/conf.d/moodle.conf <<'EOFV'\n<VirtualHost *:80>\n  DocumentRoot /app/moodle\n  DirectoryIndex index.php index.html\n\n  # PHP-FPM proxy configuration\n  <FilesMatch \\.php$>\n    SetHandler \"proxy:unix:/run/php-fpm/www.sock|fcgi://localhost\"\n  </FilesMatch>\n\n  # Timeout settings to prevent 504 errors\n  ProxyTimeout 300\n  Timeout 300\n\n  <Directory /app/moodle>\n    AllowOverride All\n    Require all granted\n    Options -Indexes +FollowSymLinks\n  </Directory>\n\n  # Logging\n  ErrorLog /var/log/httpd/moodle_error.log\n  CustomLog /var/log/httpd/moodle_access.log combined\n\n  # Security headers\n  Header always set X-Content-Type-Options \"nosniff\"\n  Header always set X-Frame-Options \"SAMEORIGIN\"\n</VirtualHost>\nEOFV\n\n# Ensure health endpoints exist early\nmkdir -p /app/moodle\necho OK > /app/moodle/health\n\n# Create advanced health check that tests Apache, PHP-FPM, and DB\ncat > /app/moodle/health.php <<'EOFH'\n<?php\n// Advanced health check that tests Apache, PHP-FPM, and database\n$start = microtime(true);\n$healthy = true;\n$errors = [];\n$warnings = [];\n\n// Test 1: PHP is executing (tests Apache -> PHP-FPM communication)\nif (!function_exists(\"phpversion\")) {\n    $healthy = false;\n    $errors[] = \"PHP not functioning\";\n} else {\n    // PHP is working, which means Apache successfully proxied to PHP-FPM\n    $warnings[] = \"PHP \" . phpversion() . \" OK\";\n}\n\n// Test 2: PHP-FPM socket is accessible\nif (function_exists(\"php_sapi_name\")) {\n    $sapi = php_sapi_name();\n    if ($sapi !== \"fpm-fcgi\") {\n        $warnings[] = \"Not using PHP-FPM (SAPI: $sapi)\";\n    }\n}\n\n// Test 3: Response time is acceptable (< 5 seconds)\n$elapsed = microtime(true) - $start;\nif ($elapsed > 5) {\n    $healthy = false;\n    $errors[] = \"Response too slow: \" . round($elapsed, 2) . \"s\";\n}\n\n// Test 4: Memory available\n$memLimit = ini_get(\"memory_limit\");\n$memUsage = memory_get_usage(true);\nif ($memUsage > 200 * 1024 * 1024) { // 200MB\n    $warnings[] = \"High memory usage: \" . round($memUsage / 1024 / 1024, 2) . \"MB\";\n}\n\n// Test 5: Database connectivity (if config exists)\nif (file_exists(\"/app/moodle/config.php\")) {\n    try {\n        // Parse config.php to get DB credentials\n        $config = file_get_contents(\"/app/moodle/config.php\");\n        if (preg_match(\"/\\$CFG->dbhost\\s*=\\s*['\\\"]([^'\\\"]+)['\\\"]/\", $config, $matches)) {\n            $dbhost = $matches[1];\n            if (preg_match(\"/\\$CFG->dbname\\s*=\\s*['\\\"]([^'\\\"]+)['\\\"]/\", $config, $matches)) {\n                $dbname = $matches[1];\n                if (preg_match(\"/\\$CFG->dbuser\\s*=\\s*['\\\"]([^'\\\"]+)['\\\"]/\", $config, $matches)) {\n                    $dbuser = $matches[1];\n                    if (preg_match(\"/\\$CFG->dbpass\\s*=\\s*['\\\"]([^'\\\"]+)['\\\"]/\", $config, $matches)) {\n                        $dbpass = $matches[1];\n                        // Quick DB connection test with 2 second timeout\n                        try {\n                            $pdo = new PDO(\"mysql:host=$dbhost;dbname=$dbname\", $dbuser, $dbpass, [\n                                PDO::ATTR_TIMEOUT => 2,\n                                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION\n                            ]);\n                            $pdo->query(\"SELECT 1\");\n                            $warnings[] = \"DB OK\";\n                            $pdo = null;\n                        } catch (Exception $e) {\n                            $healthy = false;\n                            $errors[] = \"DB connection failed: \" . $e->getMessage();\n                        }\n                    }\n                }\n            }\n        }\n    } catch (Exception $e) {\n        $warnings[] = \"DB test skipped: \" . $e->getMessage();\n    }\n}\n\n// Test 6: Apache headers (X-Powered-By should be set by Apache)\nif (function_exists(\"apache_get_modules\")) {\n    $warnings[] = \"Apache modules loaded\";\n}\n\n// Return status\nif ($healthy) {\n    http_response_code(200);\n    echo \"OK\";\n    if (!empty($warnings)) {\n        echo \" (\" . implode(\", \", $warnings) . \")\";\n    }\n} else {\n    http_response_code(503);\n    echo \"UNHEALTHY: \" . implode(\", \", $errors);\n}\n\n// Add response time\n$totalElapsed = microtime(true) - $start;\necho \" [\" . round($totalElapsed * 1000, 2) . \"ms]\";\n?>\nEOFH\n\n# Avoid recursive chown/chmod on shared EFS; only set for health files\nchown apache:apache /app/moodle/health /app/moodle/health.php || true\nchmod 644 /app/moodle/health.php || true\n\n# Start/enable web services\nsystemctl enable httpd\nsystemctl enable php-fpm || true\nsystemctl restart httpd\nsystemctl restart php-fpm || true\nsleep 3\ncurl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost/health || true\n\n# Configure CloudWatch Agent for monitoring\necho \"Configuring CloudWatch Agent...\"\ncat > /opt/aws/amazon-cloudwatch-agent/etc/config.json <<'EOFCW'\n{\n  \"agent\": {\n    \"metrics_collection_interval\": 60,\n    \"run_as_user\": \"root\"\n  },\n  \"logs\": {\n    \"logs_collected\": {\n      \"files\": {\n        \"collect_list\": [\n          {\n            \"file_path\": \"/var/log/httpd/error_log\",\n            \"log_group_name\": \"/aws/ec2/moodle\",\n            \"log_stream_name\": \"{instance_id}/apache-error\",\n            \"timezone\": \"UTC\"\n          },\n          {\n            \"file_path\": \"/var/log/httpd/moodle_error.log\",\n            \"log_group_name\": \"/aws/ec2/moodle\",\n            \"log_stream_name\": \"{instance_id}/moodle-error\",\n            \"timezone\": \"UTC\"\n          },\n          {\n            \"file_path\": \"/var/log/php-fpm/www-slow.log\",\n            \"log_group_name\": \"/aws/ec2/moodle\",\n            \"log_stream_name\": \"{instance_id}/php-fpm-slow\",\n            \"timezone\": \"UTC\"\n          },\n          {\n            \"file_path\": \"/var/log/php-fpm/www-error.log\",\n            \"log_group_name\": \"/aws/ec2/moodle\",\n            \"log_stream_name\": \"{instance_id}/php-fpm-error\",\n            \"timezone\": \"UTC\"\n          }\n        ]\n      }\n    }\n  },\n  \"metrics\": {\n    \"namespace\": \"Moodle\",\n    \"metrics_collected\": {\n      \"cpu\": {\n        \"measurement\": [\n          {\"name\": \"cpu_usage_idle\", \"rename\": \"CPU_IDLE\", \"unit\": \"Percent\"},\n          {\"name\": \"cpu_usage_iowait\", \"rename\": \"CPU_IOWAIT\", \"unit\": \"Percent\"}\n        ],\n        \"metrics_collection_interval\": 60,\n        \"totalcpu\": false\n      },\n      \"mem\": {\n        \"measurement\": [\n          {\"name\": \"mem_used_percent\", \"rename\": \"MEM_USED\", \"unit\": \"Percent\"}\n        ],\n        \"metrics_collection_interval\": 60\n      },\n      \"processes\": {\n        \"measurement\": [\n          {\"name\": \"running\", \"rename\": \"PHP_FPM_PROCESSES\", \"unit\": \"Count\"}\n        ],\n        \"metrics_collection_interval\": 60\n      }\n    },\n    \"append_dimensions\": {\n      \"InstanceId\": \"${aws:InstanceId}\",\n      \"AutoScalingGroupName\": \"${aws:AutoScalingGroupName}\"\n    }\n  }\n}\nEOFCW\n\n# Start CloudWatch Agent\n/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \\\n  -a fetch-config \\\n  -m ec2 \\\n  -s \\\n  -c file:/opt/aws/amazon-cloudwatch-agent/etc/config.json || true\n\n# Install EFS utils\nyum install -y amazon-efs-utils\nyum install -y nfs-utils\n\n# Mount EFS using proven working method (direct NFS4)\necho \"Mounting EFS file systems using proven NFS4 method...\"\necho \"APP_EFS_ID: $APP_EFS_ID\"\necho \"DATA_EFS_ID: $DATA_EFS_ID\"\necho \"REGION: $REGION\"\n# Block until EFS mount targets are fully ready and SG applied\nfor fs in \"$APP_EFS_ID\" \"$DATA_EFS_ID\"; do\n  echo \"Waiting for EFS $fs mount targets & SG readiness...\"\n  for i in $(seq 1 60); do\n    MT_JSON=$(aws efs describe-mount-targets --region \"$REGION\" --file-system-id \"$fs\" 2>/dev/null || true)\n    MT_IDS=$(echo \"$MT_JSON\" | jq -r \".MountTargets[].MountTargetId\" 2>/dev/null || true)\n    READY=1\n    for mt in $MT_IDS; do\n      SGL=$(aws efs describe-mount-target-security-groups --region \"$REGION\" --mount-target-id \"$mt\" --query \"SecurityGroups\" --output text 2>/dev/null || true)\n      if ! echo \"$SGL\" | grep -q \"$EFS_SG_ID\"; then READY=0; break; fi\n    done\n    if [ \"$READY\" = \"1\" ] && [ -n \"$MT_IDS\" ]; then echo \"EFS $fs ready\"; break; fi\n    sleep 10\n  done\ndone\n\n# Create mount points\nmkdir -p /app /data\n\n# Mount EFS using EFS helper with TLS/IAM when available (idempotent with guards and retries)\necho \"DNS check for APP EFS:\"; getent hosts \"$APP_EFS_ID.efs.$REGION.amazonaws.com\" || echo \"DNS failed for APP\"\necho \"DNS check for DATA EFS:\"; getent hosts \"$DATA_EFS_ID.efs.$REGION.amazonaws.com\" || echo \"DNS failed for DATA\"\n\nif command -v mount.efs >/dev/null 2>&1; then\n  MOUNT_APP=\"mount -t efs -o tls,iam\"\n  MOUNT_DATA=\"mount -t efs -o tls,iam\"\nelse\n  MOUNT_APP=\"mount -t nfs4 -o nfsvers=4.1,noresvport,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2\"\n  MOUNT_DATA=\"$MOUNT_APP\"\nfi\n\nfor i in $(seq 1 60); do\n  if mountpoint -q /app; then echo \"/app already mounted\"; break; fi\n  echo \"[Attempt $i/60] Mounting /app...\"\n  if $MOUNT_APP \"$APP_EFS_ID:/\" /app || $MOUNT_APP \"$APP_EFS_ID.efs.$REGION.amazonaws.com:/\" /app; then\n    echo \"Mounted /app\"; break; fi\n  sleep 10\ndone\n\nfor i in $(seq 1 60); do\n  if mountpoint -q /data; then echo \"/data already mounted\"; break; fi\n  echo \"[Attempt $i/60] Mounting /data...\"\n  if $MOUNT_DATA \"$DATA_EFS_ID:/\" /data || $MOUNT_DATA \"$DATA_EFS_ID.efs.$REGION.amazonaws.com:/\" /data; then\n    echo \"Mounted /data\"; break; fi\n  sleep 10\ndone\n\n# Persist mounts in /etc/fstab if missing (prefer TLS helper when possible)\nif command -v mount.efs >/dev/null 2>&1; then\n  grep -qE \"^$APP_EFS_ID.efs.$REGION.amazonaws.com:/s+/apps+efs\" /etc/fstab || echo \"$APP_EFS_ID.efs.$REGION.amazonaws.com:/ /app efs _netdev,tls,iam 0 0\" >> /etc/fstab\n  grep -qE \"^$DATA_EFS_ID.efs.$REGION.amazonaws.com:/s+/datas+efs\" /etc/fstab || echo \"$DATA_EFS_ID.efs.$REGION.amazonaws.com:/ /data efs _netdev,tls,iam 0 0\" >> /etc/fstab\nelse\n  grep -qE \"^$APP_EFS_ID.efs.$REGION.amazonaws.com:/s+/apps+nfs4\" /etc/fstab || echo \"$APP_EFS_ID.efs.$REGION.amazonaws.com:/ /app nfs4 nfsvers=4.1,_netdev 0 0\" >> /etc/fstab\n  grep -qE \"^$DATA_EFS_ID.efs.$REGION.amazonaws.com:/s+/datas+nfs4\" /etc/fstab || echo \"$DATA_EFS_ID.efs.$REGION.amazonaws.com:/ /data nfs4 nfsvers=4.1,_netdev 0 0\" >> /etc/fstab\nfi\n\n# Set proper permissions\n# Skipping ownership change on /app and /data to avoid disrupting existing site\n# chown apache:apache /app /data\n# chmod 755 /app /data\n\n# Verify mounts\necho \"EFS mount verification:\"\ndf -h | grep efs && echo \"✓ EFS mounted successfully\" || echo \"✗ EFS mount failed\"\nls -la /app /data && echo \"✓ Directories accessible\" || echo \"✗ Directory access failed\"\n# Re-create health endpoints on EFS to avoid 500 after mount\nmkdir -p /app/moodle\necho OK > /app/moodle/health\ncat > /app/moodle/health.php <<'EOFH'\n<?php http_response_code(200); echo \"OK\"; ?>\nEOFH\n# Avoid recursive chown on shared EFS; only set for health files\nchown apache:apache /app/moodle/health /app/moodle/health.php || true\necho \"Recreated health endpoints on EFS\"\n\n# Download and execute the intelligent installation script from S3\nSCRIPT_BUCKET=\"moodle-scripts-483382415631-ca-central-1\"\nSCRIPT_PATH=\"/tmp/intelligent-moodle-install.sh\"\necho \"Downloading intelligent installation script from S3...\"\naws s3 cp \"s3://$SCRIPT_BUCKET/intelligent-moodle-install.sh\" \"$SCRIPT_PATH\"\nchmod +x \"$SCRIPT_PATH\"\n\n# Execute the intelligent installation script\necho \"Executing intelligent Moodle installation...\"\nINSTALL_SUCCESS=false\nif \"$SCRIPT_PATH\"; then\n  echo \"✓ Intelligent install succeeded\"\n  INSTALL_SUCCESS=true\n  if [ -n \"$ASG_NAME\" ]; then aws autoscaling set-instance-protection --instance-ids \"$INSTANCE_ID\" --auto-scaling-group-name \"$ASG_NAME\" --no-protected-from-scale-in --region \"$REGION\" || true; fi\nelse\n  echo \"⚠ Intelligent install failed, will attempt fallback configuration\"\n  INSTALL_SUCCESS=false\nfi\n\n# CONSOLIDATED POST-INSTALL CONFIGURATION (Redis + Reverse Proxy)\necho \"=== CONSOLIDATED POST-INSTALL CONFIGURATION START ===\"\nREDIS_ENDPOINT=$(aws ssm get-parameter --name \"/moodle/redis/endpoint\" --region \"$REGION\" --query \"Parameter.Value\" --output text 2>/dev/null || echo \"\")\nCONFIG_NEEDS_REBUILD=false\n\n# Determine if we need to rebuild config.php\nif [ \"$INSTALL_SUCCESS\" = \"true\" ] && [ -f \"/app/moodle/config.php\" ]; then\n  echo \"✓ Using existing config.php from successful installation\"\n  # Check if Redis configuration is missing and needs to be added\n  if [ -n \"$REDIS_ENDPOINT\" ] && ! grep -q \"session_handler_class.*redis\" /app/moodle/config.php; then\n    echo \"⚠ Redis configuration missing, will rebuild config.php\"\n    CONFIG_NEEDS_REBUILD=true\n  fi\nelse\n  echo \"⚠ No existing config.php or install failed, will rebuild\"\n  CONFIG_NEEDS_REBUILD=true\nfi\n\n# Rebuild config.php if needed (SINGLE WRITE OPERATION)\nif [ \"$CONFIG_NEEDS_REBUILD\" = \"true\" ] && [ -n \"$REDIS_ENDPOINT\" ]; then\n  echo \"Rebuilding config.php with full Redis configuration...\"\n  aws s3 cp \"s3://moodle-scripts-483382415631-ca-central-1/rebuild-config-full-from-current.sh\" /tmp/rebuild-config-full-from-current.sh\n  if [ -s /tmp/rebuild-config-full-from-current.sh ]; then\n    chmod +x /tmp/rebuild-config-full-from-current.sh\n    if /tmp/rebuild-config-full-from-current.sh; then\n      echo \"✓ Config rebuilt successfully with Redis and reverse proxy configuration\"\n    else\n      echo \"✗ Config rebuild failed - keeping instance protected for debugging\"\n      exit 1\n    fi\n  else\n    echo \"✗ Could not download rebuild script\"\n    exit 1\n  fi\nelif [ \"$CONFIG_NEEDS_REBUILD\" = \"true\" ]; then\n  echo \"✗ No Redis endpoint available for config rebuild\"\n  exit 1\nfi\n\n# REVERSE PROXY VERIFICATION AND FINAL FIX\necho \"=== REVERSE PROXY VERIFICATION AND FINAL FIX ===\"\nPROXY_FIX_NEEDED=false\n\n# Test for reverse proxy abuse error\necho \"Testing for reverse proxy configuration issues...\"\nif [ -f \"/app/moodle/config.php\" ]; then\n  # Test direct access (should work)\n  LOCAL_STATUS=$(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/health 2>/dev/null || echo \"000\")\n  echo \"Local health check: $LOCAL_STATUS\"\n  \n  # Test with ALB headers (should work)\n  ALB_STATUS=$(curl -s -o /dev/null -w \"%{http_code}\" \\\n    -H \"Host: elearning.tsin.ca\" \\\n    -H \"X-Forwarded-Proto: https\" \\\n    -H \"X-Forwarded-For: 1.2.3.4\" \\\n    http://localhost/ 2>/dev/null || echo \"000\")\n  echo \"ALB simulation test: $ALB_STATUS\"\n  \n  # Check for reverse proxy abuse in error logs\n  if grep -q \"reverseproxyabused\" /var/log/httpd/error_log 2>/dev/null; then\n    echo \"⚠ Found reverseproxyabused error in logs\"\n    PROXY_FIX_NEEDED=true\n  fi\n  \n  # Check if reverse proxy configuration exists in config.php\n  if ! grep -q \"Dynamic proxy flags\" /app/moodle/config.php 2>/dev/null; then\n    echo \"⚠ Missing dynamic proxy configuration in config.php\"\n    PROXY_FIX_NEEDED=true\n  fi\n  \n  # If either test fails or errors found, apply the fix\n  if [ \"$LOCAL_STATUS\" != \"200\" ] || [ \"$ALB_STATUS\" != \"200\" ] || [ \"$PROXY_FIX_NEEDED\" = \"true\" ]; then\n    echo \"🔧 Applying reverse proxy fix...\"\n    aws s3 cp \"s3://moodle-scripts-483382415631-ca-central-1/patch-config-proxy-inplace.sh\" /tmp/patch-config-proxy-inplace.sh\n    if [ -s /tmp/patch-config-proxy-inplace.sh ]; then\n      chmod +x /tmp/patch-config-proxy-inplace.sh\n      if /tmp/patch-config-proxy-inplace.sh; then\n        echo \"✓ Reverse proxy fix applied successfully\"\n        # Restart services after fix\n        systemctl restart php-fpm httpd\n        sleep 3\n        # Re-test after fix\n        FIXED_STATUS=$(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/health 2>/dev/null || echo \"000\")\n        echo \"Post-fix health check: $FIXED_STATUS\"\n        if [ \"$FIXED_STATUS\" = \"200\" ]; then\n          echo \"✅ Reverse proxy issue resolved\"\n        else\n          echo \"❌ Reverse proxy fix failed - manual intervention required\"\n        fi\n      else\n        echo \"❌ Reverse proxy fix script failed\"\n      fi\n    else\n      echo \"❌ Could not download reverse proxy fix script\"\n    fi\n  else\n    echo \"✅ Reverse proxy configuration is working correctly\"\n  fi\nelse\n  echo \"❌ config.php not found - deployment failed\"\nfi\n\n# FINAL REVERSE PROXY DISABLE (PERMANENT FIX)\necho \"=== FINAL REVERSE PROXY DISABLE (PERMANENT FIX) ===\"\nif [ -f \"/app/moodle/config.php\" ]; then\n  echo \"Applying permanent reverse proxy disable to prevent reverseproxyabused errors...\"\n  # Create backup\n  cp /app/moodle/config.php /app/moodle/config.php.backup.final.$(date +%s) || true\n  # Force disable reverse proxy (this prevents the reverseproxyabused error)\n  if grep -q \"^\\s*\\$CFG->reverseproxy\" /app/moodle/config.php; then\n    sed -i -E \"s/^\\s*\\$CFG->reverseproxy\\s*=.*/\\$CFG->reverseproxy = false;/\" /app/moodle/config.php\n  else\n    sed -i \"/require_once.*lib\\/setup.php/i \\$CFG->reverseproxy = false;\" /app/moodle/config.php\n  fi\n  # Verify PHP syntax\n  php -l /app/moodle/config.php || echo \"⚠ PHP syntax error in config.php\"\n  # Purge caches and restart services\n  sudo -u apache php /app/moodle/admin/cli/purge_caches.php || true\n  systemctl restart php-fpm httpd || true\n  sleep 3\n  echo \"✅ Reverse proxy permanently disabled to prevent future issues\"\nelse\n  echo \"❌ config.php not found - cannot apply reverse proxy fix\"\nfi\n\n# Final health check + service verification\necho \"=== FINAL SYSTEM VERIFICATION ===\"\nsystemctl is-active --quiet httpd && echo \"✓ httpd active\" || echo \"❌ httpd NOT active\"\nsystemctl is-active --quiet php-fpm && echo \"✓ php-fpm active\" || echo \"❌ php-fpm NOT active\"\nsleep 5\nFINAL_HEALTH=$(curl -s -o /dev/null -w \"%{http_code}\" http://localhost/health 2>/dev/null || echo \"000\")\necho \"Final health check: $FINAL_HEALTH\"\n# Test ALB simulation to verify reverse proxy fix\nALB_TEST=$(curl -s -o /dev/null -w \"%{http_code}\" \\\n  -H \"Host: elearning.tsin.ca\" \\\n  -H \"X-Forwarded-Proto: https\" \\\n  -H \"X-Forwarded-For: 1.2.3.4\" \\\n  http://localhost/ 2>/dev/null || echo \"000\")\necho \"ALB simulation test: $ALB_TEST\"\nif [ \"$FINAL_HEALTH\" = \"200\" ] && [ \"$ALB_TEST\" != \"500\" ]; then\n  echo \"🎉 Moodle deployment completed successfully at $(date)\"\n  echo \"✅ Reverse proxy issue permanently resolved\"\nelse\n  echo \"⚠ Moodle deployment completed with potential issues at $(date)\"\n  echo \"Health: $FINAL_HEALTH, ALB Test: $ALB_TEST\"\nfi\n\n# SES EMAIL CONFIGURATION\necho \"=== SES EMAIL CONFIGURATION START ===\"\nif [ -f \"/app/moodle/config.php\" ]; then\n  echo \"Configuring SES email for Moodle...\"\n  aws s3 cp \"s3://moodle-scripts-483382415631-ca-central-1/configure-moodle-ses-email.sh\" /tmp/configure-moodle-ses-email.sh || true\n  if [ -s /tmp/configure-moodle-ses-email.sh ]; then\n    chmod +x /tmp/configure-moodle-ses-email.sh\n    if /tmp/configure-moodle-ses-email.sh; then\n      echo \"✓ SES email configuration completed successfully\"\n    else\n      echo \"⚠ SES email configuration failed (non-critical, can be configured manually)\"\n    fi\n  else\n    echo \"⚠ Could not download SES configuration script (non-critical)\"\n  fi\nelse\n  echo \"⚠ config.php not found - skipping SES email configuration\"\nfi\necho \"=== SES EMAIL CONFIGURATION END ===\""
+        ]
+       ]
+      }
+     }
+    },
+    "TagSpecifications": [
+     {
+      "ResourceType": "launch-template",
+      "Tags": [
+       {
+        "Key": "Name",
+        "Value": "MoodleCdkStack/MoodleLaunchTemplate"
+       }
+      ]
+     }
+    ]
+   },
+   "DependsOn": [
+    "MoodleEc2RoleDefaultPolicyFAFECB36",
+    "MoodleEc2Role099677A4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleLaunchTemplate/Resource"
+   }
+  },
+  "MoodleAutoScalingGroupASG71555747": {
+   "Type": "AWS::AutoScaling::AutoScalingGroup",
+   "Properties": {
+    "DesiredCapacity": "2",
+    "HealthCheckGracePeriod": 2700,
+    "HealthCheckType": "ELB",
+    "LaunchTemplate": {
+     "LaunchTemplateId": {
+      "Ref": "MoodleLaunchTemplateF282F2EC"
+     },
+     "Version": {
+      "Fn::GetAtt": [
+       "MoodleLaunchTemplateF282F2EC",
+       "LatestVersionNumber"
+      ]
+     }
+    },
+    "MaxSize": "4",
+    "MinSize": "2",
+    "NewInstancesProtectedFromScaleIn": true,
+    "TargetGroupARNs": [
+     {
+      "Ref": "MoodleTargetGroup38954ADA"
+     }
+    ],
+    "VPCZoneIdentifier": [
+     {
+      "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+     },
+     {
+      "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+     }
+    ]
+   },
+   "DependsOn": [
+    "EfsSecurityGroupFixer"
+   ],
+   "UpdatePolicy": {
+    "AutoScalingRollingUpdate": {
+     "MaxBatchSize": 1,
+     "MinInstancesInService": 0,
+     "SuspendProcesses": [
+      "HealthCheck",
+      "ReplaceUnhealthy",
+      "AZRebalance",
+      "AlarmNotification",
+      "ScheduledActions"
+     ],
+     "PauseTime": "PT10M"
+    },
+    "AutoScalingScheduledAction": {
+     "IgnoreUnmodifiedGroupSizeProperties": true
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAutoScalingGroup/ASG"
+   }
+  },
+  "MoodleAutoScalingGroupScalingPolicyCpuScalingC5454730": {
+   "Type": "AWS::AutoScaling::ScalingPolicy",
+   "Properties": {
+    "AutoScalingGroupName": {
+     "Ref": "MoodleAutoScalingGroupASG71555747"
+    },
+    "Cooldown": "300",
+    "PolicyType": "TargetTrackingScaling",
+    "TargetTrackingConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "ASGAverageCPUUtilization"
+     },
+     "TargetValue": 70
+    }
+   },
+   "DependsOn": [
+    "EfsSecurityGroupFixer"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAutoScalingGroup/ScalingPolicyCpuScaling/Resource"
+   }
+  },
+  "MoodleAutoScalingGroupScalingPolicyRequestCountScalingF151C885": {
+   "Type": "AWS::AutoScaling::ScalingPolicy",
+   "Properties": {
+    "AutoScalingGroupName": {
+     "Ref": "MoodleAutoScalingGroupASG71555747"
+    },
+    "PolicyType": "TargetTrackingScaling",
+    "TargetTrackingConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "ALBRequestCountPerTarget",
+      "ResourceLabel": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           1,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::Select": [
+           2,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::GetAtt": [
+           "MoodleTargetGroup38954ADA",
+           "TargetGroupFullName"
+          ]
+         }
+        ]
+       ]
+      }
+     },
+     "TargetValue": 1000
+    }
+   },
+   "DependsOn": [
+    "EfsSecurityGroupFixer",
+    "HealthOnHttpRule8C83BDBF",
+    "MoodleHttpsListener74CE89F0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/MoodleAutoScalingGroup/ScalingPolicyRequestCountScaling/Resource"
+   }
+  },
+  "UnhealthyTargetAlarmC6753764": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alert when any target becomes unhealthy",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "DatapointsToAlarm": 2,
+    "Dimensions": [
+     {
+      "Name": "LoadBalancer",
+      "Value": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           1,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::Select": [
+           2,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       ]
+      }
+     },
+     {
+      "Name": "TargetGroup",
+      "Value": {
+       "Fn::GetAtt": [
+        "MoodleTargetGroup38954ADA",
+        "TargetGroupFullName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 2,
+    "MetricName": "UnHealthyHostCount",
+    "Namespace": "AWS/ApplicationELB",
+    "Period": 300,
+    "Statistic": "Average",
+    "Threshold": 1,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/UnhealthyTargetAlarm/Resource"
+   }
+  },
+  "HighResponseTimeAlarmCB9F63BA": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alert when target response time exceeds 10 seconds",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "DatapointsToAlarm": 2,
+    "Dimensions": [
+     {
+      "Name": "LoadBalancer",
+      "Value": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           1,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::Select": [
+           2,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         },
+         "/",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             "/",
+             {
+              "Ref": "MoodleAlbMoodleListener967B9F98"
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       ]
+      }
+     },
+     {
+      "Name": "TargetGroup",
+      "Value": {
+       "Fn::GetAtt": [
+        "MoodleTargetGroup38954ADA",
+        "TargetGroupFullName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 2,
+    "MetricName": "TargetResponseTime",
+    "Namespace": "AWS/ApplicationELB",
+    "Period": 300,
+    "Statistic": "Average",
+    "Threshold": 10,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/HighResponseTimeAlarm/Resource"
+   }
+  },
+  "High5xxAlarm5A533B73": {
+   "Type": "AWS::CloudWatch::Alarm",
+   "Properties": {
+    "AlarmDescription": "Alert when 5xx errors exceed 10 per minute",
+    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+    "Dimensions": [
+     {
+      "Name": "LoadBalancer",
+      "Value": {
+       "Fn::GetAtt": [
+        "MoodleAlb6AA528A0",
+        "LoadBalancerFullName"
+       ]
+      }
+     }
+    ],
+    "EvaluationPeriods": 1,
+    "MetricName": "HTTPCode_Target_5XX_Count",
+    "Namespace": "AWS/ApplicationELB",
+    "Period": 300,
+    "Statistic": "Sum",
+    "Threshold": 10,
+    "TreatMissingData": "notBreaching"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/High5xxAlarm/Resource"
+   }
+  },
+  "ParamRedisEndpoint95BE69CC": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/redis/endpoint",
+    "Type": "String",
+    "Value": {
+     "Fn::If": [
+      "UseInternalRedisCond",
+      {
+       "Fn::GetAtt": [
+        "MoodleRedis",
+        "RedisEndpoint.Address"
+       ]
+      },
+      {
+       "Ref": "ExternalRedisEndpoint"
+      }
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamRedisEndpoint/Resource"
+   }
+  },
+  "ParamDbEndpointV230B975E8": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/db/endpoint",
+    "Type": "String",
+    "Value": {
+     "Fn::GetAtt": [
+      "MoodleDatabase37183653",
+      "Endpoint.Address"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamDbEndpointV2/Resource"
+   }
+  },
+  "ParamDbSecretArnD18186F0": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/db/secretArn",
+    "Type": "String",
+    "Value": {
+     "Ref": "MoodleDbSecret9F733EF4"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamDbSecretArn/Resource"
+   }
+  },
+  "ParamCertificateSecretArn2F640AC2": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/certificateSecretArn",
+    "Type": "String",
+    "Value": {
+     "Ref": "MoodleCertificateSecretFB69B387"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamCertificateSecretArn/Resource"
+   }
+  },
+  "ParamAppEfsIdA5EE4235": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/appEfsId",
+    "Type": "String",
+    "Value": {
+     "Ref": "MoodleAppEfs3E48A780"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamAppEfsId/Resource"
+   }
+  },
+  "ParamDataEfsId75356F6D": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/dataEfsId",
+    "Type": "String",
+    "Value": {
+     "Ref": "MoodleDataEfs150A3916"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamDataEfsId/Resource"
+   }
+  },
+  "ParamDbEndpoint1557D5A9": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/dbEndpoint",
+    "Type": "String",
+    "Value": {
+     "Fn::GetAtt": [
+      "MoodleDatabase37183653",
+      "Endpoint.Address"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamDbEndpoint/Resource"
+   }
+  },
+  "ParamAlbArnCB694532": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/albArn",
+    "Type": "String",
+    "Value": {
+     "Ref": "MoodleAlb6AA528A0"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamAlbArn/Resource"
+   }
+  },
+  "ParamAlbDnsC67DEE77": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Name": "/moodle/albDns",
+    "Type": "String",
+    "Value": {
+     "Fn::GetAtt": [
+      "MoodleAlb6AA528A0",
+      "DNSName"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamAlbDns/Resource"
+   }
+  },
+  "ParamSesSmtpEndpoint984765F4": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "SES SMTP endpoint for the current region",
+    "Name": "/moodle/ses/smtpEndpoint",
+    "Type": "String",
+    "Value": "email-smtp.ca-central-1.amazonaws.com"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamSesSmtpEndpoint/Resource"
+   }
+  },
+  "ParamSesSmtpPortB69B3792": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "SES SMTP port (587 for STARTTLS, 465 for TLS)",
+    "Name": "/moodle/ses/smtpPort",
+    "Type": "String",
+    "Value": "587"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamSesSmtpPort/Resource"
+   }
+  },
+  "ParamSesSecurityBCDB2618": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "SES SMTP security protocol (tls for STARTTLS)",
+    "Name": "/moodle/ses/security",
+    "Type": "String",
+    "Value": "tls"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamSesSecurity/Resource"
+   }
+  },
+  "ParamSesFromAddressB56D095B": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Description": "Default FROM address for SES emails",
+    "Name": "/moodle/ses/fromAddress",
+    "Type": "String",
+    "Value": "noreply@tsin.ca"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/ParamSesFromAddress/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/31U247iMAz9lnnPZFl2fwCYi5BmdxFFvCKTmpIhTarYAaGq/75KUlpm9vLkc45d24mdTuXXyUROHuBCj6o8PRq9l23BoE4CLrRrUU1lu22UWBzsdrUQq7A3WhVhb5GjNqK1C4wb2Bsc9VGbETmlgbWzQ3AEz8tVND+BX4HxAlex8voMjGPipWX0FoeA3EnPZsygjjVaFgWq4DVfX70LTerhv8LSVh6JREp/AIXbRj3bsnHacl9joG8QrDpusG4M5L4/Kp0wriLZvrlqKHbDnaBvsp0HdcrH6VE2K2e0uo5yzzOZA2H8eteW2Bh3jaeU2fU0CAKIkEnOoumEgXpfgmxTi1f0W/QU77zQtjLIzr4Eq9IUBrA4DGInNNSyXbs8xGTHFke0tMRgFa68O2gTm0TlkakGCxV62RaJ93ceUTYb8BXy3cyGgM+eTuCBZPuiDRZXYqxTmx/YDxds/10nfEmyzTszTOBpfi88AcMeCG+954gb6wQaINYK1BHT9X1KtoiOhQnE6Idg46DcgwGrtK3OU9nOmsZoldb8zUE5Tz70eR/u+H2cJkbbx9zwnT+fcOjjnv4lyzrk0d3zTkBgRwqMtpVsZ4FdkcmQ9Q8tl9l4UCdtq941LsAHoRPKuFBegNVRtjMDPs0ngU4Q1fGP4mM4eKiR81kH0nVijeSCjzMJxK4e6cH+w7Xy7qzLeFNx7wuGStvqQ9r+KexMfAY7uJAyWs4utDA6vYw0VGdLnR6BStl3vk9PciiwONhfgZvAnbCuRPlOX87T73IqJw/vpPWjD5Z1jXKd7W+dGOGwUQUAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "MoodleCdkStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Parameters": {
+  "SkipScriptDeployment": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "If true, skip deploying local scripts to S3 (for transient CI/deploy issues)"
+  },
+  "CreateSesVpcEndpoint": {
+   "Type": "String",
+   "Default": "true",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Create VPC Interface Endpoint for SES SMTP (recommended for private subnets)"
+  },
+  "UseExternalRedis": {
+   "Type": "String",
+   "Default": "false",
+   "AllowedValues": [
+    "true",
+    "false"
+   ],
+   "Description": "Use an external Redis cluster and skip creating one"
+  },
+  "ExternalRedisEndpoint": {
+   "Type": "String",
+   "Default": "",
+   "Description": "When UseExternalRedis=true, provide the Redis endpoint hostname"
+  },
+  "ExternalRedisSecurityGroupId": {
+   "Type": "String",
+   "Default": "",
+   "Description": "When UseExternalRedis=true, the Security Group ID attached to the Redis cluster"
+  },
+  "CertificateArn": {
+   "Type": "String",
+   "Default": "arn:aws:acm:ca-central-1:483382415631:certificate/356e41fc-6aed-4d07-96bf-1ab79eeedf5a",
+   "Description": "ARN of the ACM certificate for the custom domain (must be in the same region as the ALB)"
+  },
+  "CustomDomainName": {
+   "Type": "String",
+   "Default": "elearning.tsin.ca",
+   "Description": "Custom domain name pointing to the ALB (Route53 record must already exist)"
+  },
+  "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Conditions": {
+  "CreateSesEndpointCondition": {
+   "Fn::Equals": [
+    {
+     "Ref": "CreateSesVpcEndpoint"
+    },
+    "true"
+   ]
+  },
+  "UseExternalRedisCond": {
+   "Fn::Equals": [
+    {
+     "Ref": "UseExternalRedis"
+    },
+    "true"
+   ]
+  },
+  "UseInternalRedisCond": {
+   "Fn::Equals": [
+    {
+     "Ref": "UseExternalRedis"
+    },
+    "false"
+   ]
+  }
+ },
+ "Outputs": {
+  "MoodleUrl": {
+   "Description": "Moodle Application URL",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "CustomDomainName"
+      }
+     ]
+    ]
+   }
+  },
+  "CertificateSecretArn": {
+   "Description": "Secrets Manager ARN for ACM certificate details",
+   "Value": {
+    "Ref": "MoodleCertificateSecretFB69B387"
+   }
+  },
+  "AlbDnsName": {
+   "Description": "ALB DNS name",
+   "Value": {
+    "Fn::GetAtt": [
+     "MoodleAlb6AA528A0",
+     "DNSName"
+    ]
+   }
+  },
+  "DatabaseEndpoint": {
+   "Description": "RDS MariaDB Endpoint",
+   "Value": {
+    "Fn::GetAtt": [
+     "MoodleDatabase37183653",
+     "Endpoint.Address"
+    ]
+   }
+  },
+  "DataEfsId": {
+   "Description": "EFS File System ID for /data",
+   "Value": {
+    "Ref": "MoodleDataEfs150A3916"
+   }
+  },
+  "AppEfsId": {
+   "Description": "EFS File System ID for /app",
+   "Value": {
+    "Ref": "MoodleAppEfs3E48A780"
+   }
+  },
+  "SesSmtpEndpoint": {
+   "Description": "SES SMTP Endpoint",
+   "Value": "email-smtp.ca-central-1.amazonaws.com"
+  },
+  "SesSmtpPort": {
+   "Description": "SES SMTP Port (STARTTLS)",
+   "Value": "587"
+  },
+  "SesVpcEndpointCreated": {
+   "Description": "Whether SES VPC Endpoint was created",
+   "Value": {
+    "Fn::If": [
+     "CreateSesEndpointCondition",
+     "Yes - Private DNS enabled",
+     "No - Using NAT Gateway"
+    ]
+   }
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

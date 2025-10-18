@@ -1,0 +1,33 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "echo '=== MOODLE VERSION ==='",
+    "grep '$release' /app/moodle/version.php | head -2",
+    "echo ''",
+    "echo '=== INSTALLED COURSE FORMATS ==='",
+    "ls -la /app/moodle/course/format/",
+    "echo ''",
+    "echo '=== CHECK FOR BUTTONS FORMAT ==='",
+    "if [ -d /app/moodle/course/format/buttons ]; then",
+    "  echo 'Buttons format is installed'",
+    "  ls -la /app/moodle/course/format/buttons/",
+    "  if [ -f /app/moodle/course/format/buttons/version.php ]; then",
+    "    echo ''",
+    "    echo '--- Buttons Format Version ---'",
+    "    cat /app/moodle/course/format/buttons/version.php",
+    "  fi",
+    "else",
+    "  echo 'Buttons format is NOT installed'",
+    "fi",
+    "echo ''",
+    "echo '=== SEARCH FOR set_section_number IN BUTTONS FORMAT ==='",
+    "grep -rn 'set_section_number' /app/moodle/course/format/buttons/ 2>/dev/null || echo 'No matches found'",
+    "echo ''",
+    "echo '=== CHECK DATABASE FOR COURSE FORMAT ==='",
+    "php -r \"require_once('/app/moodle/config.php'); \\$DB->get_records_sql('SELECT id, category, fullname, format FROM {course} WHERE id IN (SELECT DISTINCT course FROM {course_categories} WHERE id = 34) LIMIT 5');\" 2>/dev/null || echo 'DB query failed'",
+    "echo ''",
+    "echo '=== CHECK CATEGORY 34 COURSES ==='",
+    "php /app/moodle/admin/cli/cfg.php --component=core --name=dbtype 2>/dev/null || echo 'cfg.php not available'"
+  ]
+}
+

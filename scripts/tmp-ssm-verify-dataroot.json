@@ -1,0 +1,26 @@
+{
+  "commands": [
+    "set -euxo pipefail",
+    "echo '=== EFS MOUNTS ==='",
+    "cat /proc/mounts | cut -d ' ' -f1,2,3 | grep -E 'efs|nfs4' || true",
+    "echo",
+    "echo '=== MOUNTPOINT CHECKS ==='",
+    "mountpoint -q /app && echo '/app is a mountpoint' || echo '/app is NOT a mountpoint'",
+    "mountpoint -q /data && echo '/data is a mountpoint' || echo '/data is NOT a mountpoint'",
+    "mountpoint -q /mnt/efs/app && echo '/mnt/efs/app is a mountpoint' || echo '/mnt/efs/app is NOT a mountpoint'",
+    "mountpoint -q /mnt/efs/data && echo '/mnt/efs/data is a mountpoint' || echo '/mnt/efs/data is NOT a mountpoint'",
+    "echo",
+    "echo '=== PATHS AND SYMLINKS ==='",
+    "ls -ld /data /mnt/efs /mnt/efs/data || true",
+    "readlink -f /data || true",
+    "echo",
+    "echo '=== MOODLEDATA DIRS ==='",
+    "ls -ld /data/moodledata /mnt/efs/data/moodledata 2>/dev/null || true",
+    "stat -c '%U:%G %a %n' /data/moodledata 2>/dev/null || true",
+    "stat -c '%U:%G %a %n' /mnt/efs/data/moodledata 2>/dev/null || true",
+    "echo",
+    "echo '=== DF SNIPPET ==='",
+    "df -hT | sed -n '1,20p'"
+  ]
+}
+

@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "echo '=== CHECKING MOODLE ERROR LOGS ==='",
+    "tail -50 /var/log/httpd/moodle_error.log",
+    "echo ''",
+    "echo '=== CHECKING PHP-FPM LOGS ==='",
+    "tail -30 /var/log/php-fpm/error.log 2>/dev/null || echo 'No PHP-FPM error log'",
+    "echo ''",
+    "echo '=== TESTING LOCAL ACCESS ==='",
+    "curl -sL http://localhost/ | head -50",
+    "echo ''",
+    "echo '=== CHECKING CONFIG SYNTAX ==='",
+    "php -l /app/moodle/config.php",
+    "echo ''",
+    "echo '=== VERIFYING REVERSE PROXY SETTINGS ==='",
+    "grep -A2 -B2 'reverseproxy\\|sslproxy' /app/moodle/config.php"
+  ]
+}
+

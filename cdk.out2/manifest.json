@@ -1,0 +1,955 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "MoodleCdkStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "MoodleCdkStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "MoodleCdkStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://483382415631/ca-central-1",
+      "properties": {
+        "templateFile": "MoodleCdkStack.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "Environment": "Development",
+          "Owner": "Touchstone Institute",
+          "Project": "Moodle-CDK"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::483382415631:role/cdk-hnb659fds-deploy-role-483382415631-ca-central-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::483382415631:role/cdk-hnb659fds-cfn-exec-role-483382415631-ca-central-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-483382415631-ca-central-1/4146ac90d5660125cd66acb31998ce74d2bfa0cd5f62a182ba4f05e7b7138633.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "MoodleCdkStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::483382415631:role/cdk-hnb659fds-lookup-role-483382415631-ca-central-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "MoodleCdkStack.assets"
+      ],
+      "metadata": {
+        "/MoodleCdkStack": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "Environment",
+                "Value": "Development"
+              },
+              {
+                "Key": "Owner",
+                "Value": "Touchstone Institute"
+              },
+              {
+                "Key": "Project",
+                "Value": "Moodle-CDK"
+              }
+            ]
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpc895D09D1"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet1Subnet47E239D7"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet1RouteTable81E6DEDE"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet1RouteTableAssociationB8D8EA28"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet1DefaultRoute909064EA"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet1EIP57558D09"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet1NATGatewayFCF3D029"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet2RouteTable78D40B03"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet2RouteTableAssociationADE317AD"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet2DefaultRouteA4B6773B"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet2EIP19B04F70"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPublicSubnet2NATGatewayE3FF8FC8"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet1RouteTableD2EE0C83"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet1RouteTableAssociation52975B8D"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet1DefaultRoute4CA1C383"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet2RouteTable55AD31E3"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet2RouteTableAssociationD98E67BE"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcPrivateSubnet2DefaultRoute69672EB8"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/DatabaseSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcDatabaseSubnet1Subnet6BD38C84"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/DatabaseSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcDatabaseSubnet1RouteTable71A48809"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/DatabaseSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcDatabaseSubnet1RouteTableAssociation3B57BC51"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/DatabaseSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcDatabaseSubnet2Subnet8185DD38"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/DatabaseSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcDatabaseSubnet2RouteTableEF2237FC"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/DatabaseSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcDatabaseSubnet2RouteTableAssociationE2922A0B"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcIGWEB666E00"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcVPCGWAF2FED52"
+          }
+        ],
+        "/MoodleCdkStack/MoodleVpc/RestrictDefaultSecurityGroupCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleVpcRestrictDefaultSecurityGroupCustomResource4E08D705"
+          }
+        ],
+        "/MoodleCdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+          }
+        ],
+        "/MoodleCdkStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E"
+          }
+        ],
+        "/MoodleCdkStack/MoodleLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleLogGroup62054BB4"
+          }
+        ],
+        "/MoodleCdkStack/SystemLogGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SystemLogGroupA7250254"
+          }
+        ],
+        "/MoodleCdkStack/MoodleScriptsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleScriptsBucket85A3D600"
+          }
+        ],
+        "/MoodleCdkStack/MoodleScriptsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleScriptsBucketPolicy64796874"
+          }
+        ],
+        "/MoodleCdkStack/MoodleScriptsBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleScriptsBucketAutoDeleteObjectsCustomResource1DED9FC4"
+          }
+        ],
+        "/MoodleCdkStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/MoodleCdkStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/MoodleCdkStack/SkipScriptDeployment": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SkipScriptDeployment"
+          }
+        ],
+        "/MoodleCdkStack/DeployMoodleScripts/AwsCliLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployMoodleScriptsAwsCliLayer45F6A477"
+          }
+        ],
+        "/MoodleCdkStack/DeployMoodleScripts/CustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeployMoodleScriptsCustomResource4E3F7999"
+          }
+        ],
+        "/MoodleCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+          }
+        ],
+        "/MoodleCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+          }
+        ],
+        "/MoodleCdkStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDbSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDbSecret9F733EF4"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDbSecret/Attachment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDbSecretAttachment0B6721B6"
+          }
+        ],
+        "/MoodleCdkStack/AlbSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbSecurityGroup86A59E99"
+          }
+        ],
+        "/MoodleCdkStack/MoodleSecurityGroup": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "Ignoring Egress rule since 'allowAllOutbound' is set to true; To add customized rules, set allowAllOutbound=false on the SecurityGroup [ack: @aws-cdk/aws-ec2:ipv4IgnoreEgressRule]",
+            "trace": [
+              "Annotations.addMessage (C:\\github\\moodle-cdk0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1526)",
+              "Annotations.addWarningV2 (C:\\github\\moodle-cdk0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
+              "SecurityGroup.addEgressRule (C:\\github\\moodle-cdk0\\node_modules\\aws-cdk-lib\\aws-ec2\\lib\\security-group.js:1:7618)",
+              "new MoodleCdkStack (C:\\github\\moodle-cdk0\\lib\\moodle-cdk-stack.ts:111:25)",
+              "Object.<anonymous> (C:\\github\\moodle-cdk0\\bin\\moodle-cdk.ts:8:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1734:14)",
+              "Module.m._compile (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+              "loadTS (node:internal/modules/cjs/loader:1826:10)",
+              "Object.require.extensions.<computed> [as .ts] (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1469:32)",
+              "Module._load (node:internal/modules/cjs/loader:1286:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:152:5)",
+              "phase4 (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+              "bootstrap (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+              "main (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+              "Object.<anonymous> (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1734:14)",
+              "Object..js (node:internal/modules/cjs/loader:1899:10)",
+              "Module.load (node:internal/modules/cjs/loader:1469:32)",
+              "Module._load (node:internal/modules/cjs/loader:1286:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:152:5)",
+              "node:internal/main/run_main_module:33:47"
+            ]
+          }
+        ],
+        "/MoodleCdkStack/MoodleSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleSecurityGroupA6EC1C93"
+          }
+        ],
+        "/MoodleCdkStack/MoodleSecurityGroup/from MoodleCdkStackAlbSecurityGroup4068AB88:80": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleSecurityGroupfromMoodleCdkStackAlbSecurityGroup4068AB8880B1FF4BE9"
+          }
+        ],
+        "/MoodleCdkStack/DbSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbSecurityGroupE9D701AD"
+          }
+        ],
+        "/MoodleCdkStack/DbSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:3306": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DbSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D63306D3999766"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupEC5F36AC"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:2049": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D62049BA0E4D85"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDataEfs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDataEfs150A3916"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDataEfs/EfsMountTarget1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDataEfsEfsMountTarget12AF50447"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDataEfs/EfsMountTarget2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDataEfsEfsMountTarget20AACC501"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAppEfs/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAppEfs3E48A780"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAppEfs/EfsMountTarget1": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAppEfsEfsMountTarget1911752D0"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAppEfs/EfsMountTarget2": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAppEfsEfsMountTarget26B5299BA"
+          }
+        ],
+        "/MoodleCdkStack/CreateSesVpcEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateSesVpcEndpoint"
+          }
+        ],
+        "/MoodleCdkStack/SesVpcEndpointSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesVpcEndpointSecurityGroup94CDE0B9"
+          }
+        ],
+        "/MoodleCdkStack/SesVpcEndpointSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:587": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesVpcEndpointSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D65875F334710"
+          }
+        ],
+        "/MoodleCdkStack/SesVpcEndpointSecurityGroup/from MoodleCdkStackMoodleSecurityGroupB9F856D6:465": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesVpcEndpointSecurityGroupfromMoodleCdkStackMoodleSecurityGroupB9F856D646529FAE806"
+          }
+        ],
+        "/MoodleCdkStack/SesSmtpVpcEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesSmtpVpcEndpoint87304B05"
+          }
+        ],
+        "/MoodleCdkStack/CreateSesEndpointCondition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CreateSesEndpointCondition"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixerFunction/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixerFunctionServiceRole43370271"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixerFunction/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixerFunctionServiceRoleDefaultPolicyEB09CF00"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixerFunction/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixerFunctionC644ADB6"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixerProvider/framework-onEvent/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleF6968A6E"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixerProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixerProviderframeworkonEventServiceRoleDefaultPolicy869B6809"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixerProvider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixerProviderframeworkonEvent444EFD2A"
+          }
+        ],
+        "/MoodleCdkStack/EfsSecurityGroupFixer/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "EfsSecurityGroupFixer"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDbSubnetGroup/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDbSubnetGroup"
+          }
+        ],
+        "/MoodleCdkStack/MoodleDatabase/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleDatabase37183653"
+          }
+        ],
+        "/MoodleCdkStack/UseExternalRedis": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UseExternalRedis"
+          }
+        ],
+        "/MoodleCdkStack/ExternalRedisEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExternalRedisEndpoint"
+          }
+        ],
+        "/MoodleCdkStack/ExternalRedisSecurityGroupId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExternalRedisSecurityGroupId"
+          }
+        ],
+        "/MoodleCdkStack/UseExternalRedisCond": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UseExternalRedisCond"
+          }
+        ],
+        "/MoodleCdkStack/UseInternalRedisCond": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UseInternalRedisCond"
+          }
+        ],
+        "/MoodleCdkStack/RedisSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisSecurityGroupB05951F6"
+          }
+        ],
+        "/MoodleCdkStack/RedisIngressFromMoodle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisIngressFromMoodle"
+          }
+        ],
+        "/MoodleCdkStack/ExternalRedisIngressFromMoodle": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExternalRedisIngressFromMoodle"
+          }
+        ],
+        "/MoodleCdkStack/RedisSubnetGroup": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RedisSubnetGroup"
+          }
+        ],
+        "/MoodleCdkStack/MoodleRedis": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleRedis"
+          }
+        ],
+        "/MoodleCdkStack/MoodleEc2Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleEc2Role099677A4"
+          }
+        ],
+        "/MoodleCdkStack/MoodleEc2Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleEc2RoleDefaultPolicyFAFECB36"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAlb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAlb6AA528A0"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAlb/MoodleListener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAlbMoodleListener967B9F98"
+          }
+        ],
+        "/MoodleCdkStack/MoodleTargetGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleTargetGroup38954ADA"
+          }
+        ],
+        "/MoodleCdkStack/CertificateArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CertificateArn"
+          }
+        ],
+        "/MoodleCdkStack/CustomDomainName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomDomainName"
+          }
+        ],
+        "/MoodleCdkStack/MoodleCertificateSecret/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleCertificateSecretFB69B387"
+          }
+        ],
+        "/MoodleCdkStack/HealthOnHttpRule/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HealthOnHttpRule8C83BDBF"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerResetFn/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerResetFnServiceRoleF8819787"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerResetFn/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerResetFnServiceRoleDefaultPolicy82BE53D1"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerResetFn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerResetFn1ECC1CAC"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerResetProvider/framework-onEvent/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerResetProviderframeworkonEventServiceRole4C1DD04B"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerResetProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerResetProviderframeworkonEventServiceRoleDefaultPolicy270B7FB0"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerResetProvider/framework-onEvent/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerResetProviderframeworkonEventC4CE2E44"
+          }
+        ],
+        "/MoodleCdkStack/AlbHttpsListenerReset/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbHttpsListenerReset"
+          }
+        ],
+        "/MoodleCdkStack/MoodleHttpsListener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleHttpsListener74CE89F0"
+          }
+        ],
+        "/MoodleCdkStack/MoodleLaunchTemplate/Profile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleLaunchTemplateProfileFC008913"
+          }
+        ],
+        "/MoodleCdkStack/MoodleLaunchTemplate/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleLaunchTemplateF282F2EC"
+          }
+        ],
+        "/MoodleCdkStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--al2023-ami-kernel-6.1-x86_64:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestal2023amikernel61x8664C96584B6F00A464EAD1953AFF4B05118Parameter"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAutoScalingGroup": [
+          {
+            "type": "aws:cdk:warning",
+            "data": "desiredCapacity has been configured. Be aware this will reset the size of your AutoScalingGroup on every deployment. See https://github.com/aws/aws-cdk/issues/5215 [ack: @aws-cdk/aws-autoscaling:desiredCapacitySet]",
+            "trace": [
+              "Annotations.addMessage (C:\\github\\moodle-cdk0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:1526)",
+              "Annotations.addWarningV2 (C:\\github\\moodle-cdk0\\node_modules\\aws-cdk-lib\\core\\lib\\annotations.js:1:825)",
+              "new AutoScalingGroup (C:\\github\\moodle-cdk0\\node_modules\\aws-cdk-lib\\aws-autoscaling\\lib\\auto-scaling-group.js:1:15969)",
+              "new MoodleCdkStack (C:\\github\\moodle-cdk0\\lib\\moodle-cdk-stack.ts:617:30)",
+              "Object.<anonymous> (C:\\github\\moodle-cdk0\\bin\\moodle-cdk.ts:8:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1734:14)",
+              "Module.m._compile (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\index.ts:1618:23)",
+              "loadTS (node:internal/modules/cjs/loader:1826:10)",
+              "Object.require.extensions.<computed> [as .ts] (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\index.ts:1621:12)",
+              "Module.load (node:internal/modules/cjs/loader:1469:32)",
+              "Module._load (node:internal/modules/cjs/loader:1286:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:152:5)",
+              "phase4 (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:649:14)",
+              "bootstrap (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:95:10)",
+              "main (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:55:10)",
+              "Object.<anonymous> (C:\\Users\\temidayo.ologun\\AppData\\Local\\npm-cache\\_npx\\1bf7c3c15bf47d04\\node_modules\\ts-node\\src\\bin.ts:800:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1734:14)",
+              "Object..js (node:internal/modules/cjs/loader:1899:10)",
+              "Module.load (node:internal/modules/cjs/loader:1469:32)",
+              "Module._load (node:internal/modules/cjs/loader:1286:12)",
+              "TracingChannel.traceSync (node:diagnostics_channel:322:14)",
+              "wrapModuleLoad (node:internal/modules/cjs/loader:235:24)",
+              "Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:152:5)",
+              "node:internal/main/run_main_module:33:47"
+            ]
+          }
+        ],
+        "/MoodleCdkStack/MoodleAutoScalingGroup/ASG": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAutoScalingGroupASG71555747"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAutoScalingGroup/ScalingPolicyCpuScaling/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAutoScalingGroupScalingPolicyCpuScalingC5454730"
+          }
+        ],
+        "/MoodleCdkStack/MoodleAutoScalingGroup/ScalingPolicyRequestCountScaling/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleAutoScalingGroupScalingPolicyRequestCountScalingF151C885"
+          }
+        ],
+        "/MoodleCdkStack/UnhealthyTargetAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UnhealthyTargetAlarmC6753764"
+          }
+        ],
+        "/MoodleCdkStack/HighResponseTimeAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "HighResponseTimeAlarmCB9F63BA"
+          }
+        ],
+        "/MoodleCdkStack/High5xxAlarm/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "High5xxAlarm5A533B73"
+          }
+        ],
+        "/MoodleCdkStack/MoodleUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MoodleUrl"
+          }
+        ],
+        "/MoodleCdkStack/ParamRedisEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamRedisEndpoint95BE69CC"
+          }
+        ],
+        "/MoodleCdkStack/ParamDbEndpointV2/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamDbEndpointV230B975E8"
+          }
+        ],
+        "/MoodleCdkStack/ParamDbSecretArn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamDbSecretArnD18186F0"
+          }
+        ],
+        "/MoodleCdkStack/CertificateSecretArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CertificateSecretArn"
+          }
+        ],
+        "/MoodleCdkStack/ParamCertificateSecretArn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamCertificateSecretArn2F640AC2"
+          }
+        ],
+        "/MoodleCdkStack/AlbDnsName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AlbDnsName"
+          }
+        ],
+        "/MoodleCdkStack/DatabaseEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DatabaseEndpoint"
+          }
+        ],
+        "/MoodleCdkStack/ParamAppEfsId/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamAppEfsIdA5EE4235"
+          }
+        ],
+        "/MoodleCdkStack/ParamDataEfsId/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamDataEfsId75356F6D"
+          }
+        ],
+        "/MoodleCdkStack/ParamDbEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamDbEndpoint1557D5A9"
+          }
+        ],
+        "/MoodleCdkStack/ParamAlbArn/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamAlbArnCB694532"
+          }
+        ],
+        "/MoodleCdkStack/ParamAlbDns/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamAlbDnsC67DEE77"
+          }
+        ],
+        "/MoodleCdkStack/ParamSesSmtpEndpoint/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamSesSmtpEndpoint984765F4"
+          }
+        ],
+        "/MoodleCdkStack/ParamSesSmtpPort/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamSesSmtpPortB69B3792"
+          }
+        ],
+        "/MoodleCdkStack/ParamSesSecurity/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamSesSecurityBCDB2618"
+          }
+        ],
+        "/MoodleCdkStack/ParamSesFromAddress/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ParamSesFromAddressB56D095B"
+          }
+        ],
+        "/MoodleCdkStack/DataEfsId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DataEfsId"
+          }
+        ],
+        "/MoodleCdkStack/AppEfsId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AppEfsId"
+          }
+        ],
+        "/MoodleCdkStack/SesSmtpEndpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesSmtpEndpoint"
+          }
+        ],
+        "/MoodleCdkStack/SesSmtpPort": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesSmtpPort"
+          }
+        ],
+        "/MoodleCdkStack/SesVpcEndpointCreated": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SesVpcEndpointCreated"
+          }
+        ],
+        "/MoodleCdkStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/MoodleCdkStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/MoodleCdkStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "MoodleCdkStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

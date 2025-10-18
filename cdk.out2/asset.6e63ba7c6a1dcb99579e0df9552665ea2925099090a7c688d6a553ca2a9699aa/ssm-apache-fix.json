@@ -1,0 +1,27 @@
+{
+  "commands": [
+    "set -e",
+    "LOG=/var/log/apache-fix.log; exec > >(tee -a \"$LOG\") 2>&1",
+    "echo '=== APACHE FIX START ===' $(date -u)",
+    "# Ensure packages",
+    "(command -v dnf >/dev/null 2>&1 && dnf -y install httpd php php-cli php-common php-mysqlnd php-gd php-xml php-mbstring php-intl php-json php-zip php-opcache) || yum install -y httpd php php-cli php-common php-mysqlnd php-gd php-xml php-mbstring php-intl php-json php-zip php-opcache",
+    "systemctl enable httpd",
+    "systemctl restart httpd",
+    "# Ensure docroot and minimal files",
+    "mkdir -p /app/moodle",
+    "echo OK > /app/moodle/health",
+    "cat > /app/moodle/health.php <<'EOF'\n<?php http_response_code(200); echo 'OK';\n?>\nEOF",
+    "if [ ! -f /app/moodle/index.php ]; then echo '<?php echo "Moodle placeholder"; ?>' > /app/moodle/index.php; fi",
+    "chown -R apache:apache /app/moodle",
+    "chmod -R 755 /app/moodle",
+    "# Apache vhost for Moodle",
+    "cat > /etc/httpd/conf.d/moodle.conf <<'EOFV'\n<VirtualHost *:80>\n  DocumentRoot /app/moodle\n  DirectoryIndex index.php index.html\n  <Directory /app/moodle>\n    AllowOverride All\n    Require all granted\n  </Directory>\n  ErrorLog /var/log/httpd/moodle_error.log\n  CustomLog /var/log/httpd/moodle_access.log combined\n</VirtualHost>\nEOFV",
+    "# SELinux adjustments if enforcing",
+    "if command -v getenforce >/dev/null 2>&1; then SE=$(getenforce); if [ \"$SE\" = \"Enforcing\" ] || [ \"$SE\" = \"Permissive\" ]; then chcon -R -t httpd_sys_content_t /app/moodle || true; chcon -R -t httpd_sys_rw_content_t /data/moodledata || true; fi; fi",
+    "systemctl restart httpd",
+    "sleep 2",
+    "curl -s -o /dev/null -w '%{http_code}\n' http://localhost/health || true",
+    "echo '=== APACHE FIX END ===' $(date -u)"
+  ]
+}
+

@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "set +e",
+    "mkdir -p /app /data",
+    "echo MOUNTS:",
+    "cat /proc/mounts | awk '{print $1,$2,$3}' | grep efs || true",
+    "cat /proc/mounts | awk '{print $1,$2,$3}' | grep nfs4 || true",
+    "echo MOUNTPOINTS:",
+    "if mountpoint -q /app; then echo app:mounted; else echo app:not; fi",
+    "if mountpoint -q /data; then echo data:mounted; else echo data:not; fi",
+    "echo DF:",
+    "df -h /app /data || true",
+    "echo UD LOG:",
+    "tail -n 80 /var/log/user-data.log || true",
+    "echo MI LOG:",
+    "tail -n 80 /var/log/moodle-install.log || true"
+  ]
+}
+

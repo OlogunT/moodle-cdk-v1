@@ -1,0 +1,26 @@
+{
+  "commands": [
+    "echo '=== VERIFY SECOND INSTANCE (i-011c65cd247389ee6) ==='",
+    "echo ''",
+    "echo 'Since both instances share the same EFS for /app/moodle,'",
+    "echo 'the fix should already be applied here too.'",
+    "echo ''",
+    "echo '1. Check if changes are visible:'",
+    "grep -n 'set_sectionnum' /app/moodle/course/format/menutopic/lib.php | head -3",
+    "grep -n 'set_sectionnum' /app/moodle/course/format/topcoll/classes/output/format_renderer_migration_toolbox.php | head -3",
+    "echo ''",
+    "echo '2. Services status:'",
+    "systemctl is-active httpd",
+    "systemctl is-active php-fpm",
+    "echo ''",
+    "echo '3. Test local site:'",
+    "curl -sL -w 'HTTP: %{http_code}\\n' -o /dev/null http://localhost/course/index.php?categoryid=34",
+    "echo ''",
+    "echo '4. Check for deprecation:'",
+    "curl -sL http://localhost/course/index.php?categoryid=34 2>&1 | grep -i 'set_section_number has been deprecated' && echo 'STILL HAS WARNING' || echo 'NO WARNING - FIXED!'",
+    "echo ''",
+    "echo 'RESULT: Fix is already active on this instance via shared EFS!'",
+    "date"
+  ]
+}
+

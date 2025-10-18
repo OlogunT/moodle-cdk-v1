@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Intelligent Moodle Installer - Optimized for idempotency and performance
-# Version: 2025-10-18-v2 - Fixed WWWROOT to use custom domain from MOODLE_WWWROOT env var
 # Global logging to both file and console
 LOG_FILE=${LOG_FILE:-/var/log/moodle-install.log}
 exec > >(tee -a "$LOG_FILE") 2>&1
@@ -19,73 +17,6 @@ echo "=== INTELLIGENT MOODLE INSTALLATION START at $START_TS ==="
 # Ensure mountpoints exist early
 mkdir -p /app /data
 mkdir -p /app/moodle || true
-
-# ============================================================================
-# DISTRIBUTED LOCK: Prevent concurrent installer execution on shared EFS
-# ============================================================================
-LOCK_FILE="/data/.moodle_installer.lock"
-LOCK_ACQUIRED=false
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || echo "unknown")
-
-acquire_lock() {
-  local max_wait=600  # 10 minutes max wait
-  local waited=0
-
-  echo "Attempting to acquire installation lock..."
-
-  while [ $waited -lt $max_wait ]; do
-    # Try to create lock file atomically using mkdir (atomic on NFS/EFS)
-    if mkdir "$LOCK_FILE" 2>/dev/null; then
-      echo "$INSTANCE_ID" > "$LOCK_FILE/owner"
-      echo "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$LOCK_FILE/timestamp"
-      LOCK_ACQUIRED=true
-      echo "✓ Lock acquired by instance $INSTANCE_ID"
-      return 0
-    fi
-
-    # Lock exists - check if it's stale (older than 30 minutes)
-    if [ -f "$LOCK_FILE/timestamp" ]; then
-      local lock_time owner
-      lock_time=$(cat "$LOCK_FILE/timestamp" 2>/dev/null || echo "")
-      owner=$(cat "$LOCK_FILE/owner" 2>/dev/null || echo "unknown")
-
-      if [ -n "$lock_time" ]; then
-        local lock_epoch now_epoch age
-        lock_epoch=$(date -d "$lock_time" +%s 2>/dev/null || echo 0)
-        now_epoch=$(date +%s)
-        age=$((now_epoch - lock_epoch))
-
-        if [ $age -gt 1800 ]; then
-          echo "Lock is stale (${age}s old, owner: $owner). Removing..."
-          rm -rf "$LOCK_FILE" || true
-          continue
-        fi
-
-        echo "Lock held by instance $owner (age: ${age}s). Waiting..."
-      fi
-    fi
-
-    sleep 10
-    waited=$((waited + 10))
-  done
-
-  echo "ERROR: Could not acquire lock after ${max_wait}s. Another instance may be installing."
-  exit 1
-}
-
-release_lock() {
-  if [ "$LOCK_ACQUIRED" = true ]; then
-    echo "Releasing installation lock..."
-    rm -rf "$LOCK_FILE" || true
-    LOCK_ACQUIRED=false
-  fi
-}
-
-# Ensure lock is released on exit
-trap release_lock EXIT
-
-# Acquire the lock before proceeding
-acquire_lock
 
 cd /app/moodle
 
@@ -283,23 +214,13 @@ if [ -z "$DB_ENDPOINT" ] || [ "$DB_ENDPOINT" = "None" ]; then
   DB_ENDPOINT=$(aws rds describe-db-instances --region "$REGION" --query "DBInstances[0].Endpoint.Address" --output text 2>/dev/null || echo "")
 fi
 
-# Discover Moodle URL with multiple fallback methods
-# Priority: Environment variable > CloudFormation > ALB discovery > Instance hostname
+# Discover ALB URL with multiple fallback methods
 WWWROOT=""
-
-# Method 0: Use environment variable if provided (highest priority - from CDK)
-if [ -n "${MOODLE_WWWROOT:-}" ]; then
-  WWWROOT="$MOODLE_WWWROOT"
-  echo "✓ Using MOODLE_WWWROOT from environment: $WWWROOT"
-fi
-
-if [ -z "$WWWROOT" ]; then
-  echo "Method 1: CloudFormation outputs..."
-  ALB_URL=$(aws cloudformation describe-stacks --region "$REGION" --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue" --output text 2>/dev/null || echo "")
-  if [ -n "$ALB_URL" ] && [ "$ALB_URL" != "None" ]; then
-    WWWROOT="$ALB_URL"
-    echo "Found ALB URL from CloudFormation: $WWWROOT"
-  fi
+echo "Method 1: CloudFormation outputs..."
+ALB_URL=$(aws cloudformation describe-stacks --region "$REGION" --stack-name "$STACK_NAME" --query "Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue" --output text 2>/dev/null || echo "")
+if [ -n "$ALB_URL" ] && [ "$ALB_URL" != "None" ]; then
+  WWWROOT="$ALB_URL"
+  echo "Found ALB URL from CloudFormation: $WWWROOT"
 fi
 
 if [ -z "$WWWROOT" ]; then
@@ -353,26 +274,29 @@ fi
 
 
 # Insert/refresh Moodle proxy flags before require_once in config.php
-# FIXED 2025-10-18: Removed reverseproxy=true to prevent "Reverse proxy enabled" error
-# For ALB with SSL termination, only sslproxy=true is needed
 set_proxy_flags_in_config() {
   local proto="$1"
   local cfg="/app/moodle/config.php"
   [ -f "$cfg" ] || return 0
-  # Remove any existing proxy settings to ensure clean state
+  # Remove any existing lines
   sed -i "/^\$CFG->reverseproxy/d; /^\$CFG->sslproxy/d; /^\$CFG->cookiesecure/d; /^\$CFG->loginhttps/d; /^\$CFG->getremoteaddrconf/d" "$cfg" || true
-
-  # For HTTPS with ALB SSL termination:
-  # - sslproxy=true tells Moodle to trust X-Forwarded-Proto header from ALB
-  # - reverseproxy should NOT be set (setting it to true blocks direct access from ALB)
-  # - This prevents the "Reverse proxy enabled so the server cannot be accessed directly" error
-  # - This also prevents redirect loops (ERR_TOO_MANY_REDIRECTS)
+  local sslval cookval sslcmt cookcmt
   if [ "$proto" = "https" ]; then
-    sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->sslproxy = true;" "$cfg"
-    echo "✓ Set sslproxy=true for HTTPS ALB SSL termination"
+    sslval=true; cookval=true
+    sslcmt='// HTTPS ALB termination'
+    cookcmt='// cookies secure on HTTPS'
+  else
+    sslval=false; cookval=false
+    sslcmt='// HTTP ALB now; set true when ALB is HTTPS'
+    cookcmt='// set true when ALB is HTTPS'
   fi
-  # Note: reverseproxy, getremoteaddrconf, cookiesecure, loginhttps are intentionally NOT set
-  # to avoid blocking direct access from the ALB
+  # Insert lines before require_once; order not critical, insert individually
+  sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->loginhttps = 0;" "$cfg"
+  sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->cookiesecure = $cookval; $cookcmt" "$cfg"
+  sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->sslproxy = $sslval; $sslcmt" "$cfg"
+  sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->reverseproxy = true;" "$cfg"
+  # Trust X-Forwarded-For from ALB (per Moodle docs for reverse proxies)
+  sed -i "/require_once.*lib\/setup\.php/i \\$CFG->getremoteaddrconf = 0;" "$cfg"
 }
 
 
@@ -468,16 +392,7 @@ if [ ! -f "/app/moodle/index.php" ]; then
     git branch --track MOODLE_500_STABLE origin/MOODLE_500_STABLE || true
     git checkout MOODLE_500_STABLE || true
   fi
-  # Only chown if needed (check a sample file)
-  if [ -f "/app/moodle/index.php" ]; then
-    current_owner=$(stat -c '%U' /app/moodle/index.php 2>/dev/null || echo "")
-    if [ "$current_owner" != "apache" ]; then
-      echo "Fixing ownership of /app/moodle (current owner: $current_owner)..."
-      chown -R apache:apache /app/moodle
-    else
-      echo "Ownership already correct for /app/moodle"
-    fi
-  fi
+  chown -R apache:apache /app/moodle
   echo "✓ Moodle code ready"
 else
   echo "✓ Moodle code already available"
@@ -497,38 +412,9 @@ systemctl restart php-fpm || true
 systemctl restart httpd || true
 
 mkdir -p /data/moodledata
-
-# Only chown if ownership is incorrect (idempotent check)
-echo "Checking ownership of /app/moodle and /data/moodledata..."
-NEEDS_CHOWN=false
-if [ -f "/app/moodle/index.php" ]; then
-  APP_OWNER=$(stat -c '%U' /app/moodle/index.php 2>/dev/null || echo "")
-  if [ "$APP_OWNER" != "apache" ]; then
-    echo "  /app/moodle needs ownership fix (current: $APP_OWNER)"
-    NEEDS_CHOWN=true
-  fi
-fi
-if [ -d "/data/moodledata" ]; then
-  DATA_OWNER=$(stat -c '%U' /data/moodledata 2>/dev/null || echo "")
-  if [ "$DATA_OWNER" != "apache" ]; then
-    echo "  /data/moodledata needs ownership fix (current: $DATA_OWNER)"
-    NEEDS_CHOWN=true
-  fi
-fi
-
-if [ "$NEEDS_CHOWN" = true ]; then
-  echo "Fixing ownership (this may take a few minutes on large installations)..."
-  chown -R apache:apache /app/moodle /data/moodledata
-  echo "✓ Ownership fixed"
-
-  # Only set permissions if we just fixed ownership (likely first run)
-  echo "Setting basic permissions after ownership fix..."
-  chmod -R 755 /app/moodle 2>/dev/null || true
-  chmod -R 777 /data/moodledata 2>/dev/null || true
-  echo "✓ Basic permissions set"
-else
-  echo "✓ Ownership already correct, skipping chown and chmod"
-fi
+chown -R apache:apache /app/moodle /data/moodledata
+chmod -R 755 /app/moodle
+chmod -R 777 /data/moodledata
 
 # Make mounts idempotent if script is run directly (guards)
 if ! mountpoint -q /app && [ -n "${APP_EFS_ID:-}" ]; then
@@ -638,18 +524,25 @@ RECREATE_CONFIG_EOF2
     ;;
   "update_existing")
     echo "Updating existing installation..."
-    echo "Config.php and database already exist - skipping modifications to preserve working configuration"
-    # Only verify config.php syntax
-    if php -l /app/moodle/config.php >/dev/null 2>&1; then
-      echo "✓ Config.php syntax is valid"
-    else
-      echo "⚠ Config.php has syntax errors - will not modify"
-    fi
-    # Run upgrade to ensure everything is current (safe operation)
-    cd /app/moodle
-    sudo -u apache php admin/cli/upgrade.php --non-interactive 2>&1 | head -n 20 && echo "✓ Upgrade check completed" || echo "⚠ Upgrade check failed or not needed"
-    echo "✓ Existing installation verified (no changes made)"
+    # Update config.php with current values
+    cp /app/moodle/config.php /app/moodle/config.php.backup
+    sed -i "s|\$CFG->wwwroot.*|\$CFG->wwwroot   = \"$WWWROOT\";|" /app/moodle/config.php
+    sed -i "s|\$CFG->dbhost.*|\$CFG->dbhost    = \"$DB_ENDPOINT\";|" /app/moodle/config.php
+    sed -i "s|\$CFG->dbuser.*|\$CFG->dbuser    = \"$DB_USER\";|" /app/moodle/config.php
+    sed -i "s|\$CFG->dbpass.*|\$CFG->dbpass    = \"$DB_PASS\";|" /app/moodle/config.php
+    sed -i "s|\$CFG->dbname.*|\$CFG->dbname    = \"$DB_NAME\";|" /app/moodle/config.php
+    # Proxy settings based on protocol (insert BEFORE require_once)
+    PROTO=$(echo "$WWWROOT" | cut -d: -f1)
+    set_proxy_flags_in_config "$PROTO"
+    # Update database wwwroot
+    mariadb -h "$DB_ENDPOINT" -u "$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "UPDATE mdl_config SET value=\"$WWWROOT\" WHERE name=\"wwwroot\";" 2>/dev/null && echo "✓ Database wwwroot updated" || echo "⚠ Could not update database wwwroot"
+    # Run upgrade to ensure everything is current
+    sudo -u apache php admin/cli/upgrade.php --non-interactive && echo "✓ Upgrade completed" || echo "⚠ Upgrade failed or not needed"
+    echo "✓ Existing installation updated"
     ;;
+    # Ensure debug flags present as requested (before require_once)
+    sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->debugdisplay = 1;" /app/moodle/config.php
+    sed -i "/require_once.*lib\/setup\.php/i \\\$CFG->debug = (E_ALL | E_STRICT);" /app/moodle/config.php
 
   *)
     echo "⚠ Unknown strategy: $STRATEGY, enabling manual browser installation..."
@@ -749,34 +642,10 @@ echo "Admin credentials: ${MOODLE_ADMIN_USER:-moodle-admin} / TempPass123!"
 
 # Final setup and service management
 echo "=== FINAL SETUP ==="
-
-# Only run expensive operations if needed
-FINAL_OWNER_APP=$(stat -c '%U' /app/moodle 2>/dev/null || echo "")
-FINAL_OWNER_DATA=$(stat -c '%U' /data/moodledata 2>/dev/null || echo "")
-
-if [ "$FINAL_OWNER_APP" != "apache" ] || [ "$FINAL_OWNER_DATA" != "apache" ]; then
-  echo "Final ownership fix required..."
-  chown -R apache:apache /app/moodle /data/moodledata
-  echo "✓ Final ownership set"
-else
-  echo "✓ Ownership already correct, skipping final chown"
-fi
-
-# Only run find/chmod if this is a fresh install AND we haven't already set permissions
-# Skip if:
-# - update_existing strategy (app already installed and working)
-# - NEEDS_CHOWN was true (we already ran chmod -R in lines 513-514)
-if [ "$NEEDS_CHOWN" = true ]; then
-  echo "✓ Permissions already set during ownership fix (skipping expensive find commands)"
-elif [ "$STRATEGY" = "fresh_install" ] || [ "$STRATEGY" = "repair_install" ] || [ "$STRATEGY" = "recreate_config" ] || [ "$STRATEGY" = "force_repair" ]; then
-  echo "Setting granular file permissions (strategy: $STRATEGY - this will take several minutes)..."
-  find /app/moodle -type f -exec chmod 644 {} \; 2>/dev/null || true
-  find /app/moodle -type d -exec chmod 755 {} \; 2>/dev/null || true
-  chmod -R 777 /data/moodledata 2>/dev/null || true
-  echo "✓ Granular permissions set"
-else
-  echo "✓ Skipping permission reset (strategy: $STRATEGY - app already installed)"
-fi
+chown -R apache:apache /app/moodle /data/moodledata
+find /app/moodle -type f -exec chmod 644 {} \;
+find /app/moodle -type d -exec chmod 755 {} \;
+chmod -R 777 /data/moodledata
 
 # Write state marker
 (

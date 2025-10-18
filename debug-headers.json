@@ -1,0 +1,31 @@
+{
+  "commands": [
+    "echo '=== CHECKING HTTP HEADERS FROM ALB ==='",
+    "echo 'Creating test PHP file to show all headers...'",
+    "cat > /app/moodle/test-headers.php << 'EOF'",
+    "<?php",
+    "header('Content-Type: text/plain');",
+    "echo \"=== ALL HTTP HEADERS ===\\n\";",
+    "foreach (getallheaders() as $name => $value) {",
+    "    echo \"$name: $value\\n\";",
+    "}",
+    "echo \"\\n=== SERVER VARIABLES ===\\n\";",
+    "echo \"REMOTE_ADDR: \" . $_SERVER['REMOTE_ADDR'] . \"\\n\";",
+    "echo \"HTTP_X_FORWARDED_FOR: \" . ($_SERVER['HTTP_X_FORWARDED_FOR'] ?? 'NOT SET') . \"\\n\";",
+    "echo \"HTTP_X_FORWARDED_PROTO: \" . ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? 'NOT SET') . \"\\n\";",
+    "echo \"HTTP_X_FORWARDED_PORT: \" . ($_SERVER['HTTP_X_FORWARDED_PORT'] ?? 'NOT SET') . \"\\n\";",
+    "echo \"HTTPS: \" . ($_SERVER['HTTPS'] ?? 'NOT SET') . \"\\n\";",
+    "echo \"SERVER_PORT: \" . $_SERVER['SERVER_PORT'] . \"\\n\";",
+    "echo \"REQUEST_SCHEME: \" . ($_SERVER['REQUEST_SCHEME'] ?? 'NOT SET') . \"\\n\";",
+    "?>",
+    "EOF",
+    "chown apache:apache /app/moodle/test-headers.php",
+    "echo ''",
+    "echo 'Test file created at /app/moodle/test-headers.php'",
+    "echo 'Access it via: https://elearning.tsin.ca/test-headers.php'",
+    "echo ''",
+    "echo '=== CURRENT MOODLE CONFIG ==='",
+    "grep -E '(reverseproxy|sslproxy|getremoteaddrconf)' /app/moodle/config.php"
+  ]
+}
+

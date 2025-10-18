@@ -1,0 +1,27 @@
+<?php
+unset($CFG);
+global $CFG;
+$CFG = new stdClass();
+$CFG->dbtype    = "mariadb";
+$CFG->dblibrary = "native";
+$CFG->dbhost    = 'moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com';
+$CFG->dbname    = 'moodle';
+$CFG->dbuser    = 'moodleuser';
+$CFG->dbpass    = '<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~';
+$CFG->wwwroot   = 'https://elearning.tsin.ca';
+$CFG->prefix    = "mdl_";
+$CFG->dboptions = array (
+  "dbpersist" => 0,
+  "dbport" => 3306,
+  "dbsocket" => "",
+  "dbcollation" => "utf8mb4_unicode_ci",
+);
+$CFG->dataroot  = "/data/moodledata";
+$CFG->admin     = "admin";
+$CFG->directorypermissions = 0777;
+$CFG->reverseproxy = false;
+require_once(__DIR__ . "/lib/setup.php");
+
+=== SYNTAX CHECK ===
+No syntax errors detected in /app/moodle/config.php
+

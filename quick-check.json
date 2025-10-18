@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "echo 'QUICK CHECK'",
+    "echo 'Services:'",
+    "systemctl is-active httpd",
+    "systemctl is-active php-fpm",
+    "echo 'Test:'",
+    "timeout 10 curl -sL -w 'HTTP: %{http_code}' -o /dev/null http://localhost/ 2>&1 || echo 'TIMEOUT'",
+    "echo 'Errors:'",
+    "tail -20 /var/log/httpd/error_log 2>/dev/null | grep -i 'error\\|fatal' | tail -5 || echo 'No errors'",
+    "date"
+  ]
+}
+

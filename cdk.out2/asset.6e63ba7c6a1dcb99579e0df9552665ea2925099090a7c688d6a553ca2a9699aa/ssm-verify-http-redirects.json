@@ -1,0 +1,17 @@
+{
+  "commands": [
+    "set +e",
+    "LOG=/var/log/verify-http.log; exec > >(tee -a \"$LOG\") 2>&1",
+    "REGION=${REGION:-$(curl -s http://169.254.169.254/latest/meta-data/placement/region || echo 'ca-central-1')}",
+    "STACK=${STACK:-MoodleCdkStack}",
+    "URL=$(aws cloudformation describe-stacks --region \"$REGION\" --stack-name \"$STACK\" --query \"Stacks[0].Outputs[?OutputKey=='MoodleUrl'].OutputValue\" --output text 2>/dev/null)",
+    "echo URL=$URL",
+    "echo --- LOCALHOST ---",
+    "curl -s -o /dev/null -w '%{http_code} %{url_effective} %{num_redirects}\n' http://localhost/",
+    "echo --- ALB ---",
+    "curl -sL --max-redirs 10 -o /dev/null -w '%{http_code} %{url_effective} %{num_redirects}\n' \"$URL/\"",
+    "echo --- CFG ---",
+    "grep -E 'wwwroot|reverseproxy|sslproxy|cookiesecure|loginhttps' /app/moodle/config.php || true"
+  ]
+}
+

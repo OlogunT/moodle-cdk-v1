@@ -6,6 +6,7 @@ import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as autoscaling from 'aws-cdk-lib/aws-autoscaling';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as cloudwatch from 'aws-cdk-lib/aws-cloudwatch';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -495,7 +496,7 @@ export class MoodleCdkStack extends cdk.Stack {
       },
     });
 
-    // Target Group
+    // Target Group with improved health checks
     const targetGroup = new elbv2.ApplicationTargetGroup(this, 'MoodleTargetGroup', {
       vpc,
       port: 80,
@@ -504,19 +505,22 @@ export class MoodleCdkStack extends cdk.Stack {
       healthCheck: {
         enabled: true,
         healthyHttpCodes: '200',
-        path: '/health',
-        interval: cdk.Duration.seconds(15),
-        timeout: cdk.Duration.seconds(6),
+        path: '/health.php',  // Use PHP health check to test Apache->PHP-FPM->DB
+        interval: cdk.Duration.seconds(10),  // More frequent checks
+        timeout: cdk.Duration.seconds(5),
         healthyThresholdCount: 2,
-        unhealthyThresholdCount: 5,
+        unhealthyThresholdCount: 2,  // Faster detection of unhealthy instances
       },
+      deregistrationDelay: cdk.Duration.seconds(300),  // Connection draining
     });
 
-	    // Enable sticky sessions (LB cookie) to keep PHP session on the same instance
-	    targetGroup.setAttribute('stickiness.enabled', 'true');
-	    targetGroup.setAttribute('stickiness.type', 'lb_cookie');
-	    // 2 hours stickiness to cover installation/first login flows
-	    targetGroup.setAttribute('stickiness.lb_cookie.duration_seconds', '7200');
+    // Enable sticky sessions (LB cookie) to keep PHP session on the same instance
+    targetGroup.setAttribute('stickiness.enabled', 'true');
+    targetGroup.setAttribute('stickiness.type', 'lb_cookie');
+    // 2 hours stickiness to cover installation/first login flows
+    targetGroup.setAttribute('stickiness.lb_cookie.duration_seconds', '7200');
+    // Note: connection_termination.enabled is only supported for HTTPS/TLS target groups
+    // Since we use HTTP (ALB terminates SSL), we cannot enable this attribute
 
 
     // Listener parameters
@@ -587,7 +591,7 @@ export class MoodleCdkStack extends cdk.Stack {
     });
 
     // User Data Script - build with resource params and SSM fallbacks
-    const userData = this.createUserDataScript({
+    const userData = this.createUserDataBootstrapOnly({
       appEfsId: appFileSystem.fileSystemId,
       dataEfsId: dataFileSystem.fileSystemId,
       dbEndpoint: database.instanceEndpoint.hostname,
@@ -638,6 +642,47 @@ export class MoodleCdkStack extends cdk.Stack {
 
     // Ensure EFS mount target SGs are applied before instances launch
     autoScalingGroup.node.addDependency(efsSecurityGroupFixer);
+
+    // Add auto-scaling policies based on CPU
+    autoScalingGroup.scaleOnCpuUtilization('CpuScaling', {
+      targetUtilizationPercent: 70,
+      cooldown: cdk.Duration.minutes(5),
+    });
+
+    // Add target tracking scaling based on ALB request count
+    autoScalingGroup.scaleOnRequestCount('RequestCountScaling', {
+      targetRequestsPerMinute: 1000,
+    });
+
+    // CloudWatch Alarms for monitoring
+    // Alarm: Unhealthy target count
+    const unhealthyTargetAlarm = new cloudwatch.Alarm(this, 'UnhealthyTargetAlarm', {
+      metric: targetGroup.metricUnhealthyHostCount(),
+      threshold: 1,
+      evaluationPeriods: 2,
+      datapointsToAlarm: 2,
+      alarmDescription: 'Alert when any target becomes unhealthy',
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // Alarm: High target response time (504 timeout indicator)
+    const highResponseTimeAlarm = new cloudwatch.Alarm(this, 'HighResponseTimeAlarm', {
+      metric: targetGroup.metricTargetResponseTime(),
+      threshold: 10,  // 10 seconds
+      evaluationPeriods: 2,
+      datapointsToAlarm: 2,
+      alarmDescription: 'Alert when target response time exceeds 10 seconds',
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
+
+    // Alarm: High 5xx error rate
+    const high5xxAlarm = new cloudwatch.Alarm(this, 'High5xxAlarm', {
+      metric: alb.metricHttpCodeTarget(elbv2.HttpCodeTarget.TARGET_5XX_COUNT),
+      threshold: 10,
+      evaluationPeriods: 1,
+      alarmDescription: 'Alert when 5xx errors exceed 10 per minute',
+      treatMissingData: cloudwatch.TreatMissingData.NOT_BREACHING,
+    });
 
     // Outputs
     new cdk.CfnOutput(this, 'MoodleUrl', {
@@ -794,26 +839,190 @@ export class MoodleCdkStack extends cdk.Stack {
       '# Install Apache and PHP',
       'yum install -y httpd php php-mysqlnd php-gd php-xml php-mbstring php-json php-zip php-curl php-intl php-soap php-ldap php-opcache php-fpm php-redis',
       '',
-      '# Ensure Moodle vhost',
+      '# Configure PHP-FPM for production load',
+      'echo "Configuring PHP-FPM for production..."',
+      'cat > /etc/php-fpm.d/www.conf <<\'EOFPHP\'',
+      '[www]',
+      'user = apache',
+      'group = apache',
+      'listen = /run/php-fpm/www.sock',
+      'listen.owner = apache',
+      'listen.group = apache',
+      'listen.mode = 0660',
+      '',
+      '; Process pool management - optimized for production',
+      'pm = dynamic',
+      'pm.max_children = 50',
+      'pm.start_servers = 10',
+      'pm.min_spare_servers = 5',
+      'pm.max_spare_servers = 20',
+      'pm.max_requests = 1000',
+      '',
+      '; Timeouts',
+      'request_terminate_timeout = 300',
+      'request_slowlog_timeout = 10s',
+      '',
+      '; Logging',
+      'slowlog = /var/log/php-fpm/www-slow.log',
+      'catch_workers_output = yes',
+      '',
+      '; Status monitoring',
+      'pm.status_path = /php-fpm-status',
+      'ping.path = /php-fpm-ping',
+      'ping.response = pong',
+      '',
+      '; Security',
+      'php_admin_value[error_log] = /var/log/php-fpm/www-error.log',
+      'php_admin_flag[log_errors] = on',
+      'EOFPHP',
+      '',
+      '# Create PHP-FPM log directory',
+      'mkdir -p /var/log/php-fpm',
+      'chown apache:apache /var/log/php-fpm',
+      '',
+      '# Configure PHP settings for Moodle',
+      'cat > /etc/php.d/99-moodle.ini <<\'EOFPHPINI\'',
+      'max_execution_time = 300',
+      'max_input_time = 300',
+      'memory_limit = 256M',
+      'post_max_size = 512M',
+      'upload_max_filesize = 512M',
+      'max_input_vars = 5000',
+      'EOFPHPINI',
+      '',
+      '# Ensure Moodle vhost with PHP-FPM proxy and timeout settings',
       'cat > /etc/httpd/conf.d/moodle.conf <<\'EOFV\'',
       '<VirtualHost *:80>',
       '  DocumentRoot /app/moodle',
       '  DirectoryIndex index.php index.html',
+      '',
+      '  # PHP-FPM proxy configuration',
+      '  <FilesMatch \\.php$>',
+      '    SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost"',
+      '  </FilesMatch>',
+      '',
+      '  # Timeout settings to prevent 504 errors',
+      '  ProxyTimeout 300',
+      '  Timeout 300',
+      '',
       '  <Directory /app/moodle>',
       '    AllowOverride All',
       '    Require all granted',
+      '    Options -Indexes +FollowSymLinks',
       '  </Directory>',
+      '',
+      '  # Logging',
       '  ErrorLog /var/log/httpd/moodle_error.log',
       '  CustomLog /var/log/httpd/moodle_access.log combined',
+      '',
+      '  # Security headers',
+      '  Header always set X-Content-Type-Options "nosniff"',
+      '  Header always set X-Frame-Options "SAMEORIGIN"',
       '</VirtualHost>',
       'EOFV',
       '',
       '# Ensure health endpoints exist early',
       'mkdir -p /app/moodle',
       'echo OK > /app/moodle/health',
+      '',
+      '# Create advanced health check that tests Apache, PHP-FPM, and DB',
       'cat > /app/moodle/health.php <<\'EOFH\'',
-      '<?php http_response_code(200); echo "OK"; ?>',
+      '<?php',
+      '// Advanced health check that tests Apache, PHP-FPM, and database',
+      '$start = microtime(true);',
+      '$healthy = true;',
+      '$errors = [];',
+      '$warnings = [];',
+      '',
+      '// Test 1: PHP is executing (tests Apache -> PHP-FPM communication)',
+      'if (!function_exists("phpversion")) {',
+      '    $healthy = false;',
+      '    $errors[] = "PHP not functioning";',
+      '} else {',
+      '    // PHP is working, which means Apache successfully proxied to PHP-FPM',
+      '    $warnings[] = "PHP " . phpversion() . " OK";',
+      '}',
+      '',
+      '// Test 2: PHP-FPM socket is accessible',
+      'if (function_exists("php_sapi_name")) {',
+      '    $sapi = php_sapi_name();',
+      '    if ($sapi !== "fpm-fcgi") {',
+      '        $warnings[] = "Not using PHP-FPM (SAPI: $sapi)";',
+      '    }',
+      '}',
+      '',
+      '// Test 3: Response time is acceptable (< 5 seconds)',
+      '$elapsed = microtime(true) - $start;',
+      'if ($elapsed > 5) {',
+      '    $healthy = false;',
+      '    $errors[] = "Response too slow: " . round($elapsed, 2) . "s";',
+      '}',
+      '',
+      '// Test 4: Memory available',
+      '$memLimit = ini_get("memory_limit");',
+      '$memUsage = memory_get_usage(true);',
+      'if ($memUsage > 200 * 1024 * 1024) { // 200MB',
+      '    $warnings[] = "High memory usage: " . round($memUsage / 1024 / 1024, 2) . "MB";',
+      '}',
+      '',
+      '// Test 5: Database connectivity (if config exists)',
+      'if (file_exists("/app/moodle/config.php")) {',
+      '    try {',
+      '        // Parse config.php to get DB credentials',
+      '        $config = file_get_contents("/app/moodle/config.php");',
+      '        if (preg_match("/\\$CFG->dbhost\\s*=\\s*[\'\\"]([^\'\\"]+)[\'\\"]/", $config, $matches)) {',
+      '            $dbhost = $matches[1];',
+      '            if (preg_match("/\\$CFG->dbname\\s*=\\s*[\'\\"]([^\'\\"]+)[\'\\"]/", $config, $matches)) {',
+      '                $dbname = $matches[1];',
+      '                if (preg_match("/\\$CFG->dbuser\\s*=\\s*[\'\\"]([^\'\\"]+)[\'\\"]/", $config, $matches)) {',
+      '                    $dbuser = $matches[1];',
+      '                    if (preg_match("/\\$CFG->dbpass\\s*=\\s*[\'\\"]([^\'\\"]+)[\'\\"]/", $config, $matches)) {',
+      '                        $dbpass = $matches[1];',
+      '                        // Quick DB connection test with 2 second timeout',
+      '                        try {',
+      '                            $pdo = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass, [',
+      '                                PDO::ATTR_TIMEOUT => 2,',
+      '                                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION',
+      '                            ]);',
+      '                            $pdo->query("SELECT 1");',
+      '                            $warnings[] = "DB OK";',
+      '                            $pdo = null;',
+      '                        } catch (Exception $e) {',
+      '                            $healthy = false;',
+      '                            $errors[] = "DB connection failed: " . $e->getMessage();',
+      '                        }',
+      '                    }',
+      '                }',
+      '            }',
+      '        }',
+      '    } catch (Exception $e) {',
+      '        $warnings[] = "DB test skipped: " . $e->getMessage();',
+      '    }',
+      '}',
+      '',
+      '// Test 6: Apache headers (X-Powered-By should be set by Apache)',
+      'if (function_exists("apache_get_modules")) {',
+      '    $warnings[] = "Apache modules loaded";',
+      '}',
+      '',
+      '// Return status',
+      'if ($healthy) {',
+      '    http_response_code(200);',
+      '    echo "OK";',
+      '    if (!empty($warnings)) {',
+      '        echo " (" . implode(", ", $warnings) . ")";',
+      '    }',
+      '} else {',
+      '    http_response_code(503);',
+      '    echo "UNHEALTHY: " . implode(", ", $errors);',
+      '}',
+      '',
+      '// Add response time',
+      '$totalElapsed = microtime(true) - $start;',
+      'echo " [" . round($totalElapsed * 1000, 2) . "ms]";',
+      '?>',
       'EOFH',
+      '',
       '# Avoid recursive chown/chmod on shared EFS; only set for health files',
       'chown apache:apache /app/moodle/health /app/moodle/health.php || true',
       'chmod 644 /app/moodle/health.php || true',
@@ -825,6 +1034,85 @@ export class MoodleCdkStack extends cdk.Stack {
       'systemctl restart php-fpm || true',
       'sleep 3',
       'curl -s -o /dev/null -w "%{http_code}\\n" http://localhost/health || true',
+      '',
+      '# Configure CloudWatch Agent for monitoring',
+      'echo "Configuring CloudWatch Agent..."',
+      'cat > /opt/aws/amazon-cloudwatch-agent/etc/config.json <<\'EOFCW\'',
+      '{',
+      '  "agent": {',
+      '    "metrics_collection_interval": 60,',
+      '    "run_as_user": "root"',
+      '  },',
+      '  "logs": {',
+      '    "logs_collected": {',
+      '      "files": {',
+      '        "collect_list": [',
+      '          {',
+      '            "file_path": "/var/log/httpd/error_log",',
+      '            "log_group_name": "/aws/ec2/moodle",',
+      '            "log_stream_name": "{instance_id}/apache-error",',
+      '            "timezone": "UTC"',
+      '          },',
+      '          {',
+      '            "file_path": "/var/log/httpd/moodle_error.log",',
+      '            "log_group_name": "/aws/ec2/moodle",',
+      '            "log_stream_name": "{instance_id}/moodle-error",',
+      '            "timezone": "UTC"',
+      '          },',
+      '          {',
+      '            "file_path": "/var/log/php-fpm/www-slow.log",',
+      '            "log_group_name": "/aws/ec2/moodle",',
+      '            "log_stream_name": "{instance_id}/php-fpm-slow",',
+      '            "timezone": "UTC"',
+      '          },',
+      '          {',
+      '            "file_path": "/var/log/php-fpm/www-error.log",',
+      '            "log_group_name": "/aws/ec2/moodle",',
+      '            "log_stream_name": "{instance_id}/php-fpm-error",',
+      '            "timezone": "UTC"',
+      '          }',
+      '        ]',
+      '      }',
+      '    }',
+      '  },',
+      '  "metrics": {',
+      '    "namespace": "Moodle",',
+      '    "metrics_collected": {',
+      '      "cpu": {',
+      '        "measurement": [',
+      '          {"name": "cpu_usage_idle", "rename": "CPU_IDLE", "unit": "Percent"},',
+      '          {"name": "cpu_usage_iowait", "rename": "CPU_IOWAIT", "unit": "Percent"}',
+      '        ],',
+      '        "metrics_collection_interval": 60,',
+      '        "totalcpu": false',
+      '      },',
+      '      "mem": {',
+      '        "measurement": [',
+      '          {"name": "mem_used_percent", "rename": "MEM_USED", "unit": "Percent"}',
+      '        ],',
+      '        "metrics_collection_interval": 60',
+      '      },',
+      '      "processes": {',
+      '        "measurement": [',
+      '          {"name": "running", "rename": "PHP_FPM_PROCESSES", "unit": "Count"}',
+      '        ],',
+      '        "metrics_collection_interval": 60',
+      '      }',
+      '    },',
+      '    "append_dimensions": {',
+      '      "InstanceId": "${aws:InstanceId}",',
+      '      "AutoScalingGroupName": "${aws:AutoScalingGroupName}"',
+      '    }',
+      '  }',
+      '}',
+      'EOFCW',
+      '',
+      '# Start CloudWatch Agent',
+      '/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \\',
+      '  -a fetch-config \\',
+      '  -m ec2 \\',
+      '  -s \\',
+      '  -c file:/opt/aws/amazon-cloudwatch-agent/etc/config.json || true',
       '',
       '# Install EFS utils',
       'yum install -y amazon-efs-utils',
@@ -1101,6 +1389,28 @@ export class MoodleCdkStack extends cdk.Stack {
 
     return userData;
   }
+
+  private createUserDataBootstrapOnly(p: { appEfsId: string; dataEfsId: string; dbEndpoint: string; region: string; dbSecretArn: string; efsSgId: string; moodleWwwroot?: string; }): ec2.UserData {
+    const userData = ec2.UserData.forLinux();
+    userData.addCommands(
+      '#!/bin/bash',
+      'set -euo pipefail',
+      'exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1',
+      `export APP_EFS_ID="${p.appEfsId}"`,
+      `export DATA_EFS_ID="${p.dataEfsId}"`,
+      `export REGION="${p.region}"`,
+      `export DB_SECRET_ARN="${p.dbSecretArn}"`,
+      `export EFS_SG_ID="${p.efsSgId}"`,
+      `export MOODLE_WWWROOT="${p.moodleWwwroot ?? ''}"`,
+      `export SCRIPT_BUCKET="moodle-scripts-${this.account}-${this.region}"`,
+      'command -v aws >/dev/null 2>&1 || yum install -y awscli jq',
+      'aws s3 cp "s3://$SCRIPT_BUCKET/bootstrap-moodle.sh" /tmp/bootstrap-moodle.sh',
+      'chmod +x /tmp/bootstrap-moodle.sh',
+      '/tmp/bootstrap-moodle.sh'
+    );
+    return userData;
+  }
+
 
   private createEfsSecurityGroupFixerProvider() {
     const onEventHandler = new lambda.Function(this, 'EfsSecurityGroupFixerFunction', {

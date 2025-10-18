@@ -1,0 +1,31 @@
+{
+  "commands": [
+    "echo '=== MOODLE CONFIG CHECK ==='",
+    "echo '--- wwwroot setting ---'",
+    "grep -n 'wwwroot' /app/moodle/config.php || echo 'No wwwroot found'",
+    "echo ''",
+    "echo '--- Reverse proxy settings ---'",
+    "grep -n -E '(reverseproxy|sslproxy|cookiesecure|loginhttps|getremoteaddrconf)' /app/moodle/config.php || echo 'No proxy settings found'",
+    "echo ''",
+    "echo '--- Config order check (should be BEFORE require_once) ---'",
+    "awk '/reverseproxy|sslproxy|cookiesecure|loginhttps|getremoteaddrconf|wwwroot|require_once.*lib\\/setup\\.php/ {print NR \" : \" $0}' /app/moodle/config.php",
+    "echo ''",
+    "echo '=== APACHE CONFIG CHECK ==='",
+    "cat /etc/httpd/conf.d/moodle.conf",
+    "echo ''",
+    "echo '=== LOCAL REDIRECT TEST ==='",
+    "curl -sI --max-redirs 5 http://localhost/ | grep -E '^(HTTP/|Location:)' || echo 'Redirect test failed'",
+    "echo ''",
+    "echo '=== DATABASE wwwroot CHECK ==='",
+    "REGION=$(curl -s http://169.254.169.254/latest/meta-data/placement/region)",
+    "DB_SECRET=$(aws secretsmanager list-secrets --region $REGION --query \"SecretList[?contains(Name, 'MoodleDbSecret')].ARN | [0]\" --output text 2>/dev/null || echo '')",
+    "if [ -n \"$DB_SECRET\" ]; then",
+    "  DB_JSON=$(aws secretsmanager get-secret-value --region $REGION --secret-id $DB_SECRET --query SecretString --output text 2>/dev/null)",
+    "  DB_HOST=$(echo \"$DB_JSON\" | jq -r .host)",
+    "  DB_USER=$(echo \"$DB_JSON\" | jq -r .username)",
+    "  DB_PASS=$(echo \"$DB_JSON\" | jq -r .password)",
+    "  mariadb -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D moodle -e \"SELECT name, value FROM mdl_config WHERE name='wwwroot';\" 2>/dev/null || echo 'DB query failed'",
+    "fi"
+  ]
+}
+

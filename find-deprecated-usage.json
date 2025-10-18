@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "echo '=== SEARCH FOR set_section_number IN ALL CUSTOM FORMATS ==='",
+    "echo ''",
+    "echo '--- GRID FORMAT ---'",
+    "grep -rn 'set_section_number' /app/moodle/course/format/grid/ 2>/dev/null || echo 'No matches in grid'",
+    "echo ''",
+    "echo '--- MENUTOPIC FORMAT ---'",
+    "grep -rn 'set_section_number' /app/moodle/course/format/menutopic/ 2>/dev/null || echo 'No matches in menutopic'",
+    "echo ''",
+    "echo '--- TOPCOLL FORMAT ---'",
+    "grep -rn 'set_section_number' /app/moodle/course/format/topcoll/ 2>/dev/null || echo 'No matches in topcoll'",
+    "echo ''",
+    "echo '=== CHECK VERSIONS OF CUSTOM FORMATS ==='",
+    "echo ''",
+    "echo '--- GRID VERSION ---'",
+    "grep -E '(version|release)' /app/moodle/course/format/grid/version.php 2>/dev/null | head -5",
+    "echo ''",
+    "echo '--- MENUTOPIC VERSION ---'",
+    "grep -E '(version|release)' /app/moodle/course/format/menutopic/version.php 2>/dev/null | head -5",
+    "echo ''",
+    "echo '--- TOPCOLL VERSION ---'",
+    "grep -E '(version|release)' /app/moodle/course/format/topcoll/version.php 2>/dev/null | head -5",
+    "echo ''",
+    "echo '=== CHECK ERROR LOG FOR STACK TRACE ==='",
+    "grep -B 5 -A 15 'set_section_number has been deprecated' /var/log/httpd/moodle_error.log 2>/dev/null | tail -40 || echo 'No recent errors in log'"
+  ]
+}
+

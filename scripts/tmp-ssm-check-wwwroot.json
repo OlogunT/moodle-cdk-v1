@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "echo '=== DB CREDS FROM SECRET ==='",
+    "REGION=ca-central-1",
+    "DB_SECRET=$(aws secretsmanager list-secrets --region $REGION --query 'SecretList[?contains(Name, `\''MoodleDbSecret`\'')].ARN | [0]' --output text)",
+    "DB_JSON=$(aws secretsmanager get-secret-value --region $REGION --secret-id $DB_SECRET --query SecretString --output text)",
+    "DB_HOST=$(echo $DB_JSON | jq -r .host)",
+    "DB_USER=$(echo $DB_JSON | jq -r .username)",
+    "DB_PASS=$(echo $DB_JSON | jq -r .password)",
+    "DB_NAME=$(echo $DB_JSON | jq -r .dbname)",
+    "echo host=$DB_HOST user=$DB_USER db=$DB_NAME",
+    "echo '=== WWWROOT IN DB ==='",
+    "mariadb -h $DB_HOST -u $DB_USER -p$DB_PASS -D $DB_NAME -e \"SELECT name,value FROM mdl_config WHERE name IN ('wwwroot','reverseproxy','sslproxy');\"",
+    "echo '=== DONE ==='"
+  ]
+}
+

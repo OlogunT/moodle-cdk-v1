@@ -1,0 +1,29 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "echo '=== MOODLE VERSION ==='",
+    "php /app/moodle/admin/cli/cfg.php --name=version 2>/dev/null || grep \"\\$release\" /app/moodle/version.php | head -1",
+    "php /app/moodle/admin/cli/cfg.php --name=release 2>/dev/null || grep \"\\$release\" /app/moodle/version.php | head -1",
+    "echo ''",
+    "echo '=== SEARCH FOR set_section_number USAGE ==='",
+    "grep -r \"set_section_number\" /app/moodle/ --include=\"*.php\" 2>/dev/null | head -30 || echo 'No matches found'",
+    "echo ''",
+    "echo '=== CHECK COURSEFORMAT BASE CLASS ==='",
+    "if [ -f /app/moodle/course/format/classes/base.php ]; then",
+    "  echo 'File exists: /app/moodle/course/format/classes/base.php'",
+    "  grep -n \"function set_section\" /app/moodle/course/format/classes/base.php 2>/dev/null | head -10",
+    "else",
+    "  echo 'File not found'",
+    "fi",
+    "echo ''",
+    "echo '=== CHECK FOR CUSTOM COURSE FORMATS ==='",
+    "ls -la /app/moodle/course/format/ | grep -v \"^d.*\\.$\" | tail -20",
+    "echo ''",
+    "echo '=== CHECK ERROR LOG FOR FULL STACK TRACE ==='",
+    "grep -A 10 \"set_section_number has been deprecated\" /var/log/httpd/moodle_error.log 2>/dev/null | tail -30 || echo 'No error log entries found'",
+    "echo ''",
+    "echo '=== CHECK MOODLE DEBUG LOG ==='",
+    "tail -50 /data/moodledata/moodledata.log 2>/dev/null || echo 'No moodledata.log found'"
+  ]
+}
+
