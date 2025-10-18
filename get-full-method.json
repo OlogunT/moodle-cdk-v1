@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "echo '=== GET COMPLETE METHOD IMPLEMENTATIONS ==='",
+    "echo ''",
+    "echo '=== FULL set_section_number METHOD ==='",
+    "sed -n '666,676p' /app/moodle/course/format/classes/base.php",
+    "echo ''",
+    "echo '=== FULL set_sectionnum METHOD ==='",
+    "sed -n '677,700p' /app/moodle/course/format/classes/base.php",
+    "echo ''",
+    "echo '=== CHECK IF set_section_number CALLS set_sectionnum ==='",
+    "sed -n '666,676p' /app/moodle/course/format/classes/base.php | grep -i 'set_sectionnum'",
+    "echo ''",
+    "echo 'Result: If empty above, set_section_number does NOT call set_sectionnum'",
+    "echo ''",
+    "date"
+  ]
+}
+

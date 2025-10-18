@@ -1,0 +1,24 @@
+{
+  "commands": [
+    "echo '=== INVESTIGATE COURSE ID 70 DEPRECATION ==='",
+    "echo ''",
+    "echo '=== 1. GET COURSE FORMAT FOR COURSE 70 ==='",
+    "mysql -u root moodle -e \"SELECT id, fullname, shortname, format FROM mdl_course WHERE id = 70;\"",
+    "echo ''",
+    "echo '=== 2. CHECK WHICH PLUGIN IS BEING USED ==='",
+    "mysql -u root moodle -e \"SELECT format FROM mdl_course WHERE id = 70;\" | tail -1",
+    "echo ''",
+    "echo '=== 3. VERIFY OUR PREVIOUS FIXES ARE STILL IN PLACE ==='",
+    "echo 'Checking menutopic:'",
+    "grep -n 'set_section_number\\|set_sectionnum' /app/moodle/course/format/menutopic/lib.php | head -5",
+    "echo ''",
+    "echo 'Checking topcoll:'",
+    "grep -n 'set_section_number\\|set_sectionnum' /app/moodle/course/format/topcoll/classes/output/format_renderer_migration_toolbox.php | head -5",
+    "echo ''",
+    "echo '=== 4. CHECK MOODLE CORE FIX ==='",
+    "sed -n '666,670p' /app/moodle/course/format/classes/base.php",
+    "echo ''",
+    "date"
+  ]
+}
+
