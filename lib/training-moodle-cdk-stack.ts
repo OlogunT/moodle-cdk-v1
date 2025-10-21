@@ -161,6 +161,10 @@ export class TrainingMoodleCdkStack extends cdk.Stack {
       securityGroup: efsSecurityGroup,
     });
 
+    // Add backup tags to EFS filesystems
+    cdk.Tags.of(dataFileSystem).add('BackupEnabled', 'true');
+    cdk.Tags.of(appFileSystem).add('BackupEnabled', 'true');
+
     // ========================================================================
     // RDS Database (Separate for Training)
     // ========================================================================
