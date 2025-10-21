@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "#!/bin/bash",
+    "set -e",
+    "",
+    "REGION=ca-central-1",
+    "",
+    "echo '=== Getting Database Credentials ==='",
+    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region $REGION --query 'SecretList[?contains(Name,`TrainingMoodleDbSecret`)].ARN' --output text)",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region $REGION --query SecretString --output text)",
+    "DB_HOST=$(echo \"$DB_CREDS\" | jq -r .host)",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username)",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password)",
+    "",
+    "echo ''",
+    "echo '=== ALL Admin Users (Role ID 1) ==='",
+    "echo ''",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D moodle -e \"SELECT u.id, u.username, u.email, u.firstname, u.lastname, u.suspended, u.deleted FROM mdl_user u INNER JOIN mdl_role_assignments ra ON u.id = ra.userid WHERE ra.roleid = 1 ORDER BY u.id;\" 2>&1 | grep -v 'Warning'",
+    "",
+    "echo ''",
+    "echo '=== Users with Lambda in username or email ==='",
+    "echo ''",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D moodle -e \"SELECT id, username, email, firstname, lastname FROM mdl_user WHERE (username LIKE '%lambda%' OR email LIKE '%lambda%' OR firstname LIKE '%Lambda%' OR lastname LIKE '%Lambda%') AND deleted = 0 ORDER BY id;\" 2>&1 | grep -v 'Warning'",
+    "",
+    "echo ''",
+    "echo '=== Site Admin IDs from config ==='",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D moodle -e \"SELECT value FROM mdl_config WHERE name='siteadmins';\" -s -N 2>&1 | grep -v 'Warning'"
+  ]
+}
+

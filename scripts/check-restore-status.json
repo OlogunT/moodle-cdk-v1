@@ -1,0 +1,31 @@
+{
+  "commands": [
+    "echo === Checking Restoration Status ===",
+    "echo",
+    "if [ -f /tmp/restore.log ]; then",
+    "  echo Restoration log found",
+    "  echo Total lines: $(wc -l /tmp/restore.log | cut -d' ' -f1)",
+    "  echo",
+    "  echo === Last 100 lines (filtered) ===",
+    "  tail -100 /tmp/restore.log | tr -cd '\\11\\12\\15\\40-\\176'",
+    "else",
+    "  echo Restoration log not found",
+    "fi",
+    "echo",
+    "echo === Database Status ===",
+    "REGION=ca-central-1",
+    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region $REGION --query 'SecretList[?contains(Name, `TrainingMoodleDbSecret`)].ARN' --output text)",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region $REGION --query SecretString --output text)",
+    "DB_HOST=$(echo \"$DB_CREDS\" | jq -r .host)",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username)",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password)",
+    "echo Listing all databases:",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -e 'SHOW DATABASES;' 2>&1 | grep -v Warning",
+    "echo",
+    "echo === Moodledata Status ===",
+    "du -sh /data/moodledata/ 2>&1",
+    "echo",
+    "ls -lh /data/moodledata/ 2>&1 | head -15"
+  ]
+}
+

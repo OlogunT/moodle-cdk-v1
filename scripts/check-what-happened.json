@@ -1,0 +1,24 @@
+{
+  "commands": [
+    "echo === Checking what happened ===",
+    "echo",
+    "echo Step 1: Check if lftp was installed",
+    "which lftp && echo lftp is installed || echo lftp NOT installed",
+    "echo",
+    "echo Step 2: Check if SSH key was downloaded",
+    "ls -la /tmp/keys/etraintouchstone 2>&1",
+    "echo",
+    "echo Step 3: Check if script tried to download",
+    "ps aux | grep lftp | grep -v grep || echo No lftp process running",
+    "echo",
+    "echo Step 4: Check for any downloaded files anywhere",
+    "find /data -name '*.sql' -o -name '*.tar.gz' 2>/dev/null | head -20",
+    "echo",
+    "echo Step 5: Check disk space",
+    "df -h /data",
+    "echo",
+    "echo Step 6: Test SFTP connection manually",
+    "timeout 10 sftp -i /tmp/keys/etraintouchstone -o StrictHostKeyChecking=no etraintouchstone@sftp-prod2-ca-cenral-1.lambdasolutionscloud.net <<< 'ls' 2>&1 | head -20"
+  ]
+}
+

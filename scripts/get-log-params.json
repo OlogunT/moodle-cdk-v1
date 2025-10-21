@@ -1,0 +1,6 @@
+{
+  "commands": [
+    "cat /tmp/fix-efs-download.log | tr -cd '\\11\\12\\15\\40-\\176' | tail -100"
+  ]
+}
+

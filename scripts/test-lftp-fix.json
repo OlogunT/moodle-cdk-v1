@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "echo === Testing LFTP with proper SSH config ===",
+    "echo",
+    "echo Step 1: Check SSH key permissions",
+    "ls -la /tmp/keys/etraintouchstone",
+    "echo",
+    "echo Step 2: Test SSH connection directly",
+    "ssh -i /tmp/keys/etraintouchstone -o StrictHostKeyChecking=no etraintouchstone@sftp-prod2-ca-cenral-1.lambdasolutionscloud.net 'echo SSH works' 2>&1 | head -5",
+    "echo",
+    "echo Step 3: Create SSH config for lftp",
+    "cat > /tmp/ssh-wrapper.sh << 'EOF'\n#!/bin/bash\nexec /usr/bin/ssh -i /tmp/keys/etraintouchstone -o StrictHostKeyChecking=no \"$@\"\nEOF",
+    "chmod +x /tmp/ssh-wrapper.sh",
+    "echo SSH wrapper created",
+    "echo",
+    "echo Step 4: Test lftp with SSH wrapper",
+    "cd /data/training-backups",
+    "lftp -e \"set sftp:connect-program '/tmp/ssh-wrapper.sh'; set net:max-retries 3; set net:timeout 30; connect sftp://etraintouchstone@sftp-prod2-ca-cenral-1.lambdasolutionscloud.net; ls; bye\" 2>&1 | head -20"
+  ]
+}
+

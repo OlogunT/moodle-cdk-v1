@@ -1,0 +1,16 @@
+{
+  "Changes": [
+    {
+      "Action": "UPSERT",
+      "ResourceRecordSet": {
+        "Name": "training.tsin.ca",
+        "Type": "A",
+        "AliasTarget": {
+          "HostedZoneId": "ZQSVJUPU6J1EY",
+          "DNSName": "Traini-Train-gDNwhrGVvy0B-1466546903.ca-central-1.elb.amazonaws.com",
+          "EvaluateTargetHealth": true
+        }
+      }
+    }
+  ]
+}

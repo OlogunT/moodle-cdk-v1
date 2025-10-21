@@ -1,0 +1,15 @@
+{
+  "commands": [
+    "echo === Download Progress Check ===",
+    "echo",
+    "echo Files in /data/training-backups/:",
+    "ls -lh /data/training-backups/ 2>&1",
+    "echo",
+    "echo Active SFTP processes:",
+    "ps aux | grep sftp | grep -v grep || echo No SFTP processes",
+    "echo",
+    "echo Last 30 lines of download log:",
+    "tail -30 /tmp/sftp-download.log 2>&1 || echo Log not found yet"
+  ]
+}
+

@@ -1,0 +1,30 @@
+{
+  "commands": [
+    "echo === Full Restoration Log ===",
+    "cat /tmp/restore.log | tr -cd '\\11\\12\\15\\40-\\176'",
+    "echo",
+    "echo === Database Check ===",
+    "REGION=ca-central-1",
+    "DB_SECRET_ARN=$(aws secretsmanager list-secrets --region $REGION --query 'SecretList[?contains(Name, `TrainingMoodleDbSecret`)].ARN' --output text)",
+    "DB_CREDS=$(aws secretsmanager get-secret-value --secret-id \"$DB_SECRET_ARN\" --region $REGION --query SecretString --output text)",
+    "DB_HOST=$(echo \"$DB_CREDS\" | jq -r .host)",
+    "DB_USER=$(echo \"$DB_CREDS\" | jq -r .username)",
+    "DB_PASS=$(echo \"$DB_CREDS\" | jq -r .password)",
+    "echo Database Host: $DB_HOST",
+    "echo Database User: $DB_USER",
+    "echo",
+    "echo Checking database connection...",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -e 'SELECT VERSION();' 2>&1 | grep -v Warning || echo Connection failed",
+    "echo",
+    "echo Checking moodle database...",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D moodle -e 'SELECT COUNT(*) as table_count FROM information_schema.tables WHERE table_schema=\"moodle\";' 2>&1 | grep -v Warning || echo Database query failed",
+    "echo",
+    "echo Checking users...",
+    "mysql -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D moodle -e 'SELECT COUNT(*) as user_count FROM mdl_user;' 2>&1 | grep -v Warning || echo User query failed",
+    "echo",
+    "echo === Moodledata Check ===",
+    "du -sh /data/moodledata/",
+    "ls -lh /data/moodledata/ | head -20"
+  ]
+}
+

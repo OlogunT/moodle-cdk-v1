@@ -1,0 +1,17 @@
+{
+  "commands": [
+    "echo === Manual Download Test ===",
+    "echo",
+    "cd /data/training-backups || (mkdir -p /data/training-backups && cd /data/training-backups)",
+    "echo Current directory: $(pwd)",
+    "echo",
+    "echo Testing lftp download of small file first...",
+    "lftp -e \"set sftp:connect-program 'ssh -a -x -i /tmp/keys/etraintouchstone -o StrictHostKeyChecking=no'; set net:max-retries 3; set net:timeout 30; connect sftp://etraintouchstone@sftp-prod2-ca-cenral-1.lambdasolutionscloud.net; get -c 'mdl_etraintouchstone.sql'; bye\" 2>&1 | head -50",
+    "echo",
+    "echo Checking if file was downloaded...",
+    "ls -lh /data/training-backups/",
+    "echo",
+    "echo Done"
+  ]
+}
+
