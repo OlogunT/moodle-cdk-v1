@@ -1,0 +1,15 @@
+{
+  "commands": [
+    "echo '--- VHOST LOG PATHS ---'",
+    "grep -nE 'ErrorLog|CustomLog' /etc/httpd/conf.d/*.conf || true",
+    "echo '--- MOODLE CONF (head) ---'",
+    "sed -n '1,200p' /etc/httpd/conf.d/moodle.conf || true",
+    "echo '--- PHP-FPM POOL LOG SETTINGS ---'",
+    "grep -nE 'error_log|catch_workers_output' /etc/php-fpm.d/www.conf || true",
+    "echo '--- PHP INI error_log ---'",
+    "grep -n '^error_log' /etc/php.ini || true",
+    "echo '--- LIST PHP-FPM LOG DIR ---'",
+    "ls -la /var/log/php-fpm/ || true"
+  ]
+}
+

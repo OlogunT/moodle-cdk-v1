@@ -1,0 +1,15 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "REGION=ca-central-1",
+    "HOST=$(aws ssm get-parameter --name /moodle/redis/endpoint --region $REGION --query Parameter.Value --output text 2>/dev/null || echo '')",
+    "echo Using Redis host: $HOST",
+    "if [ -z \"$HOST\" ]; then echo 'No Redis endpoint found in SSM; aborting'; exit 1; fi",
+    "sudo bash -c 'cat >> /app/moodle/config.php <<PHP\n$CFG->session_handler_class = \\\'\\\\core\\\\session\\\\redis\\\';\n$CFG->session_redis_host = \\\'$HOST\\\';\n$CFG->session_redis_port = 6379;\n$CFG->session_redis_database = 0;\n$CFG->session_redis_prefix = \\\'moodle_sess_\\\';\n$CFG->cachestore_redis_servers = array(\n  0 => array(\'server\' => \'$HOST\', \'port\' => 6379, \'password\' => \'\', \'database\' => 1, \'prefix\' => \'muc_\'),\n);\n$CFG->cachestore_redis_prefix = \\\'muc_\\\';\n$CFG->cachestore_redis_serializer_use_igbinary = 0;\nPHP'",
+    "sudo systemctl restart php-fpm || true",
+    "sudo systemctl restart httpd || true",
+    "php /app/moodle/admin/cli/purge_caches.php || true",
+    "grep -nE 'session_redis_host|cachestore_redis_servers' /app/moodle/config.php | tail -n +1 || true"
+  ]
+}
+

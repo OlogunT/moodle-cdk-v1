@@ -313,6 +313,15 @@ export class TrainingMoodleCdkStack extends cdk.Stack {
       ],
     }));
 
+    // Grant access to shared Redis endpoint parameter for cross-stack usage
+    instanceRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['ssm:GetParameter', 'ssm:GetParameters'],
+      resources: [
+        `arn:aws:ssm:${this.region}:${this.account}:parameter/moodle/redis/*`,
+      ],
+    }));
+
     // Grant SES email sending permissions
     instanceRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -471,12 +480,15 @@ export class TrainingMoodleCdkStack extends cdk.Stack {
       'export MULTI_INSTANCE_SAFE=1',
       'export ALLOW_DESTRUCTIVE=0',
       '',
+      '# Resolve shared Redis endpoint to ensure consistency across stacks',
+      'export REDIS_ENDPOINT=$(aws ssm get-parameter --name "/moodle/redis/endpoint" --region "$REGION" --query "Parameter.Value" --output text 2>/dev/null || echo "")',
+      '',
       '# Download and execute bootstrap script',
       'aws s3 cp "s3://$SCRIPT_BUCKET/bootstrap-moodle.sh" /tmp/bootstrap-moodle.sh',
       'chmod +x /tmp/bootstrap-moodle.sh',
       '/tmp/bootstrap-moodle.sh'
     );
-    
+
     return userData;
   }
 }

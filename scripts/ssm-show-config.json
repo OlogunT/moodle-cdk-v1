@@ -1,0 +1,7 @@
+{
+  "commands": [
+    "echo '--- /app/moodle/config.php (lines 1-80) ---'",
+    "nl -ba /app/moodle/config.php | sed -n '1,80p' || true"
+  ]
+}
+

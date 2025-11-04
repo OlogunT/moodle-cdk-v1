@@ -1,0 +1,11 @@
+{
+  "commands": [
+    "HOST=shared-redis-ha.kbi0dr.ng.0001.cac1.cache.amazonaws.com",
+    "echo HOST=$HOST",
+    "getent hosts $HOST || true",
+    "echo TEST TCP 6379",
+    "if command -v nc >/dev/null 2>&1; then nc -z -w2 $HOST 6379 >/dev/null 2>&1 && echo OK || echo FAIL; else echo 'nc not installed'; fi",
+    "echo DONE"
+  ]
+}
+

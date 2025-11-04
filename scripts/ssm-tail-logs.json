@@ -1,0 +1,9 @@
+{
+  "commands": [
+    "echo '--- PHP-FPM www-error.log (last 120) ---'",
+    "tail -n 120 /var/log/php-fpm/www-error.log || true",
+    "echo '--- Apache moodle_access.log (last 40) ---'",
+    "tail -n 40 /var/log/httpd/moodle_access.log || true"
+  ]
+}
+

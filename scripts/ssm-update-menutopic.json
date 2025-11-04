@@ -1,0 +1,20 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Starting Menutopic update'",
+    "cd /app/moodle/course/format",
+    "TS=$(date +%s)",
+    "if [ -d menutopic ]; then echo 'Backing up existing menutopic'; mv menutopic menutopic.bak.$TS; fi",
+    "if git clone --depth 1 https://github.com/davidherney/moodle-format_menutopic menutopic; then echo 'Git clone OK'; else echo 'Git clone failed; falling back to zip'; yum install -y unzip || true; curl -L -o /tmp/menutopic.zip https://github.com/davidherney/moodle-format_menutopic/archive/refs/heads/master.zip; mkdir -p menutopic; unzip -q /tmp/menutopic.zip -d /tmp; cp -a /tmp/moodle-format_menutopic-master/. menutopic/; fi",
+    "chown -R apache:apache menutopic",
+    "cd /app/moodle",
+    "sudo -u apache php admin/cli/maintenance.php --enable || true",
+    "sudo -u apache php admin/cli/upgrade.php --non-interactive",
+    "sudo -u apache php admin/cli/purge_caches.php || true",
+    "sudo -u apache php admin/cli/maintenance.php --disable || true",
+    "systemctl restart php-fpm || true",
+    "systemctl restart httpd || true",
+    "echo 'Menutopic update complete'"
+  ]
+}
+

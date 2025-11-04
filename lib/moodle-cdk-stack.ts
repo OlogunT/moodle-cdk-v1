@@ -335,6 +335,17 @@ export class MoodleCdkStack extends cdk.Stack {
     });
     internalRedisIngress.cfnOptions.condition = useInternalCond;
 
+    // Additional ingress to allow any host within the VPC CIDR to use Redis (enables sharing across stacks)
+    const internalRedisIngressVpc = new ec2.CfnSecurityGroupIngress(this, 'RedisIngressFromVpcCidr', {
+      ipProtocol: 'tcp',
+      fromPort: 6379,
+      toPort: 6379,
+      groupId: redisSecurityGroup.securityGroupId,
+      cidrIp: vpc.vpcCidrBlock,
+      description: 'Allow Redis from within VPC (shared across Moodle stacks)'
+    });
+    internalRedisIngressVpc.cfnOptions.condition = useInternalCond;
+
     // If using an external Redis, allow inbound from Moodle SG to that external SG
     const externalRedisIngress = new ec2.CfnSecurityGroupIngress(this, 'ExternalRedisIngressFromMoodle', {
       ipProtocol: 'tcp',

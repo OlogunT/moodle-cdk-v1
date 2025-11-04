@@ -1,0 +1,9 @@
+{
+  "commands": [
+    "set -e",
+    "BASE=/app/moodle",
+    "echo 'Scanning for hardcoded elearning.tsin.ca references under /app/moodle (excluding cache and local directories)...'",
+    "grep -RIl --exclude-dir=cache --exclude-dir=local --exclude-dir=.git -m 1 -n -- 'elearning.tsin.ca' $BASE || echo 'NO_MATCH'"
+  ]
+}
+

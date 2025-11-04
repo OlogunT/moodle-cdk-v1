@@ -1,0 +1,17 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Before (head 1-60):'",
+    "nl -ba /app/moodle/config.php | sed -n '1,60p'",
+    "echo 'Applying fix: removing stray ->debug* lines'",
+    "sed -i -e '/^\\s*->debug\\b/d' -e '/^\\s*->debugdisplay\\b/d' -e '/^\\s*->debugstringkeys\\b/d' -e '/^\\s*->debugpageinfo\\b/d' /app/moodle/config.php",
+    "echo 'After (head 1-60):'",
+    "nl -ba /app/moodle/config.php | sed -n '1,60p'",
+    "echo 'PHP lint:'",
+    "php -l /app/moodle/config.php || true",
+    "echo 'CURL local / and /login after fix:'",
+    "curl -s -o /dev/null -w '%{http_code}\\n' http://localhost/",
+    "curl -s -o /dev/null -w '%{http_code}\\n' http://localhost/login/index.php"
+  ]
+}
+

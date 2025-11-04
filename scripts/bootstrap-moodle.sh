@@ -170,22 +170,45 @@ fi
 
 # Post-install: Redis + reverse proxy config
 echo "=== POST-INSTALL CONFIG START ==="
-REDIS_ENDPOINT=$(aws ssm get-parameter --name "/moodle/redis/endpoint" --region "$REGION" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+# Prefer env-provided REDIS_ENDPOINT, fallback to SSM parameter
+if [ -z "${REDIS_ENDPOINT:-}" ]; then
+  REDIS_ENDPOINT=$(aws ssm get-parameter --name "/moodle/redis/endpoint" --region "$REGION" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+fi
 CONFIG_NEEDS_REBUILD=false
+CURRENT_REDIS=""
+if [ -f "/app/moodle/config.php" ]; then
+  CURRENT_REDIS=$(sed -n "s/^\s*\$CFG->session_redis_host\s*=\s*'\(.*\)'.*$/\1/p" /app/moodle/config.php | head -n1 || true)
+fi
 if [ "$INSTALL_SUCCESS" = "true" ] && [ -f "/app/moodle/config.php" ]; then
-  if [ -n "$REDIS_ENDPOINT" ] && ! grep -q "session_handler_class.*redis" /app/moodle/config.php; then CONFIG_NEEDS_REBUILD=true; fi
+  if [ -n "$REDIS_ENDPOINT" ]; then
+    if ! grep -q "session_handler_class.*redis" /app/moodle/config.php; then CONFIG_NEEDS_REBUILD=true; fi
+    if [ -n "$CURRENT_REDIS" ] && [ "$CURRENT_REDIS" != "$REDIS_ENDPOINT" ]; then CONFIG_NEEDS_REBUILD=true; fi
+  fi
 else
   CONFIG_NEEDS_REBUILD=true
 fi
 if [ "$CONFIG_NEEDS_REBUILD" = "true" ] && [ -n "$REDIS_ENDPOINT" ]; then
-  if aws s3 cp "s3://$SCRIPT_BUCKET/rebuild-config-full-from-current.sh" /tmp/rebuild-config-full-from-current.sh 2>/dev/null; then
-    chmod +x /tmp/rebuild-config-full-from-current.sh || true
-    /tmp/rebuild-config-full-from-current.sh || echo "Config rebuild script ran but reported failure"
+  echo "Updating config.php to use Redis: $REDIS_ENDPOINT (previous: ${CURRENT_REDIS:-none})"
+  cp /app/moodle/config.php /app/moodle/config.php.backup.redis.$(date +%s) || true
+  if grep -q "^\s*\$CFG->session_redis_host" /app/moodle/config.php; then
+    sed -i -E "s|^\s*\$CFG->session_redis_host\s*=.*|$CFG->session_redis_host = '$REDIS_ENDPOINT';|" /app/moodle/config.php
   else
-    echo "Rebuild script not found in S3; skipping config rebuild"
+    sed -i "/require_once.*lib\/setup.php/i \
+$CFG->session_handler_class = '\\\\core\\\\session\\\\redis';\
+$CFG->session_redis_host = '$REDIS_ENDPOINT';\
+$CFG->session_redis_port = 6379;\
+$CFG->session_redis_database = 0;\
+$CFG->session_redis_serializer_use_igbinary = 0;\
+$CFG->session_redis_locking = 1;\
+$CFG->session_redis_prefix = 'mdl_sess_';" /app/moodle/config.php
   fi
+  php -l /app/moodle/config.php || echo "PHP syntax error in config.php"
+  sudo -u apache php /app/moodle/admin/cli/purge_caches.php || true
+  systemctl restart php-fpm httpd || true
 elif [ "$CONFIG_NEEDS_REBUILD" = "true" ]; then
   echo "Redis endpoint missing for rebuild; skipping config rebuild"
+else
+  echo "Config already using desired Redis endpoint ($REDIS_ENDPOINT); no rebuild needed"
 fi
 
 # Reverse proxy verification and fix

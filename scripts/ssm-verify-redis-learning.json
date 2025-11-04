@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "set -e",
+    "REGION=ca-central-1",
+    "ENDPOINT=$(aws ssm get-parameter --name /moodle/redis/endpoint --region $REGION --query Parameter.Value --output text 2>/dev/null || echo '')",
+    "echo Redis endpoint from SSM: $ENDPOINT",
+    "if [ -z \"$ENDPOINT\" ]; then echo 'No Redis endpoint in SSM'; exit 2; fi",
+    "echo 'Checking config.php for Redis settings...'",
+    "if grep -Eq '^[[:space:]]*\\$CFG->session_handler_class[[:space:]]*=' /app/moodle/config.php; then echo 'SESSION_HANDLER_PRESENT'; else echo 'SESSION_HANDLER_MISSING'; fi",
+    "if grep -Fq \"$ENDPOINT\" /app/moodle/config.php; then echo 'HOST_PRESENT_IN_CONFIG'; else echo 'HOST_NOT_FOUND_IN_CONFIG'; fi",
+    "echo 'Diagnostics (DNS and nc presence)...'",
+    "getent hosts \"$ENDPOINT\" || echo 'DNS_LOOKUP_FAILED'",
+    "if command -v nc >/dev/null 2>&1; then echo 'NC_PRESENT'; else echo 'NC_MISSING'; fi",
+    "echo 'Connectivity test to Redis (nc)...'",
+    "if command -v nc >/dev/null 2>&1 && nc -z -w2 \"$ENDPOINT\" 6379 >/dev/null 2>&1; then echo 'REDIS_CONNECT_OK(nc)'; else echo 'REDIS_CONNECT_FAIL(nc)'; fi",
+    "echo 'Connectivity test to Redis (/dev/tcp)...'",
+    "if command -v timeout >/dev/null 2>&1; then if timeout 2 bash -lc \"</dev/tcp/$ENDPOINT/6379\" >/dev/null 2>&1; then echo 'REDIS_CONNECT_OK(tcp)'; else echo 'REDIS_CONNECT_FAIL(tcp)'; fi; else echo 'TIMEOUT_NOT_FOUND'; fi",
+    "echo 'Done'"
+  ]
+}
+

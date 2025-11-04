@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "set -e",
+    "CFG=/app/moodle/config.php",
+    "TARGET=https://training.tsin.ca",
+    "echo 'Backing up config.php'",
+    "cp $CFG $CFG.backup.wwwroot.$(date +%s) || true",
+    "# Ensure wwwroot is set to training.tsin.ca (replace if present, otherwise insert before require_once)",
+    "if grep -Eq '^\\s*\\$CFG->wwwroot\\s*=' $CFG; then sed -i -E \"s|^\\s*\\$CFG->wwwroot\\s*=.*|\\$CFG->wwwroot = '$TARGET';|\" $CFG; else sed -i \"/require_once.*lib\\/setup.php/i \\$CFG->wwwroot = '$TARGET';\" $CFG; fi",
+    "echo 'PHP lint of config.php'",
+    "php -l $CFG || { echo 'PHP syntax error in config.php'; exit 4; }",
+    "echo 'Purge caches'",
+    "sudo -u apache php /app/moodle/admin/cli/purge_caches.php || true",
+    "echo 'Restart services'",
+    "systemctl restart php-fpm || true",
+    "systemctl restart httpd || true",
+    "echo -n 'wwwroot now: '; (grep -E \"^\\s*\\$CFG->wwwroot\\s*=\" $CFG || true)",
+    "echo -n 'Contains elearning.tsin.ca? '; (grep -F \"elearning.tsin.ca\" $CFG && echo YES) || echo NO"
+  ]
+}
+

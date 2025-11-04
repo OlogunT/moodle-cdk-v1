@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "set +e",
+    "echo '=== QUICK DIAG START ===' $(date -u)",
+    "echo '--- SERVICES ---'",
+    "systemctl is-active httpd || true",
+    "systemctl is-active php-fpm || true",
+    "echo '--- CURL LOGIN (LOCAL) ---'",
+    "curl -s -o /dev/null -w '%{http_code}\\n' http://localhost/login/index.php",
+    "echo '--- CURL HOME (LOCAL) ---'",
+    "curl -s -o /dev/null -w '%{http_code}\\n' http://localhost/",
+    "echo '--- APACHE ERROR LOG (last 120) ---'",
+    "tail -n 120 /var/log/httpd/error_log || true",
+    "echo '--- MOODLE ERROR LOG (last 120) ---'",
+    "tail -n 120 /var/log/httpd/moodle_error.log || true",
+    "echo '=== QUICK DIAG END ===' $(date -u)"
+  ]
+}
+
