@@ -1,0 +1,19 @@
+{
+  "commands": [
+    "set -e",
+    "cd /app/moodle",
+    "echo === Enabling maintenance mode ===",
+    "sudo -u apache php admin/cli/maintenance.php --enable",
+    "echo === Applying core schema fixes ===",
+    "sudo -u apache php -r 'define(\"CLI_SCRIPT\",true); chdir(\"/app/moodle\"); require \"config.php\"; $pdo=new PDO(\"mysql:host=\".$CFG->dbhost.\";dbname=\".$CFG->dbname.\";charset=utf8mb4\", $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); $pdo->exec(\"ALTER TABLE \".$CFG->prefix.\"groups ADD COLUMN visibility TINYINT(1) NOT NULL DEFAULT 0\"); echo \"+ OK: groups.visibility\\n\";'",
+    "sudo -u apache php -r 'define(\"CLI_SCRIPT\",true); chdir(\"/app/moodle\"); require \"config.php\"; $pdo=new PDO(\"mysql:host=\".$CFG->dbhost.\";dbname=\".$CFG->dbname.\";charset=utf8mb4\", $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); $pdo->exec(\"ALTER TABLE \".$CFG->prefix.\"groups ADD COLUMN participation TINYINT(1) NOT NULL DEFAULT 1\"); echo \"+ OK: groups.participation\\n\";'",
+    "sudo -u apache php -r 'define(\"CLI_SCRIPT\",true); chdir(\"/app/moodle\"); require \"config.php\"; $pdo=new PDO(\"mysql:host=\".$CFG->dbhost.\";dbname=\".$CFG->dbname.\";charset=utf8mb4\", $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); $pdo->exec(\"ALTER TABLE \".$CFG->prefix.\"quiz_slots ADD COLUMN displaynumber CHAR(16) NULL\"); echo \"+ OK: quiz_slots.displaynumber\\n\";'",
+    "sudo -u apache php -r 'define(\"CLI_SCRIPT\",true); chdir(\"/app/moodle\"); require \"config.php\"; $pdo=new PDO(\"mysql:host=\".$CFG->dbhost.\";dbname=\".$CFG->dbname.\";charset=utf8mb4\", $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); $prefix=$CFG->prefix; $sql=\"CREATE TABLE IF NOT EXISTS ${prefix}xapi_states ( id INT(10) NOT NULL AUTO_INCREMENT, component CHAR(255) NOT NULL, userid INT(10) NULL, itemid INT(10) NOT NULL, stateid CHAR(255) NOT NULL, statedata TEXT NULL, registration CHAR(255) NULL, timecreated INT(10) NOT NULL, timemodified INT(10) NULL, PRIMARY KEY (id), INDEX component_itemid (component, itemid), INDEX userid (userid), INDEX timemodified (timemodified) ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC\"; $pdo->exec($sql); echo \"+ OK: xapi_states table\\n\";'",
+    "sudo -u apache php -r 'define(\"CLI_SCRIPT\",true); chdir(\"/app/moodle\"); require \"config.php\"; $pdo=new PDO(\"mysql:host=\".$CFG->dbhost.\";dbname=\".$CFG->dbname.\";charset=utf8mb4\", $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); $pdo->exec(\"CREATE INDEX blocknameindex ON \".$CFG->prefix.\"block_instances (blockname)\"); echo \"+ OK: block_instances.blockname index\\n\";'",
+    "sudo -u apache php -r 'define(\"CLI_SCRIPT\",true); chdir(\"/app/moodle\"); require \"config.php\"; $pdo=new PDO(\"mysql:host=\".$CFG->dbhost.\";dbname=\".$CFG->dbname.\";charset=utf8mb4\", $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]); $pdo->exec(\"CREATE INDEX course_bbbid_ix ON \".$CFG->prefix.\"bigbluebuttonbn_logs (courseid, bigbluebuttonbnid)\"); echo \"+ OK: bigbluebuttonbn_logs.course_bbbid_ix\\n\";'",
+    "echo === Verifying schema ===",
+    "sudo -u apache php admin/cli/check_database_schema.php || true",
+    "echo === Finished core schema fixes ==="
+  ]
+}
+

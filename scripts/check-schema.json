@@ -1,0 +1,7 @@
+{
+  "commands": [
+    "cd /app/moodle",
+    "sudo -u apache php admin/cli/check_database_schema.php || true"
+  ]
+}
+

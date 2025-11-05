@@ -1,0 +1,27 @@
+{
+  "commands": [
+    "set -e",
+    "echo '=== CRON CHECK ==='",
+    "systemctl is-active crond && echo '[OK] crond active' || echo '[WARN] crond NOT active'",
+    "echo '-- root crontab --'",
+    "crontab -l 2>/dev/null || echo 'no root crontab'",
+    "echo '-- apache crontab --'",
+    "crontab -u apache -l 2>/dev/null || echo 'no apache crontab'",
+    "echo '-- /etc/cron.d entries --'",
+    "ls -l /etc/cron.d || true",
+    "echo '-- grep for moodle cron --'",
+    "grep -R -n \"admin/cli/cron.php\" /etc/cron* /var/spool/cron 2>/dev/null || echo 'not found'",
+    "echo '-- last scheduled task runtimes (top 5) --'",
+    "CFG=/app/moodle/config.php",
+    "if [ -f \"$CFG\" ]; then ",
+    "  DB_HOST=$(grep -E '^\\s*\\$CFG->dbhost' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\");",
+    "  DB_NAME=$(grep -E '^\\s*\\$CFG->dbname' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\");",
+    "  DB_USER=$(grep -E '^\\s*\\$CFG->dbuser' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\");",
+    "  DB_PASS=$(grep -E '^\\s*\\$CFG->dbpass' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\");",
+    "  mariadb -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D \"$DB_NAME\" -e \"SELECT name, FROM_UNIXTIME(lastruntime) as last_run FROM mdl_task_scheduled ORDER BY lastruntime DESC LIMIT 5;\" 2>/dev/null || echo 'DB task check failed';",
+    "else",
+    "  echo 'config.php not found; skipping DB task check';",
+    "fi"
+  ]
+}
+
