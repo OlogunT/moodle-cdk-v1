@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Apply Menutopic deprecation hotfix'",
+    "cd /app/moodle/course/format",
+    "if [ -d menutopic ]; then cd menutopic; if grep -R --include='*.php' -q 'set_section_number(' .; then echo 'Patching set_section_number -> set_sectionnum'; sed -i -e 's/set_section_number(/set_sectionnum(/g' $(grep -Rl --include='*.php' 'set_section_number(' .); else echo 'No deprecated calls found'; fi; else echo 'menutopic directory not found'; fi",
+    "# PHP binary detection",
+    "if [ -x /usr/bin/php ]; then PHP=/usr/bin/php; elif [ -x /usr/bin/php80 ]; then PHP=/usr/bin/php80; else PHP=php; fi",
+    "cd /app/moodle",
+    "sudo -u apache $PHP admin/cli/purge_caches.php || true",
+    "systemctl restart php-fpm || true",
+    "systemctl restart httpd || true",
+    "echo 'Hotfix complete'"
+  ]
+}
+

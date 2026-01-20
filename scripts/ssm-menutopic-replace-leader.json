@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Leader replacing Menutopic plugin'",
+    "cd /app/moodle/course/format",
+    "rm -rf /tmp/menutopic.src /tmp/moodle-format_menutopic-master /tmp/menutopic.zip",
+    "if git clone --depth 1 https://github.com/davidherney/moodle-format_menutopic /tmp/menutopic.src; then echo 'Git clone OK'; else echo 'Git clone failed; falling back to zip'; yum install -y unzip || true; curl -fL -o /tmp/menutopic.zip https://github.com/davidherney/moodle-format_menutopic/archive/refs/heads/master.zip; unzip -qo /tmp/menutopic.zip -d /tmp; mv /tmp/moodle-format_menutopic-master /tmp/menutopic.src; fi",
+    "chown -R apache:apache /tmp/menutopic.src || true",
+    "TS=$(date +%s)",
+    "if [ -d menutopic ]; then mv menutopic menutopic.bak.$TS; fi",
+    "mv /tmp/menutopic.src menutopic",
+    "chown -R apache:apache menutopic || true",
+    "echo 'Leader replacement done'"
+  ]
+}
+

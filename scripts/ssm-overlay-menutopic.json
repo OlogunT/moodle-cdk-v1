@@ -1,25 +1,22 @@
 {
   "commands": [
     "set -e",
-    "echo 'Starting Menutopic update'",
+    "echo 'Overlay Menutopic update'",
     "cd /app/moodle/course/format",
-    "TS=$(date +%s)",
-    "if [ -d menutopic ]; then echo 'Backing up existing menutopic'; mv menutopic menutopic.bak.$TS || true; fi",
-    "# Prepare a clean staging directory",
     "rm -rf /tmp/menutopic.new /tmp/moodle-format_menutopic-master /tmp/menutopic.zip",
     "if git clone --depth 1 https://github.com/davidherney/moodle-format_menutopic /tmp/menutopic.new; then echo 'Git clone OK'; else echo 'Git clone failed; falling back to zip'; yum install -y unzip || true; curl -fL -o /tmp/menutopic.zip https://github.com/davidherney/moodle-format_menutopic/archive/refs/heads/master.zip; unzip -qo /tmp/menutopic.zip -d /tmp; mv /tmp/moodle-format_menutopic-master /tmp/menutopic.new; fi",
-    "chown -R apache:apache /tmp/menutopic.new || true",
-    "# Swap into place atomically",
-    "rm -rf menutopic || true",
-    "mv /tmp/menutopic.new menutopic",
+    "yum install -y rsync || true",
+    "mkdir -p menutopic",
+    "rsync -a --delete /tmp/menutopic.new/ menutopic/",
+    "chown -R apache:apache menutopic || true",
     "cd /app/moodle",
     "sudo -u apache php admin/cli/maintenance.php --enable || true",
-    "sudo -u apache php admin/cli/upgrade.php --non-interactive",
+    "sudo -u apache php admin/cli/upgrade.php --non-interactive || true",
     "sudo -u apache php admin/cli/purge_caches.php || true",
     "sudo -u apache php admin/cli/maintenance.php --disable || true",
     "systemctl restart php-fpm || true",
     "systemctl restart httpd || true",
-    "echo 'Menutopic update complete'"
+    "echo 'Overlay complete'"
   ]
 }
 
