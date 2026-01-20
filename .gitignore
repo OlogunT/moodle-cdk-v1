@@ -95,3 +95,4 @@ jspm_packages/
 
 # AWS CDK Context
 cdk.context.json
+\n# Local backups and dumps (do not track)\nbackups/\n*.sql\n*.tar\n*.tar.gz\n
