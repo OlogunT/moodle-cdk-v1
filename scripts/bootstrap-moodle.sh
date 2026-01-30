@@ -32,7 +32,7 @@ pm.start_servers = 10
 pm.min_spare_servers = 5
 pm.max_spare_servers = 20
 pm.max_requests = 1000
-request_terminate_timeout = 300
+request_terminate_timeout = 600
 request_slowlog_timeout = 10s
 slowlog = /var/log/php-fpm/www-slow.log
 catch_workers_output = yes
@@ -46,11 +46,11 @@ mkdir -p /var/log/php-fpm && chown apache:apache /var/log/php-fpm
 
 # PHP ini
 cat > /etc/php.d/99-moodle.ini <<'EOFPHPINI'
-max_execution_time = 300
-max_input_time = 300
-memory_limit = 256M
-post_max_size = 512M
-upload_max_filesize = 512M
+max_execution_time = 600
+max_input_time = 900
+memory_limit = 4096M
+post_max_size = 1024M
+upload_max_filesize = 1024M
 max_input_vars = 5000
 EOFPHPINI
 
@@ -59,11 +59,12 @@ cat > /etc/httpd/conf.d/moodle.conf <<'EOFV'
 <VirtualHost *:80>
   DocumentRoot /app/moodle
   DirectoryIndex index.php index.html
+  LimitRequestBody 0
   <FilesMatch \.php$>
     SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost"
   </FilesMatch>
-  ProxyTimeout 300
-  Timeout 300
+  ProxyTimeout 600
+  Timeout 600
   <Directory /app/moodle>
     AllowOverride All
     Require all granted
