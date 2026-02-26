@@ -15,7 +15,16 @@ ASG_NAME=$(aws autoscaling describe-auto-scaling-instances --instance-ids "$INST
 
 yum update -y
 # Base tools
-yum install -y amazon-cloudwatch-agent git mariadb105 jq awscli httpd php php-mysqlnd php-gd php-xml php-mbstring php-json php-zip php-curl php-intl php-soap php-ldap php-opcache php-fpm php-redis
+yum install -y amazon-cloudwatch-agent git mariadb105 jq awscli httpd php php-mysqlnd php-gd php-xml php-mbstring php-json php-zip php-curl php-intl php-soap php-ldap php-opcache php-fpm php-redis cronie
+
+# Install and configure cron for Moodle
+echo "=== Installing and configuring cron ==="
+yum install -y cronie
+systemctl start crond
+systemctl enable crond
+# Configure Moodle cron to run every minute as apache user
+echo '* * * * * /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1' | crontab -u apache -
+echo "Cron installed and configured for Moodle"
 
 # Configure PHP-FPM (production)
 cat > /etc/php-fpm.d/www.conf <<'EOFPHP'

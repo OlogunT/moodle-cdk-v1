@@ -1,0 +1,253 @@
+=========================================
+FIXING MOODLE BACKUP & COPY ISSUES
+=========================================
+
+=== Extracting DB credentials ===
+DB Host: moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com
+DB Name: moodle
+Dataroot: /data/moodledata
+
+=== 1. Clear stuck backup controllers ===
+[OK] No stuck backup controllers found
+
+=== 2. Reset failed adhoc tasks ===
+[OK] No failed adhoc tasks found
+
+=== 3. Enable backup scheduled tasks ===
+[OK] Enabled backup scheduled tasks
+
+=== 4. Fix dataroot permissions ===
+Checking /data/moodledata permissions...
+[OK] Dataroot permissions fixed
+
+=== 5. Purge Moodle caches ===
+[OK] Caches purged
+
+=== 6. Run cron manually to process queue ===
+Running Moodle cron (this may take a minute)...
+Server Time: Sat, 07 Feb 2026 08:49:13 -0500
+
+
+Execute scheduled task: Automated backups report (core\task\automated_backup_report_task)
+... started 08:49:18. Current memory use 8.0 MB.
+... used 16 dbqueries
+... used 0.0610511302948 seconds
+... used 10.1 MB peak memory
+Scheduled task complete: Automated backups report (core\task\automated_backup_report_task)
+Execute scheduled task: Notify user of an approaching quiz open date (mod_quiz\task\queue_all_quiz_open_notification_tasks)
+... started 08:49:19. Current memory use 9.0 MB.
+... used 1 dbqueries
+... used 0.0043659210205078 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Notify user of an approaching quiz open date (mod_quiz\task\queue_all_quiz_open_notification_tasks)
+Execute scheduled task: Issue certificates task (mod_customcert\task\issue_certificates_task)
+... started 08:49:19. Current memory use 9.1 MB.
+... used 4 dbqueries
+... used 0.044192790985107 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Issue certificates task (mod_customcert\task\issue_certificates_task)
+Execute scheduled task: Cleanup old sessions (core\task\session_cleanup_task)
+... started 08:49:19. Current memory use 9.1 MB.
+... used 1 dbqueries
+... used 0.0077319145202637 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Cleanup old sessions (core\task\session_cleanup_task)
+Execute scheduled task: Send new user passwords (core\task\send_new_user_passwords_task)
+... started 08:49:19. Current memory use 9.1 MB.
+... used 1 dbqueries
+... used 0.0024888515472412 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Send new user passwords (core\task\send_new_user_passwords_task)
+Execute scheduled task: Send failed login notifications (core\task\send_failed_login_notifications_task)
+... started 08:49:19. Current memory use 9.1 MB.
+... used 0 dbqueries
+... used 8.2015991210938E-5 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Send failed login notifications (core\task\send_failed_login_notifications_task)
+Execute scheduled task: Background processing for gradebook (core\task\grade_cron_task)
+... started 08:49:19. Current memory use 9.1 MB.
+... used 2 dbqueries
+... used 0.0035388469696045 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Background processing for gradebook (core\task\grade_cron_task)
+Execute scheduled task: Add award badges adhoc tasks (core\task\badges_cron_task)
+... started 08:49:19. Current memory use 9.1 MB.
+0 adhoc badge tasks were added
+... used 1 dbqueries
+... used 0.011277914047241 seconds
+... used 9.6 MB peak memory
+Scheduled task complete: Add award badges adhoc tasks (core\task\badges_cron_task)
+Execute scheduled task: Background processing for SCORM (mod_scorm\task\cron_task)
+... started 08:49:19. Current memory use 9.1 MB.
+... used 0 dbqueries
+... used 0.0061919689178467 seconds
+... used 10.1 MB peak memory
+Scheduled task complete: Background processing for SCORM (mod_scorm\task\cron_task)
+Execute scheduled task: Background processing for sending badges notifications (core\task\badges_message_task)
+... started 08:49:19. Current memory use 9.1 MB.
+Sending scheduled badge notifications.
+... used 1 dbqueries
+... used 0.0027599334716797 seconds
+... used 9.2 MB peak memory
+Scheduled task complete: Background processing for sending badges notifications (core\task\badges_message_task)
+Execute scheduled task: Fetch pending recordings (mod_bigbluebuttonbn\task\check_pending_recordings)
+... started 08:49:19. Current memory use 9.1 MB.
+=> Looking for any recording awaiting processing from the past 30 days.
+=> Found 0 recordings to query
+=> Fetching recording metadata from server
+=> Finished processing recordings. Updated status for 0 / 0 recordings.
+... used 1 dbqueries
+... used 0.0094778537750244 seconds
+... used 9.5 MB peak memory
+Scheduled task complete: Fetch pending recordings (mod_bigbluebuttonbn\task\check_pending_recordings)
+Execute scheduled task: Calculate regular completion data (core\task\completion_regular_task)
+... started 08:49:20. Current memory use 9.1 MB.
+Aggregating completions
+... used 6 dbqueries
+... used 0.036568880081177 seconds
+... used 9.4 MB peak memory
+Scheduled task complete: Calculate regular completion data (core\task\completion_regular_task)
+Execute scheduled task: Background processing for portfolio plugins (core\task\portfolio_cron_task)
+... started 08:49:20. Current memory use 9.2 MB.
+... used 0 dbqueries
+... used 8.5830688476562E-5 seconds
+... used 9.2 MB peak memory
+Scheduled task complete: Background processing for portfolio plugins (core\task\portfolio_cron_task)
+Execute scheduled task: Background processing for legacy cron in plagiarism plugins (core\task\plagiarism_cron_task)
+... started 08:49:20. Current memory use 9.2 MB.
+... used 0 dbqueries
+... used 8.8930130004883E-5 seconds
+... used 9.2 MB peak memory
+Scheduled task complete: Background processing for legacy cron in plagiarism plugins (core\task\plagiarism_cron_task)
+Execute scheduled task: Process bulk batch accessibility checking (tool_brickfield\task\bulk_process_courses)
+... started 08:49:21. Current memory use 8.5 MB.
+... used 3 dbqueries
+... used 0.041017055511475 seconds
+... used 8.8 MB peak memory
+Scheduled task complete: Process bulk batch accessibility checking (tool_brickfield\task\bulk_process_courses)
+Execute scheduled task: Process bulk caching (tool_brickfield\task\bulk_process_caches)
+... started 08:49:21. Current memory use 8.5 MB.
+... used 3 dbqueries
+... used 0.030903100967407 seconds
+... used 8.6 MB peak memory
+Scheduled task complete: Process bulk caching (tool_brickfield\task\bulk_process_caches)
+Execute scheduled task: Process content analysis requests (tool_brickfield\task\process_analysis_requests)
+... started 08:49:21. Current memory use 8.5 MB.
+... used 3 dbqueries
+... used 0.033550024032593 seconds
+... used 8.6 MB peak memory
+Scheduled task complete: Process content analysis requests (tool_brickfield\task\process_analysis_requests)
+Execute scheduled task: Send calendar notifications (core\task\calendar_cron_task)
+... started 08:49:21. Current memory use 8.8 MB.
+... used 1 dbqueries
+... used 0.013948917388916 seconds
+... used 9.3 MB peak memory
+Scheduled task complete: Send calendar notifications (core\task\calendar_cron_task)
+Execute scheduled task: Sync external blogs (core\task\blog_cron_task)
+... started 08:49:21. Current memory use 8.8 MB.
+... used 2 dbqueries
+... used 0.010326147079468 seconds
+... used 9.4 MB peak memory
+Scheduled task complete: Sync external blogs (core\task\blog_cron_task)
+Execute scheduled task: Background processing for cleaning up question previews (core\task\question_preview_cleanup_task)
+... started 08:49:21. Current memory use 8.8 MB.
+
+  Cleaning up old question previews...done.
+... used 2 dbqueries
+... used 0.0067188739776611 seconds
+... used 8.9 MB peak memory
+Scheduled task complete: Background processing for cleaning up question previews (core\task\question_preview_cleanup_task)
+Execute scheduled task: Forum mailings and maintenance jobs (mod_forum\task\cron_task)
+... started 08:49:21. Current memory use 9.0 MB.
+Removing old digest records from 7 days ago.
+Removed all old digest records.
+Fetching unmailed posts.
+  No posts found.
+... used 2 dbqueries
+... used 0.0050828456878662 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Forum mailings and maintenance jobs (mod_forum\task\cron_task)
+Execute scheduled task: Incoming email pickup (tool_messageinbound\task\pickup_task)
+... started 08:49:21. Current memory use 9.0 MB.
+Inbound Message not fully configured - exiting early.
+... used 0 dbqueries
+... used 0.026963949203491 seconds
+... used 10.6 MB peak memory
+Scheduled task complete: Incoming email pickup (tool_messageinbound\task\pickup_task)
+Execute scheduled task: Cleanup event monitor events (tool_monitor\task\clean_events)
+... started 08:49:21. Current memory use 9.1 MB.
+... used 1 dbqueries
+... used 0.029397964477539 seconds
+... used 9.1 MB peak memory
+Scheduled task complete: Cleanup event monitor events (tool_monitor\task\clean_events)
+Execute scheduled task: Background processing for assignment module (mod_assign\task\cron_task)
+... started 08:49:21. Current memory use 9.1 MB.
+... used 10 dbqueries
+... used 0.20427203178406 seconds
+... used 9.5 MB peak memory
+Scheduled task complete: Background processing for assignment module (mod_assign\task\cron_task)
+Execute scheduled task: Updating overdue quiz attempts (mod_quiz\task\update_overdue_attempts)
+... started 08:49:22. Current memory use 9.4 MB.
+  Looking for quiz overdue quiz attempts...
+  Considered 0 attempts in 0 quizzes.
+... used 2 dbqueries
+... used 0.030978202819824 seconds
+... used 9.5 MB peak memory
+Scheduled task complete: Updating overdue quiz attempts (mod_quiz\task\update_overdue_attempts)
+Execute scheduled task: Background processing for workshop module (mod_workshop\task\cron_task)
+... started 08:49:22. Current memory use 9.5 MB.
+ processing workshop subplugins ...
+... used 1 dbqueries
+... used 0.0026450157165527 seconds
+... used 9.5 MB peak memory
+Scheduled task complete: Background processing for workshop module (mod_workshop\task\cron_task)
+Execute scheduled task: Background processing for scheduled allocation (workshopallocation_scheduled\task\cron_task)
+... started 08:49:22. Current memory use 9.5 MB.
+... no workshops awaiting scheduled allocation. ... used 1 dbqueries
+... used 0.0026319026947021 seconds
+... used 9.5 MB peak memory
+Scheduled task complete: Background processing for scheduled allocation (workshopallocation_scheduled\task\cron_task)
+Execute scheduled task: Send report schedules (core_reportbuilder\task\send_schedules)
+... started 08:49:22. Current memory use 9.5 MB.
+... used 1 dbqueries
+... used 0.0054740905761719 seconds
+... used 9.7 MB peak memory
+Scheduled task complete: Send report schedules (core_reportbuilder\task\send_schedules)
+Execute adhoc task: core\task\course_backup_task
+Adhoc task id: 5390
+Adhoc task custom data: {"courseid":"73","adminid":"816"}
+... started 08:49:22. Current memory use 11.4 MB.
+Processing automated backup for course: Foundations Module
+Terminated: 15
+== Exiting gracefully, please wait ... ==
+Specified backup directory is not writable -  /var/www/data/touchstone/moodledata/course_backup/
+Automated backup for course: Foundations Module failed.
+Error: /var/www/data/touchstone/moodledata/course_backup/ does not appear to be a valid directory
+Automated backup for course: Foundations Module completed.
+... used 56296 dbqueries
+... used 177.97645282745 seconds
+... used 18.1 MB peak memory
+Adhoc task complete: core\task\course_backup_task
+Ran 1 adhoc tasks found at Sat, 07 Feb 2026 08:49:22 -0500
+Cron run completed correctly
+Cron completed at 08:52:20 in 187.001188 seconds. Memory used: 15.1 MB.
+[INFO] Cron timed out or completed
+
+=========================================
+FIXES APPLIED
+=========================================
+
+Summary of actions taken:
+1. Cleared stuck backup controllers
+2. Reset failed adhoc tasks
+3. Enabled backup scheduled tasks
+4. Fixed dataroot permissions
+5. Purged Moodle caches
+6. Ran cron manually
+
+IMPORTANT: Cron is not running automatically on this system.
+You will need to run cron manually or set up a scheduled task.
+To run cron manually: sudo -u apache /usr/bin/php /app/moodle/admin/cli/cron.php
+
+Please try creating a backup or copying a course again.
+
