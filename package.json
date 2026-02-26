@@ -11,7 +11,11 @@
     "deploy": "cdk deploy",
     "destroy": "cdk destroy",
     "diff": "cdk diff",
-    "synth": "cdk synth"
+    "synth": "cdk synth",
+    "deploy:prod": "pwsh -NoLogo -NoProfile -Command \"$env:AWS_PROFILE='tsin-account'; cdk deploy MoodleCdkStack\"",
+    "deploy:training": "pwsh -NoLogo -NoProfile -Command \"$env:AWS_PROFILE='tsin-account'; cdk deploy TrainingMoodleCdkStack\"",
+    "synth:prod": "pwsh -NoLogo -NoProfile -Command \"$env:AWS_PROFILE='tsin-account'; cdk synth MoodleCdkStack\"",
+    "diff:prod": "pwsh -NoLogo -NoProfile -Command \"$env:AWS_PROFILE='tsin-account'; cdk diff MoodleCdkStack\""
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
