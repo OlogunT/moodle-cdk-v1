@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "=== 1. Purge caches via CLI ===\nEXIT=0\n\n=== 2. Check upgrade status ===\nEXIT=124\n\n=== 3. Try admin/cli/upgrade.php --non-interactive ===\nEXIT=124\n\n=== 4. Rebuild course cache ===\nEXIT=124\n\n=== 5. Restart PHP-FPM ===\nPHP-FPM restarted\n\n=== 6. Warmup homepage ===\nHTTP: 000 Time: 30.002489s\n\n=== 7. Test admin from localhost ===\nHTTP: 000 Time: 120.001484s\nDONE\n",
+    "E": ""
+}

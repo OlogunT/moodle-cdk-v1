@@ -1,0 +1,69 @@
+Sending SSM command...
+CommandId: 2b65be53-f4a2-4b96-84b1-03b400fbd81b
+Status: Success, RC: 0
+=== RUNNING PHP PROCESSES ===
+apache   1519759  0.0  0.5 451916 82448 ?        S    Mar12   0:02 php-fpm: pool www
+apache   1523533  0.0  0.5 452588 80720 ?        S    Mar12   0:02 php-fpm: pool www
+apache   1533269  0.0  0.5 452244 90668 ?        S    Mar12   0:03 php-fpm: pool www
+apache   1584441  0.0  0.4 452016 69780 ?        S    Mar12   0:01 php-fpm: pool www
+apache   1585787  0.0  0.3 452644 58240 ?        S    00:07   0:00 php-fpm: pool www
+apache   1598963  0.0  0.3 451688 59576 ?        S    01:22   0:00 php-fpm: pool www
+apache   1602677  0.0  0.3 451876 62500 ?        S    01:42   0:00 php-fpm: pool www
+apache   1610657  0.0  0.3 451556 56356 ?        S    02:26   0:00 php-fpm: pool www
+apache   1612875  0.0  0.3 451812 59916 ?        S    02:38   0:00 php-fpm: pool www
+apache   1666503  0.0  0.3 450764 63832 ?        S    07:33   0:00 php-fpm: pool www
+root     1686208  0.0  0.0 234620  6480 ?        S    Jan20   0:00 sudo vi config.php.backup.final.1760756205
+root     1686220  0.0  0.0 234620  2252 pts/1    Ss   Jan20   0:00 sudo vi config.php.backup.final.1760756205
+root     1686221  0.0  0.0 232172  8688 pts/1    Tl+  Jan20   0:00 /usr/bin/vim config.php.backup.final.1760756205
+root     1686648  0.0  0.0 234620  6480 ?        S    Jan20   0:00 sudo vi config.php.backup.final.1760756205
+root     1686651  0.0  0.0 234620  2248 pts/2    Ss   Jan20   0:00 sudo vi config.php.backup.final.1760756205
+root     1686652  0.0  0.0 232140  8724 pts/2    Tl+  Jan20   0:00 /usr/bin/vim config.php.backup.final.1760756205
+root     1686680  0.0  0.0 234620  6488 ?        S    Jan20   0:00 sudo vi config.php.backup.final.1760756205
+root     1686685  0.0  0.0 234620  2252 pts/3    Ss   Jan20   0:00 sudo vi config.php.backup.final.1760756205
+root     1686686  0.0  0.0 232144  8728 pts/3    Tl+  Jan20   0:00 /usr/bin/vim config.php.backup.final.1760756205
+root     1686970  0.0  0.0 234620  6480 ?        S    Jan20   0:00 sudo vi config.php
+root     1686972  0.0  0.0 234620  2248 pts/4    Ss   Jan20   0:00 sudo vi config.php
+root     1686973  0.0  0.0 234120 10544 pts/4    Tl+  Jan20   0:00 /usr/bin/vim config.php
+root     1689378  0.0  0.0 234620  6476 ?        S    Jan20   0:00 sudo vi view.php
+root     1689380  0.0  0.0 234620  2244 pts/5    Ss   Jan20   0:00 sudo vi view.php
+root     1689381  0.0  0.0 234000 10680 pts/5    Tl+  Jan20   0:00 /usr/bin/vim view.php
+root     1689603  0.0  0.0 234620  6460 ?        S    Jan20   0:00 sudo vi view.php
+root     1689605  0.0  0.0 234620  2292 pts/6    Ss   Jan20   0:00 sudo vi view.php
+root     1689606  0.0  0.0 234000 10688 pts/6    Tl+  Jan20   0:00 /usr/bin/vim view.php
+root     1690473  0.0  0.0 234620  6476 ?        S    Jan20   0:00 sudo vi base.php
+root     1690477  0.0  0.0 234620  2244 pts/7    Ss   Jan20   0:00 sudo vi base.php
+root     1690478  0.0  0.0 234076 10756 pts/7    Tl+  Jan20   0:00 /usr/bin/vim base.php
+apache   1707853  0.0  0.4 451876 69840 ?        S    11:20   0:00 php-fpm: pool www
+apache   1707874  0.0  0.3 451556 52304 ?        S    11:20   0:00 php-fpm: pool www
+apache   1708432  0.0  0.3 451556 60800 ?        S    11:23   0:00 php-fpm: pool www
+apache   1708506  0.0  0.3 451556 57132 ?        S    11:24   0:00 php-fpm: pool www
+apache   1709491  0.0  0.3 451688 61428 ?        S    11:29   0:00 php-fpm: pool www
+apache   1709512  0.0  0.3 451712 53768 ?        S    11:29   0:00 php-fpm: pool www
+apache   1709537  0.0  0.3 451556 48344 ?        S    11:30   0:00 php-fpm: pool www
+apache   1711436  0.0  0.3 451556 59516 ?        S    11:40   0:00 php-fpm: pool www
+apache   1717379  0.0  0.3 452584 56320 ?        S    12:12   0:00 php-fpm: pool www
+apache   1718664  0.0  0.3 451556 52444 ?        S    12:20   0:00 php-fpm: pool www
+root     1731579  0.3  0.6 513376 103384 ?       D    13:30   0:02 php /app/moodle/admin/cli/upgrade.php --non-interactive
+apache   1732289  0.0  0.0 222964  3364 ?        Ss   13:34   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1732290  0.2  0.4 457092 77172 ?        D    13:34   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1732463  0.0  0.0 222964  3348 ?        Ss   13:35   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1732464  0.1  0.2 449404 43136 ?        D    13:35   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1732637  0.0  0.0 222964  3364 ?        Ss   13:36   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1732638  0.1  0.2 452476 38500 ?        D    13:36   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1732813  0.0  0.0 222964  3388 ?        Ss   13:37   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1732814  0.1  0.2 448380 38404 ?        D    13:37   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1732936  0.0  0.0 222964  3364 ?        Ss   13:38   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1732937  0.2  0.3 453504 54964 ?        D    13:38   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1733111  0.0  0.0 222964  3360 ?        Ss   13:39   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1733112  0.5  0.3 451456 49284 ?        D    13:39   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+root     3906200  0.0  0.1 445776 25368 ?        Ss   Jan30   3:16 php-fpm: master process (/etc/php-fpm.conf)
+=== APACHE STATUS ===
+active
+=== CURL TEST LOGIN (10s max) ===
+HTTP: 000 Time: 10.002801s
+=== RECENT APACHE ERRORS ===
+[Sun Mar 08 00:00:01.486307 2026] [lbmethod_heartbeat:notice] [pid 3906217:tid 3906217] AH02282: No slotmem from mod_heartmonitor
+[Sun Mar 08 00:00:01.486966 2026] [systemd:notice] [pid 3906217:tid 3906217] AH10497: SELinux is enabled; httpd running as context system_u:system_r:httpd_t:s0
+[Sun Mar 08 00:00:01.489946 2026] [mpm_event:notice] [pid 3906217:tid 3906217] AH00489: Apache/2.4.65 (Amazon Linux) configured -- resuming normal operations
+[Sun Mar 08 00:00:01.489970 2026] [core:notice] [pid 3906217:tid 3906217] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+

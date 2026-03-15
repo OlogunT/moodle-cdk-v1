@@ -1,0 +1,22 @@
+{
+    "CommandId": "3d2ddb15-636c-46eb-9d36-57d0559ccb05",
+    "InstanceId": "i-011c65cd247389ee6",
+    "Comment": "",
+    "DocumentName": "AWS-RunShellScript",
+    "DocumentVersion": "$DEFAULT",
+    "PluginName": "aws:runShellScript",
+    "ResponseCode": 0,
+    "ExecutionStartDateTime": "2026-03-13T01:31:07.881Z",
+    "ExecutionElapsedTime": "PT0.079S",
+    "ExecutionEndDateTime": "2026-03-13T01:31:07.881Z",
+    "Status": "Success",
+    "StatusDetails": "Success",
+    "StandardOutputContent": "=== MOODLE VERSION ===\nvalue\n2025041402.1\n=== MANAGER ROLE: TOTAL CAPABILITY COUNT AT SYSTEM LEVEL ===\ntotal_caps\tallow_count\tprevent_count\tprohibit_count\n680\t680\t0\t0\n=== EDITINGTEACHER ROLE: TOTAL CAPABILITY COUNT AT SYSTEM LEVEL ===\ntotal_caps\tallow_count\tprevent_count\tprohibit_count\n573\t573\t0\t0\n=== KEY COURSE EDITING CAPABILITIES FOR MANAGER ===\ncapability\tpermission\nmoodle/course:activityvisibility\t1\nmoodle/course:ignoreavailabilityrestrictions\t1\nmoodle/course:manageactivities\t1\nmoodle/course:movesections\t1\nmoodle/course:sectionvisibility\t1\nmoodle/course:setforcedlanguage\t1\nmoodle/course:update\t1\nmoodle/course:viewhiddensections\t1\nmoodle/site:accessallgroups\t1\n=== MANAGER CAPABILITIES MISSING VS EDITINGTEACHER ===\n=== SITE ADMIN USER IDS ===\nvalue\n816,3676\n=== USERS WITH MANAGER ROLE AT SYSTEM LEVEL ===\nid\tusername\tfirstname\tlastname\n1325\tc.stanclik\tConnie\tStanclik\n2054\td.costa@tsin.ca\tDavid\tCosta\n1079\tj.mottola\tJoe\tMottola\n1328\tj.zisis\tJen\tZisis\n3632\tk.gies@tsin.ca\tKrystal\tGies\n1327\tk.huszar@tsin.ca\tKaren\tHuszar\n2978\tr.rashid@tsin.ca\tRubaiyat\tRashid\n2926\tronaldapuritch\tRonalda\tPuritch\n3709\ts.nguyentsin@gmail.com\tSimon\tTest Account\n2976\twendyyen\tWendy\tYen\n=== CHECK mdl_backup_controllers COLUMNS ===\nField\tType\tNull\tKey\tDefault\tExtra\nid\tbigint(20)\tNO\tPRI\tNULL\tauto_increment\nbackupid\tvarchar(32)\tNO\tUNI\t\t\noperation\tvarchar(20)\tNO\t\tbackup\t\ntype\tvarchar(10)\tNO\tMUL\t\t\nitemid\tbigint(20)\tNO\t\tNULL\t\nformat\tvarchar(20)\tNO\t\t\t\ninteractive\tsmallint(6)\tNO\t\tNULL\t\npurpose\tsmallint(6)\tNO\t\tNULL\t\nuserid\tbigint(20)\tNO\tMUL\tNULL\t\nstatus\tsmallint(6)\tNO\t\tNULL\t\nexecution\tsmallint(6)\tNO\t\tNULL\t\nexecutiontime\tbigint(20)\tNO\t\tNULL\t\nchecksum\tvarchar(32)\tNO\t\t\t\ntimecreated\tbigint(20)\tNO\t\tNULL\t\ntimemodified\tbigint(20)\tNO\t\tNULL\t\nprogress\tdecimal(15,14)\tNO\t\t0.00000000000000\t\ncontroller\tlongtext\tNO\t\tNULL\t\n=== DONE ===\n",
+    "StandardOutputUrl": "",
+    "StandardErrorContent": "",
+    "StandardErrorUrl": "",
+    "CloudWatchOutputConfig": {
+        "CloudWatchLogGroupName": "",
+        "CloudWatchOutputEnabled": false
+    }
+}

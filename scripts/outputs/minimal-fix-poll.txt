@@ -1,0 +1,5 @@
+{
+    "Status": "Success",
+    "RC": 0,
+    "Out": "=== DB State ===\nname\tvalue\nversion\t2025041402.10\n=== Speed Test 1 ===\nHTTP: 000 Time: 30.003060s\n=== Speed Test 2 (cached) ===\nHTTP: 000 Time: 30.002851s\n=== Cron status ===\n* * * * * /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1\n=== DONE ===\n"
+}

@@ -1,0 +1,3 @@
+Command ID: dcf4a061-05a6-4a9d-829e-53bbfc0f4d82
+Waiting 90 seconds...
+{     "S": "Failed",     "O": "1. Hash check: computed=37158af4f6a915609afc17e5c20321917db7d3d0 stored=37158af4f6a915609afc17e5c20321917db7d3d0 match=YES\n2. Cleared upgraderunning flag\n3. Rebuilding localcache...\n   Cleared localcache contents\n4. Cleared MUC cache\n5. Note: opcache_reset only works in web context, skipping in CLI\n6. Version check: disk=2025041402.1 db=2025041402.1 match=YES\n\nDone. Restart PHP-FPM to apply opcache reset.\n---RESTARTING PHP-FPM---\nPHP-FPM restarted\n---TESTING ADMIN PAGE---\nHTTP: 000 Time: 60.002969s",     "E": "failed to run commands: exit status 28" }

@@ -1,6 +1,10 @@
 #!/usr/bin/env pwsh
 # Fix backup and copy issues on elearning.tsin.ca
 
+Param(
+    [string]$Profile = 'tsin-account'
+)
+
 $ErrorActionPreference = "Stop"
 
 Write-Host "=========================================" -ForegroundColor Cyan
@@ -27,7 +31,7 @@ if ($confirm -ne "y") {
 Write-Host ""
 Write-Host "Finding elearning instance..." -ForegroundColor Yellow
 $instanceId = aws ec2 describe-instances `
-    --profile account-483382415631 `
+    --profile $Profile `
     --filters "Name=tag:aws:cloudformation:stack-name,Values=MoodleCdkStack" `
               "Name=instance-state-name,Values=running" `
     --query "Reservations[0].Instances[0].InstanceId" `
@@ -44,7 +48,7 @@ Write-Host ""
 # Run the fix
 Write-Host "Applying fixes..." -ForegroundColor Yellow
 $commandId = aws ssm send-command `
-    --profile account-483382415631 `
+    --profile $Profile `
     --instance-ids $instanceId `
     --document-name "AWS-RunShellScript" `
     --parameters "file://scripts/fix-backup-simple.json" `
@@ -63,7 +67,7 @@ $status = ""
 
 while ($attempt -lt $maxAttempts) {
     $status = aws ssm get-command-invocation `
-        --profile account-483382415631 `
+        --profile $Profile `
         --command-id $commandId `
         --instance-id $instanceId `
         --query "Status" `
@@ -88,7 +92,7 @@ Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host ""
 
 $output = aws ssm get-command-invocation `
-    --profile account-483382415631 `
+    --profile $Profile `
     --command-id $commandId `
     --instance-id $instanceId `
     --query "StandardOutputContent" `
@@ -98,7 +102,7 @@ Write-Host $output
 
 # Get errors if any
 $errors = aws ssm get-command-invocation `
-    --profile account-483382415631 `
+    --profile $Profile `
     --command-id $commandId `
     --instance-id $instanceId `
     --query "StandardErrorContent" `

@@ -1,0 +1,270 @@
+=== Route 53 Hosted Zones ===
+[
+    {
+        "Name": "tsin.ca.",
+        "Id": "/hostedzone/Z07528203FGB11621IFK",
+        "Private": false
+    },
+    {
+        "Name": "portal.tsin.ca.",
+        "Id": "/hostedzone/Z08119463L25A2NJ6Q8DW",
+        "Private": false
+    },
+    {
+        "Name": "secure.share-be.tsin.ca.",
+        "Id": "/hostedzone/Z06897962ADVK02C7N56Q",
+        "Private": false
+    },
+    {
+        "Name": "pro-be-dev.tsin.ca.",
+        "Id": "/hostedzone/Z077276831NTK1Z541T9A",
+        "Private": false
+    },
+    {
+        "Name": "pro-be.tsin.ca.",
+        "Id": "/hostedzone/Z0031193228L23NEETEZV",
+        "Private": false
+    },
+    {
+        "Name": "prodb-prod3.tsin.ca.",
+        "Id": "/hostedzone/Z0633143GFWIOS8017JV",
+        "Private": false
+    },
+    {
+        "Name": "prodb-prod1.tsin.ca.",
+        "Id": "/hostedzone/Z063297830G8G9HB2X49B",
+        "Private": false
+    },
+    {
+        "Name": "prodb-prod2.tsin.ca.",
+        "Id": "/hostedzone/Z0632673K8AUGZPZE150",
+        "Private": false
+    },
+    {
+        "Name": "user-dev.tsin.ca.",
+        "Id": "/hostedzone/Z080792910XAROJ3RA8FE",
+        "Private": false
+    },
+    {
+        "Name": "tsinsvc.ca.",
+        "Id": "/hostedzone/Z01122362TY2SMQLPTUTZ",
+        "Private": false
+    },
+    {
+        "Name": "touchstoneinstitute.ca.",
+        "Id": "/hostedzone/Z05533053W1DFBRHZS372",
+        "Private": false
+    },
+    {
+        "Name": "moodle1-dev.tsin.ca.",
+        "Id": "/hostedzone/Z06543863JL5DR1IXS7Z3",
+        "Private": false
+    },
+    {
+        "Name": "user-dev-be.tsin.ca.",
+        "Id": "/hostedzone/Z00959893M2U2MLKKWS7D",
+        "Private": false
+    },
+    {
+        "Name": "payment-prod.tsin.ca.",
+        "Id": "/hostedzone/Z0125561298MKUEYHF76R",
+        "Private": false
+    },
+    {
+        "Name": "auth.tsin.ca.",
+        "Id": "/hostedzone/Z07481892LPGRWCEETC2S",
+        "Private": false
+    },
+    {
+        "Name": "training.tsin.ca.",
+        "Id": "/hostedzone/Z027314638VEVQ74RCLYR",
+        "Private": false
+    },
+    {
+        "Name": "portalstage.tsin.ca.",
+        "Id": "/hostedzone/Z0270001375P6NOB187AQ",
+        "Private": false
+    },
+    {
+        "Name": "portaldev-be.tsin.ca.",
+        "Id": "/hostedzone/Z03947711L8DAR3OWU34C",
+        "Private": false
+    },
+    {
+        "Name": "portalstage-be.tsin.ca.",
+        "Id": "/hostedzone/Z0394275TW3X3KI7CYK3",
+        "Private": false
+    },
+    {
+        "Name": "pro-dev.tsin.ca.",
+        "Id": "/hostedzone/Z0637523FJHGP2QEWDU6",
+        "Private": false
+    },
+    {
+        "Name": "exams.tsin.ca.",
+        "Id": "/hostedzone/Z07404502IHO8X73AQ5VX",
+        "Private": false
+    },
+    {
+        "Name": "exams-dev-be.tsin.ca.",
+        "Id": "/hostedzone/Z07626311OZEHIEAFJBUM",
+        "Private": false
+    },
+    {
+        "Name": "payment-dev.tsin.ca.",
+        "Id": "/hostedzone/Z0234161SULCGY0GFR6U",
+        "Private": false
+    },
+    {
+        "Name": "local.touchstoneinstitute.ca.",
+        "Id": "/hostedzone/Z0139206D0B8EPESK67S",
+        "Private": false
+    },
+    {
+        "Name": "wwusdb-prod1.tsin.ca.",
+        "Id": "/hostedzone/Z03759875XJVBYWRE6W9",
+        "Private": false
+    },
+    {
+        "Name": "portal-be.tsin.ca.",
+        "Id": "/hostedzone/Z03799771YRXZ9GWP9IM5",
+        "Private": false
+    },
+    {
+        "Name": "share.tsin.ca.",
+        "Id": "/hostedzone/Z05721291NZEK2NKBEJUE",
+        "Private": false
+    },
+    {
+        "Name": "chime.tsin.ca.",
+        "Id": "/hostedzone/Z095974816EQHVCRGI1MA",
+        "Private": false
+    },
+    {
+        "Name": "share-be.tsin.ca.",
+        "Id": "/hostedzone/Z09900643EWB6EV3SRD4Q",
+        "Private": false
+    },
+    {
+        "Name": "exams-dev.tsin.ca.",
+        "Id": "/hostedzone/Z0040966277OIEFO7Z5TE",
+        "Private": false
+    },
+    {
+        "Name": "exams-be.tsin.ca.",
+        "Id": "/hostedzone/Z0033203OU6HF0RQCLUM",
+        "Private": false
+    },
+    {
+        "Name": "work-with-us-dev.tsin.ca.",
+        "Id": "/hostedzone/Z06730662Y3S2OF0SXXP7",
+        "Private": false
+    },
+    {
+        "Name": "authdb-prod2.tsin.ca.",
+        "Id": "/hostedzone/Z0208537VWUTBDHL4MBM",
+        "Private": false
+    },
+    {
+        "Name": "authdb-prod1.tsin.ca.",
+        "Id": "/hostedzone/Z02053882GIHPR9U6WJH7",
+        "Private": false
+    },
+    {
+        "Name": "authdb-prod3.tsin.ca.",
+        "Id": "/hostedzone/Z02051861HO5A3V18NM7U",
+        "Private": false
+    },
+    {
+        "Name": "wwusdb-prod3.tsin.ca.",
+        "Id": "/hostedzone/Z0894511CXGSFMZAPD0D",
+        "Private": false
+    },
+    {
+        "Name": "hscpoa.tsin.ca.",
+        "Id": "/hostedzone/Z09579973V485VBYDOTQ0",
+        "Private": false
+    },
+    {
+        "Name": "etraining.tsin.ca.",
+        "Id": "/hostedzone/Z10113862HCR0S63T9XEN",
+        "Private": false
+    },
+    {
+        "Name": "portaldev.tsin.ca.",
+        "Id": "/hostedzone/Z02075751QUI5Y3PTETBM",
+        "Private": false
+    },
+    {
+        "Name": "secure.share.tsin.ca.",
+        "Id": "/hostedzone/Z0525988EUISB0E969KI",
+        "Private": false
+    },
+    {
+        "Name": "prodata.tsin.ca.",
+        "Id": "/hostedzone/Z09969812WWLEDBR1RREA",
+        "Private": false
+    },
+    {
+        "Name": "user-prod.tsin.ca.",
+        "Id": "/hostedzone/Z0533842Z8GD244GS3PA",
+        "Private": false
+    },
+    {
+        "Name": "portal1.tsin.ca.",
+        "Id": "/hostedzone/Z0086522YUBNMDNEWFA0",
+        "Private": false
+    },
+    {
+        "Name": "web01.tsin.ca.",
+        "Id": "/hostedzone/Z076539118DLM0DLDPQOA",
+        "Private": false
+    },
+    {
+        "Name": "work-with-us.tsin.ca.",
+        "Id": "/hostedzone/Z02197496DM6KVYNX3OR",
+        "Private": false
+    },
+    {
+        "Name": "work-with-us-be.tsin.ca.",
+        "Id": "/hostedzone/Z02385292III0EFTKL2V4",
+        "Private": false
+    },
+    {
+        "Name": "wwusdb-prod2.tsin.ca.",
+        "Id": "/hostedzone/Z02550642O3HOGNAKYESF",
+        "Private": false
+    },
+    {
+        "Name": "moodle.tsin.ca.",
+        "Id": "/hostedzone/Z04216092EWLK1HDL68YM",
+        "Private": false
+    },
+    {
+        "Name": "learning.tsin.ca.",
+        "Id": "/hostedzone/Z07625681EWDD9MVQJB4S",
+        "Private": false
+    },
+    {
+        "Name": "elearning.tsin.ca.",
+        "Id": "/hostedzone/Z0336091ZTTWLQK1CPI6",
+        "Private": false
+    }
+]
+
+=== Check for elearning record ===
+Zone: Z07528203FGB11621IFK
+[]
+Zone: Z08119463L25A2NJ6Q8DW
+[]
+Zone: Z06897962ADVK02C7N56Q
+[]
+Zone: Z077276831NTK1Z541T9A
+[]
+Zone: Z0031193228L23NEETEZV
+[]
+Zone: Z0633143GFWIOS8017JV
+[]
+Zone: Z063297830G8G9HB2X49B
+[]
+Zone: Z0632673K8AUGZPZE150

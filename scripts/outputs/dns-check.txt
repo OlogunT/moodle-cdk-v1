@@ -1,0 +1,14 @@
+Server:  mynetwork.home
+Address:  192.168.2.1
+
+Name:    elearning.tsin.ca
+Address:  6.6.1.199
+
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+---
+
+[32;1mName                                          [0m[32;1m Type  [0m[32;1m TTL  [0m[32;1m Section   [0m[32;1m IPAddress[0m
+[32;1m----                                          [0m [32;1m----  [0m [32;1m---  [0m [32;1m-------   [0m [32;1m---------[0m
+elearning.tsin.ca                              A      60    Answer     6.6.1.199
+

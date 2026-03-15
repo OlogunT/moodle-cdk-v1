@@ -1,0 +1,2 @@
+Command ID: 20d647a2-07cd-4e2c-98fc-0dc7b955692c
+{     "S": "Success",     "O": "PHP Parse error:  syntax error, unexpected token \"\\\", expecting end of file in /tmp/debug_hash.php on line 5\nEXIT=\\True\n",     "E": "" }

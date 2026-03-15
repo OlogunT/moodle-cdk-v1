@@ -1,0 +1,25 @@
+Sending SSM command...
+CommandId: 96dd0172-ad0c-42fc-a581-1c1b1c49edd8
+Waiting 60s...
+Status: Success, RC: 0
+=== Kill any stuck PHP CLI ===
+=== Clear DB locks ===
+Done
+=== Check DB version ===
+version=2025041402.1
+=== Check disk version ===
+$version  = 2025041402.10;              // 20250414      = branching date YYYYMMDD - do not modify!
+=== Force update DB version to match disk ===
+Disk version: 2025041402.1020250414
+Updated
+=== Recalculate allversionshash via PHP ===
+Config loaded
+=== Restart PHP-FPM ===
+Restarted
+=== Test login speed ===
+HTTP: 200 Time: 2.373934s
+=== DB state ===
+name	value
+version	2025041402.1020250414
+=== DONE ===
+

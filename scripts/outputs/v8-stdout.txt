@@ -1,0 +1,84 @@
+=== MENUTOPIC PLUGIN FILES ===
+total 148
+drwxr-xr-x. 10 apache apache  6144 Jan 20 20:48 .
+drwxr-xr-x. 14 apache apache  6144 Jan 20 20:48 ..
+drwxr-xr-x.  7 apache apache  6144 Jan 20 20:48 .git
+drwxr-xr-x.  3 apache apache  6144 Jan 20 20:48 .github
+-rw-r--r--.  1 apache apache 35122 Jan 20 20:48 LICENSE
+-rwxr-xr-x.  1 apache apache  2874 Jan 20 20:48 README.md
+drwxr-xr-x.  4 apache apache  6144 Jan 20 20:48 amd
+drwxr-xr-x.  3 apache apache  6144 Jan 20 20:48 backup
+drwxr-xr-x.  5 apache apache  6144 Jan 20 20:48 classes
+-rw-r--r--.  1 apache apache   206 Jan 20 20:48 composer.json
+drwxr-xr-x.  2 apache apache  6144 Jan 20 20:48 db
+-rwxr-xr-x.  1 apache apache  2363 Jan 20 20:48 format.php
+drwxr-xr-x.  4 apache apache  6144 Jan 20 20:48 lang
+-rwxr-xr-x.  1 apache apache 34092 Jan 20 20:48 lib.php
+-rw-r--r--.  1 apache apache  3622 Jan 20 20:48 settings.php
+-rwxr-xr-x.  1 apache apache 16306 Jan 20 20:48 styles.css
+drwxr-xr-x.  4 apache apache  6144 Jan 20 20:48 templates
+-rwxr-xr-x.  1 apache apache  1311 Jan 20 20:48 version.php
+=== MENUTOPIC VERSION.PHP ===
+<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Version details.
+ *
+ * @package format_menutopic
+ * @copyright 2014 David Herney Bernal - cirano
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+$plugin->version = 2025062301; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2025021400; // Requires this Moodle version.
+$plugin->component = 'format_menutopic'; // Full name of the plugin (used for diagnostics).
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = 'michelle-5.0.1';
+$plugin->dependencies = ['format_topics' => 2024121800];
+$plugin->supported = [500, 500];
+=== PHP SYNTAX CHECK - MENUTOPIC LIB.PHP ===
+No syntax errors detected in /app/moodle/course/format/menutopic/lib.php
+=== PHP SYNTAX CHECK - MENUTOPIC FORMAT.PHP ===
+No syntax errors detected in /app/moodle/course/format/menutopic/format.php
+=== PHP SYNTAX CHECK - ALL MENUTOPIC PHP FILES ===
+=== MOODLE ERROR LOG (last 10 lines only) ===
+PHP log not found at: 
+=== MOODLE LOCAL PLUGINS ===
+readme.txt
+upgrade.txt
+=== MOODLE ADMIN PLUGINS DB (recently installed/upgraded) ===
+--------------
+SELECT plugin, version, FROM_UNIXTIME(timemodified) AS modified
+FROM mdl_config_plugins
+WHERE plugin LIKE '%menutopic%' OR plugin LIKE '%format_%'
+ORDER BY plugin
+--------------
+
+ERROR 1054 (42S22) at line 1: Unknown column 'version' in 'SELECT'
+=== RECENT MOODLE UPGRADES ===
+--------------
+SELECT plugin, version, FROM_UNIXTIME(timemodified) AS modified
+FROM mdl_config_plugins
+WHERE timemodified > UNIX_TIMESTAMP(NOW()) - 30*86400
+ORDER BY timemodified DESC LIMIT 20
+--------------
+
+ERROR 1054 (42S22) at line 1: Unknown column 'version' in 'SELECT'
+=== DONE ===
+

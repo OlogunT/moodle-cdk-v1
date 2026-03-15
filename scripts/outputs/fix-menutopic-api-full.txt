@@ -1,0 +1,22 @@
+{
+    "CommandId": "864aff99-bf2f-428c-a09d-f63345ee0ead",
+    "InstanceId": "i-011c65cd247389ee6",
+    "Comment": "",
+    "DocumentName": "AWS-RunShellScript",
+    "DocumentVersion": "$DEFAULT",
+    "PluginName": "aws:runShellScript",
+    "ResponseCode": 0,
+    "ExecutionStartDateTime": "2026-03-13T13:06:40.771Z",
+    "ExecutionElapsedTime": "PT2M3.944S",
+    "ExecutionEndDateTime": "2026-03-13T13:08:43.771Z",
+    "Status": "Success",
+    "StatusDetails": "Success",
+    "StandardOutputContent": "=== SEARCHING FOR set_section_number IN MENUTOPIC ===\n/app/moodle/course/format/menutopic/lib.php.backup.20250920_150728_v2:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20250920_150641_v2:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20250920_145910:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20250920_193410_direct:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20250920_153305_safe:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20251018_050542:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20250921_163624_direct:113:                $this->set_section_number($displaysection);\n/app/moodle/course/format/menutopic/lib.php.backup.20250921_125114_safe:113:                $this->set_section_number($displaysection);\n=== REPLACING set_section_number WITH set_sectionnum ===\nFound 9 occurrence(s) to replace\nPatching: /app/moodle/course/format/menutopic/lib.php\nReplacement done\n=== VERIFYING PATCH ===\nRemaining occurrences of set_section_number: 8\n=== SHOWING PATCHED LINES (set_sectionnum) ===\n/app/moodle/course/format/menutopic/lib.php.broken_version:113:                $this->set_sectionnum($displaysection);\n/app/moodle/course/format/menutopic/lib.php:113:                $this->set_sectionnum($displaysection);\n=== PURGING MOODLE CACHES ===\nCache purge exit: 0\n=== DONE ===\n",
+    "StandardOutputUrl": "",
+    "StandardErrorContent": "",
+    "StandardErrorUrl": "",
+    "CloudWatchOutputConfig": {
+        "CloudWatchLogGroupName": "",
+        "CloudWatchOutputEnabled": false
+    }
+}

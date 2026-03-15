@@ -1,0 +1,14 @@
+=== alive Fri Mar 13 01:21:19 UTC 2026 ===
+H=$CFG->dbhost= N=$CFG->dbname=
+ERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)
+DB OK
+=== SYSTEM CAPS ===
+ERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)
+=== PROHIBIT/PREVENT COUNT ===
+count=ERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)
+=== ROLE ARCHETYPES ===
+ERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)
+=== CAT 33 + COURSES ===
+ERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)
+=== DONE ===
+

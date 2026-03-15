@@ -1,0 +1,16 @@
+Starting upgrade in background...
+CommandId: 364b2c58-a69b-4120-813e-da58e483b083
+Status: Success
+PID: 1741046
+Upgrade started in background
+
+
+Waiting 60s then checking progress...
+
+Progress check - Status: Success
+=== UPGRADE PROCESS STATUS ===
+root     1741046  0.2  0.2 453500 37892 ?        D    14:18   0:00 php /app/moodle/admin/cli/upgrade.php --non-interactive
+=== LOG FILE (last 50 lines) ===
+=== LOG FILE SIZE ===
+-rw-r--r--. 1 root root 0 Mar 13 14:18 /tmp/upgrade-log.txt
+

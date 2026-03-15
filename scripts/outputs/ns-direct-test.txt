@@ -1,0 +1,29 @@
+=== Query Route 53 NS directly ===
+Server:  UnKnown
+Address:  6.6.2.110
+
+Name:    elearning.tsin.ca
+Address:  6.6.1.199
+
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+
+=== Query external NS ===
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+Server:  UnKnown
+Address:  6.6.2.111
+
+Name:    elearning.tsin.ca
+Address:  6.6.1.199
+
+
+=== Query another Route 53 NS ===
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+Server:  UnKnown
+Address:  6.6.2.112
+
+Name:    elearning.tsin.ca
+Address:  6.6.1.199
+

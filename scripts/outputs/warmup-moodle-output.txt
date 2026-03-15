@@ -1,0 +1,25 @@
+Sending SSM command...
+CommandId: 9866ea5c-8d11-427e-83f7-6191966cec56
+Waiting 90s for warmup to complete...
+Status: Success, RC: 0
+=== ALB IDLE TIMEOUT CHECK ===
+=== MOODLE SESSION HANDLER ===
+name	value
+sessiontimeout	7200
+=== WARMING UP MOODLE CACHES (hitting real URL) ===
+Hitting login page...
+HTTP: 200 Time: 27.070837s
+First 200 chars of response:
+<!DOCTYPE html>
+
+<html  dir="ltr" lang="en" xml:lang="en">
+<head>
+    <title>Log in to the site | Touchstone Institute</title>
+    <link rel="shortcut icon" href="https://elearning.tsin.ca/pluginfile.=== WARMING UP CACHE VIA PHP CLI ===
+Moodle version: 2025041402.1
+wwwroot: https://elearning.tsin.ca
+Cache OK
+=== MOODLE CRON (run once to rebuild) ===
+Moodle upgrade pending, cron execution suspended.
+=== DONE ===
+

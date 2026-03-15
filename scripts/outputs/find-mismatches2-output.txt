@@ -1,0 +1,37 @@
+CID: 86c6d166-a8b5-4117-bedc-9848ba7339e1
+S: Success RC: 0
+=== CURL OUTPUT ===
+* Host localhost:80 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+*   Trying [::1]:80...
+* Connected to localhost (::1) port 80
+* using HTTP/1.x
+> GET /find_mm_9x7k.php HTTP/1.1
+> Host: localhost
+> User-Agent: curl/8.11.1
+> Accept: */*
+> 
+* Request completely sent off
+< HTTP/1.1 500 Internal Server Error
+< Date: Fri, 13 Mar 2026 14:41:50 GMT
+< Server: Apache/2.4.65 (Amazon Linux)
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< Connection: close
+< Transfer-Encoding: chunked
+< Content-Type: text/plain;charset=UTF-8
+< 
+{ [16 bytes data]
+* shutting down connection #0
+START
+
+=== PHP ERROR LOG ===
+[13-Mar-2026 04:52:30 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[13-Mar-2026 05:45:57 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 06:38:16 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[13-Mar-2026 06:43:56 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 07:00:48 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+=== CLEANUP ===
+DONE
+

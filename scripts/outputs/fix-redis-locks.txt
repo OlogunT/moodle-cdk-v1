@@ -1,0 +1,6 @@
+CMD: 2f358309-1f09-4b33-999d-07406e6fd8be
+{
+    "S": "Success",
+    "O": "=== 1. Get Redis config ===\n$CFG->session_handler_class = '\\core\\session\\redis';\n$CFG->session_redis_host = 'moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com';\n$CFG->session_redis_port = 6379;\n$CFG->session_redis_database = 0;\n$CFG->session_redis_serializer_use_igbinary = 0;\n$CFG->session_redis_locking = 1;\n$CFG->session_redis_prefix = 'mdl_sess_';\n$CFG->session_handler_class = '\\core\\session\\redis';\n$CFG->session_redis_host = 'moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com';\n$CFG->session_redis_port = 6379;\n$CFG->session_redis_database = 0;\n$CFG->session_redis_serializer_use_igbinary = 0;\n$CFG->session_redis_locking = 1;\n$CFG->session_redis_prefix = 'mdl_sess_';\n\n=== 2. Find Redis endpoint ===\n\n\n=== 3. Check redis-cli availability ===\nwhich: no redis-cli in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin)\n\n=== 4. Try connecting to Redis and list lock keys ===\nRedis host: \n\n=== 7. Test course edit page ===\ncourse_edit: HTTP=303 Time=3.089993s\nDONE\n",
+    "E": ""
+}

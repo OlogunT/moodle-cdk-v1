@@ -1,0 +1,22 @@
+{
+    "CommandId": "03d0b150-63a4-4a57-a84c-79de1413a3e7",
+    "InstanceId": "i-011c65cd247389ee6",
+    "Comment": "",
+    "DocumentName": "AWS-RunShellScript",
+    "DocumentVersion": "$DEFAULT",
+    "PluginName": "aws:runShellScript",
+    "ResponseCode": 0,
+    "ExecutionStartDateTime": "2026-03-13T01:42:32.359Z",
+    "ExecutionElapsedTime": "PT1.804S",
+    "ExecutionEndDateTime": "2026-03-13T01:42:33.359Z",
+    "Status": "Success",
+    "StatusDetails": "Success",
+    "StandardOutputContent": "=== MENUTOPIC PLUGIN FILES ===\ntotal 148\ndrwxr-xr-x. 10 apache apache  6144 Jan 20 20:48 .\ndrwxr-xr-x. 14 apache apache  6144 Jan 20 20:48 ..\ndrwxr-xr-x.  7 apache apache  6144 Jan 20 20:48 .git\ndrwxr-xr-x.  3 apache apache  6144 Jan 20 20:48 .github\n-rw-r--r--.  1 apache apache 35122 Jan 20 20:48 LICENSE\n-rwxr-xr-x.  1 apache apache  2874 Jan 20 20:48 README.md\ndrwxr-xr-x.  4 apache apache  6144 Jan 20 20:48 amd\ndrwxr-xr-x.  3 apache apache  6144 Jan 20 20:48 backup\ndrwxr-xr-x.  5 apache apache  6144 Jan 20 20:48 classes\n-rw-r--r--.  1 apache apache   206 Jan 20 20:48 composer.json\ndrwxr-xr-x.  2 apache apache  6144 Jan 20 20:48 db\n-rwxr-xr-x.  1 apache apache  2363 Jan 20 20:48 format.php\ndrwxr-xr-x.  4 apache apache  6144 Jan 20 20:48 lang\n-rwxr-xr-x.  1 apache apache 34092 Jan 20 20:48 lib.php\n-rw-r--r--.  1 apache apache  3622 Jan 20 20:48 settings.php\n-rwxr-xr-x.  1 apache apache 16306 Jan 20 20:48 styles.css\ndrwxr-xr-x.  4 apache apache  6144 Jan 20 20:48 templates\n-rwxr-xr-x.  1 apache apache  1311 Jan 20 20:48 version.php\n=== MENUTOPIC VERSION.PHP ===\n<?php\n// This file is part of Moodle - http://moodle.org/\n//\n// Moodle is free software: you can redistribute it and/or modify\n// it under the terms of the GNU General Public License as published by\n// the Free Software Foundation, either version 3 of the License, or\n// (at your option) any later version.\n//\n// Moodle is distributed in the hope that it will be useful,\n// but WITHOUT ANY WARRANTY; without even the implied warranty of\n// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n// GNU General Public License for more details.\n//\n// You should have received a copy of the GNU General Public License\n// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.\n\n/**\n * Version details.\n *\n * @package format_menutopic\n * @copyright 2014 David Herney Bernal - cirano\n * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later\n */\n\ndefined('MOODLE_INTERNAL') || die();\n\n$plugin->version = 2025062301; // The current plugin version (Date: YYYYMMDDXX).\n$plugin->requires  = 2025021400; // Requires this Moodle version.\n$plugin->component = 'format_menutopic'; // Full name of the plugin (used for diagnostics).\n$plugin->maturity = MATURITY_STABLE;\n$plugin->release = 'michelle-5.0.1';\n$plugin->dependencies = ['format_topics' => 2024121800];\n$plugin->supported = [500, 500];\n=== PHP SYNTAX CHECK - MENUTOPIC LIB.PHP ===\nNo syntax errors detected in /app/moodle/course/format/menutopic/lib.php\n=== PHP SYNTAX CHECK - MENUTOPIC FORMAT.PHP ===\nNo syntax errors detected in /app/moodle/course/format/menutopic/format.php\n=== PHP SYNTAX CHECK - ALL MENUTOPIC PHP FILES ===\n=== MOODLE ERROR LOG (last 10 lines only) ===\nPHP log not found at: \n=== MOODLE LOCAL PLUGINS ===\nreadme.txt\nupgrade.txt\n=== MOODLE ADMIN PLUGINS DB (recently installed/upgraded) ===\n--------------\nSELECT plugin, version, FROM_UNIXTIME(timemodified) AS modified\nFROM mdl_config_plugins\nWHERE plugin LIKE '%menutopic%' OR plugin LIKE '%format_%'\nORDER BY plugin\n--------------\n\nERROR 1054 (42S22) at line 1: Unknown column 'version' in 'SELECT'\n=== RECENT MOODLE UPGRADES ===\n--------------\nSELECT plugin, version, FROM_UNIXTIME(timemodified) AS modified\nFROM mdl_config_plugins\nWHERE timemodified > UNIX_TIMESTAMP(NOW()) - 30*86400\nORDER BY timemodified DESC LIMIT 20\n--------------\n\nERROR 1054 (42S22) at line 1: Unknown column 'version' in 'SELECT'\n=== DONE ===\n",
+    "StandardOutputUrl": "",
+    "StandardErrorContent": "",
+    "StandardErrorUrl": "",
+    "CloudWatchOutputConfig": {
+        "CloudWatchLogGroupName": "",
+        "CloudWatchOutputEnabled": false
+    }
+}

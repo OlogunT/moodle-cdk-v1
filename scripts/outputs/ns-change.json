@@ -1,0 +1,16 @@
+{
+  "Changes": [{
+    "Action": "UPSERT",
+    "ResourceRecordSet": {
+      "Name": "elearning.tsin.ca.",
+      "Type": "NS",
+      "TTL": 300,
+      "ResourceRecords": [
+        {"Value": "ns-71.awsdns-08.com."},
+        {"Value": "ns-644.awsdns-16.net."},
+        {"Value": "ns-1773.awsdns-29.co.uk."},
+        {"Value": "ns-1105.awsdns-10.org."}
+      ]
+    }
+  }]
+}

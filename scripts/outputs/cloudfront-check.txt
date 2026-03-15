@@ -1,0 +1,192 @@
+[
+    {
+        "Id": "E2F9XUFGY7EIPB",
+        "Domain": "d1p9ud4goea0o8.cloudfront.net",
+        "Origins": [
+            "tsin-portal-fe-dev.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E20ISMNBNQJCTA",
+        "Domain": "d3l3v5wj3qnq99.cloudfront.net",
+        "Origins": [
+            "tsin-portal-fe-stage.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E3DZWLAZ6ES2KP",
+        "Domain": "d1bu6ocs0wrowa.cloudfront.net",
+        "Origins": [
+            "portal-fe-prod.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "EWJH4ROOYP1BE",
+        "Domain": "d1wnwyag9usc7m.cloudfront.net",
+        "Origins": [
+            "tsin-portal-uploads.s3.ca-central-1.amazonaws.com",
+            "tsin-portal-uploads.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E1ERCD9DVF9E1G",
+        "Domain": "d2k4x4mn85f9re.cloudfront.net",
+        "Origins": [
+            "portal-demo-fe.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "ECQF4DB37SJBB",
+        "Domain": "d1wgigiz998j5f.cloudfront.net",
+        "Origins": [
+            "sftp-web-ui-artifacts-9d61f290.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E35GOAYWQH77Y1",
+        "Domain": "d3szaes21d96bx.cloudfront.net",
+        "Origins": [
+            "practicreadyontario-config.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E2Z1EVFFE58NMT",
+        "Domain": "d1q29fzjup4sgg.cloudfront.net",
+        "Origins": [
+            "portal-pro-2-fe.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E1EYCC4NG1C05W",
+        "Domain": "d23b81ugikpxil.cloudfront.net",
+        "Origins": [
+            "tsin-interview.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E7G3JQNRD5UCZ",
+        "Domain": "d1q4wnjl1jba9v.cloudfront.net",
+        "Origins": [
+            "tsin-pro-uploads.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "EGBWZD1IHL7QG",
+        "Domain": "d3ri4f783t06m5.cloudfront.net",
+        "Origins": [
+            "tsin-pro-uploads-dev.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "EXL836ESRIEAR",
+        "Domain": "d2spchnag7ram3.cloudfront.net",
+        "Origins": [
+            "tsin2024-payment-frontend-dev.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E2IH8M1UE1W80R",
+        "Domain": "d3d44xvw3ndo37.cloudfront.net",
+        "Origins": [
+            "tsin-public.s3-website.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "EP9NJMN9HGYFA",
+        "Domain": "d3kfuy1hk77v02.cloudfront.net",
+        "Origins": [
+            "tsin2024-user-dev-branch-bucket.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E1CJSLA03SAV13",
+        "Domain": "d25hn7gka8glq4.cloudfront.net",
+        "Origins": [
+            "tsin2024-pro-dev-branch-bucket.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E3233QKQ3TFNSQ",
+        "Domain": "d1klrxbiv1kvfh.cloudfront.net",
+        "Origins": [
+            "tsin2024.exam.frontend.uploads.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E10NW1DJOUBKDN",
+        "Domain": "d3w1yiafssrcju.cloudfront.net",
+        "Origins": [
+            "touchstone-be.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E3SOC80Y7PDR8E",
+        "Domain": "d2jld23xv3rq53.cloudfront.net",
+        "Origins": [
+            "tsin2024-payment-frontend-prod.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E4UVTGZ5A2WI0",
+        "Domain": "d2xe9twign8m2v.cloudfront.net",
+        "Origins": [
+            "tsin2024-user-prod-branch-bucket.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "EZO9KELSE3HJL",
+        "Domain": "ddgvyc4ou1riv.cloudfront.net",
+        "Origins": [
+            "tsin-workwithus-front-dev.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E1X54BG09A94XQ",
+        "Domain": "d16w9fuu4p4isj.cloudfront.net",
+        "Origins": [
+            "web01-tsin-ca-1406768212.ca-central-1.elb.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E2ESHDDN1S637B",
+        "Domain": "d2xhgoo376k0s0.cloudfront.net",
+        "Origins": [
+            "tsin2025-user-dev-frontend.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E1UPQC8GEDFBV1",
+        "Domain": "d2s5kzor28ex56.cloudfront.net",
+        "Origins": [
+            "tsin2025-user-prod-frontend.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E2B9PXTJEKI3H7",
+        "Domain": "ddiux7ckf9n7c.cloudfront.net",
+        "Origins": [
+            "tsin-workwithus-front-prod.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E1NZCHYRSICKD5",
+        "Domain": "d1dz5xld5xv360.cloudfront.net",
+        "Origins": [
+            "tsin-lms-front-dev.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E190F3HXN8ZFI5",
+        "Domain": "d1qcmcstbck14n.cloudfront.net",
+        "Origins": [
+            "payment-stage-tsin-ca-site.s3.ca-central-1.amazonaws.com"
+        ]
+    },
+    {
+        "Id": "E69B6V6DL949E",
+        "Domain": "d1f0938q8slry4.cloudfront.net",
+        "Origins": [
+            "tsin2026-new-payment-prod.s3.ca-central-1.amazonaws.com"
+        ]
+    }
+]

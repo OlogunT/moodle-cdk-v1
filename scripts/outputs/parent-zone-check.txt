@@ -1,0 +1,123 @@
+=== Parent zone tsin.ca - check for elearning NS delegation ===
+[]
+
+=== All ALBs ===
+[
+    {
+        "Name": "awseb-AWSEB-15ZES05AX1ZWP",
+        "DNS": "awseb-AWSEB-15ZES05AX1ZWP-1813285034.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "share-Publi-55HR9DJA7BD5",
+        "DNS": "share-Publi-55HR9DJA7BD5-461021149.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "filestash",
+        "DNS": "filestash-245015630.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "Interview-dev",
+        "DNS": "Interview-dev-65931683.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "PRO-2-LB",
+        "DNS": "PRO-2-LB-229307649.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb-AWSEB-1SHPV3AEGM5Y8",
+        "DNS": "awseb-AWSEB-1SHPV3AEGM5Y8-261446403.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-P1ngSoe51qc0",
+        "DNS": "awseb--AWSEB-P1ngSoe51qc0-1962944799.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-2vSReocAq35W",
+        "DNS": "awseb--AWSEB-2vSReocAq35W-1699842814.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-AC9iAukmGDDp",
+        "DNS": "awseb--AWSEB-AC9iAukmGDDp-560183333.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "test",
+        "DNS": "test-798480849.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "Tsin-be-staging-LB",
+        "DNS": "Tsin-be-staging-LB-791992547.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-HKEB3y2vMM3O",
+        "DNS": "awseb--AWSEB-HKEB3y2vMM3O-912585430.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-50h6fM9sjDEe",
+        "DNS": "awseb--AWSEB-50h6fM9sjDEe-1429461507.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-MPObAJHEYpNw",
+        "DNS": "awseb--AWSEB-MPObAJHEYpNw-1628763180.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-NHPpTqGy9LIo",
+        "DNS": "awseb--AWSEB-NHPpTqGy9LIo-69988917.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "awseb--AWSEB-M6Gt0hfDWLIZ",
+        "DNS": "awseb--AWSEB-M6Gt0hfDWLIZ-286895357.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "Moodle-Moodl-JabjSDOCuhdn",
+        "DNS": "Moodle-Moodl-JabjSDOCuhdn-677156032.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "lms-load-balancer",
+        "DNS": "lms-load-balancer-1566809538.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "Traini-Train-gDNwhrGVvy0B",
+        "DNS": "Traini-Train-gDNwhrGVvy0B-1466546903.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "Paymen-Backe-2wBQiHwK6UFO",
+        "DNS": "Paymen-Backe-2wBQiHwK6UFO-575750669.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    },
+    {
+        "Name": "web01-tsin-ca",
+        "DNS": "web01-tsin-ca-1406768212.ca-central-1.elb.amazonaws.com",
+        "State": "active"
+    }
+]
+
+=== Check tsin.ca external NS ===
+Server:  mynetwork.home
+Address:  192.168.2.1
+
+tsin.ca	nameserver = ns-1639.awsdns-12.co.uk
+tsin.ca	nameserver = ns-1089.awsdns-08.org
+tsin.ca	nameserver = ns1.oitc.ca
+tsin.ca	nameserver = ns-180.awsdns-22.com
+tsin.ca	nameserver = ns-925.awsdns-51.net
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m

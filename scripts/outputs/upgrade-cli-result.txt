@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "START\nNo upgrade needed for the installed version 5.0.2+ (Build: 20250916) (2025041402.1). Thanks for coming anyway!\n\nEXIT=0\n",
+    "E": ""
+}

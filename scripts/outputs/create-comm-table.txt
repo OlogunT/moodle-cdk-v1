@@ -1,0 +1,6 @@
+CMD: 031d30b2-2d7a-4786-bf06-5bc8bf005b6c
+{
+    "S": "Success",
+    "O": "Existing tables with 'communication':\n  EXISTS: communication_customlink\n  EXISTS: communication_customlink_old\n  EXISTS: communication_old\n  EXISTS: communication_user_old\n\nCore install.xml: /app/moodle/lib/db/install.xml\n\nLooking for communication tables in core install.xml:\n  FOUND in XML: communication\n    -> CREATING table communication\n    -> CREATED\n  FOUND in XML: communication_user\n    -> CREATING table communication_user\n    -> CREATED\n\nVerification:\ncommunication table exists: YES\nDone\nEXIT=0\n",
+    "E": ""
+}

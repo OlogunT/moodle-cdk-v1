@@ -1,0 +1,61 @@
+=== ACTIVE THEME ===
+name	value
+theme	boost
+=== COURSE FORMAT PLUGINS INSTALLED ===
+README.txt
+UPGRADING.md
+amd
+classes
+formatlegacy.php
+grid
+lib.php
+menutopic
+menutopic.bak.1768942117
+singleactivity
+social
+templates
+tests
+topcoll
+topics
+update.php
+upgrade.txt
+weeks
+=== MENUTOPIC FORMAT EXISTS ===
+LICENSE
+README.md
+amd
+backup
+classes
+composer.json
+db
+format.php
+lang
+lib.php
+=== PHP ERROR LOG (last 50 lines) ===
+PHP log not found at: 
+=== MOODLE ERROR LOG (recent, last 20) ===
+--------------
+SELECT FROM_UNIXTIME(timecreated) AS ts, component, action, info
+FROM mdl_logstore_standard_log
+WHERE action='failed' OR info LIKE '%error%' OR info LIKE '%exception%'
+ORDER BY timecreated DESC LIMIT 20
+--------------
+
+ERROR 1054 (42S22) at line 1: Unknown column 'info' in 'SELECT'
+=== COURSE SETTINGS FOR CAT 33 (check locks/restrictions) ===
+id	fullname	format	enablecompletion	groupmode	groupmodeforce	defaultgroupingid	lang	theme	visible	visibleold
+70	Physician Facilitator Training 	menutopic	1	2	0	0			1	1
+111	Canadian Medicine Primer Asynchronous2026	topics	1	2	0	0			1	1
+112	Foundations Module2026	weeks	1	2	0	0			1	1
+113	Advanced Module2026	weeks	1	2	0	0			1	1
+114	Welcome/Orientation Module	weeks	1	2	0	0			1	1
+115	Additional Module 1	weeks	1	0	0	0			1	1
+116	Additional Module 2	weeks	1	0	0	0			1	1
+=== CONFIG_PLUGINS FOR COURSE EDITING ===
+=== CHECK FOR MOODLE MAINTENANCE MODE ===
+name	value
+maintenance_enabled	0
+maintenance_message	
+=== CHECK BACKUP CONTROLLERS FOR LOCKED COURSES ===
+=== DONE ===
+

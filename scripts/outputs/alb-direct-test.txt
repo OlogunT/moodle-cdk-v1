@@ -1,0 +1,5 @@
+CMD: 18169ea1-30c8-4368-a090-2500a624f622
+{
+    "S": "Success",
+    "O": "=== DNS for elearning.tsin.ca ===\n3.96.30.200\n3.96.40.253\n\n=== Try ALB direct (with Host header) ===\nHTTP: 404 Time: 0.011863s\n\n=== PHP opcache status ===\narray (\n  'opcache_enabled' => true,\n  'cache_full' => false,\n  'restart_pending' => false,\n  'restart_in_progress' => false,\n  'memory_usage' => \n  array (\n    'used_memory' => 9167944,\n    'free_memory' => 125049784,\n    'wasted_memory' => 0,\n    'current_wasted_percentage' => 0.0,\n  ),\n  'interned_strings_usage' => \n  array (\n    'buffer_size' => 8388608,\n    'used_memory' => 2572224,\n    'free_memory' => 5816384,\n    'number_of_strings' => 9967,\n  ),\n  'opcache_statistics' => \n"
+}

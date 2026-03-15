@@ -1,0 +1,6 @@
+CMD: 32d1cd5a-c4db-4d6f-8222-e629121c3a8c
+{
+    "S": "Success",
+    "O": "PHP Parse error:  syntax error, unexpected token \"\\\", expecting end of file in /tmp/clear_locks.php on line 2\nEXIT=True\n",
+    "E": ""
+}

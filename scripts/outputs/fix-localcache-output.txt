@@ -1,0 +1,30 @@
+Sending SSM command...
+CommandId: 4811178c-a32c-4e43-b5bc-e3756b369e51
+Status: Success, RC: 0
+=== CHECK localcachedir CONFIG ===
+No localcachedir in config.php
+=== CHECK DEFAULT localcachedir ===
+ls: cannot access '/app/moodledata/localcache/': No such file or directory
+localcache dir does not exist
+=== CHECK dataroot ===
+$CFG->dataroot  = "/data/moodledata";
+=== CREATE localcache DIRECTORY ===
+Dataroot: $CFG->dataroot  = "/data/moodledata";
+total 0
+drwxrwxr-x. 2 apache apache  6 Mar 13 14:10 .
+drwxr-xr-x. 3 root   root   24 Mar 13 14:10 ..
+=== BUILD COMPONENT CACHE via PHP CLI ===
+Components loaded: 65
+Cache dir: /data/moodledata/localcache
+PHP exit: 0
+=== CHECK localcache CONTENTS ===
+=== RESTART PHP-FPM ===
+Restarted
+=== TEST LOGIN SPEED ===
+HTTP: 303 Time: 0.215728s
+=== TEST 2 ===
+HTTP: 303 Time: 0.012639s
+=== DONE ===
+
+STDERR: ls: cannot access '/app/moodledata/': No such file or directory
+

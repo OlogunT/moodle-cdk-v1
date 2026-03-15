@@ -1,0 +1,6 @@
+CID: 8b2a5424-d1dd-4985-8a5f-4081449f2bc5
+S: Success RC: 0
+root     1743735  0.2  0.2 451452 37876 ?        D    14:33   0:00 php /app/moodle/admin/cli/upgrade.php --non-interactive
+---
+---
+HTTP:303 T:1.196856s

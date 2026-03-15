@@ -1,0 +1,23 @@
+CID: e20731c6-80f5-47ab-a6a8-cd3fce14e46b
+S: Success RC: 0
+=== DB CONFIG STATE ===
+name	value
+allversionshash	630a1d3cc8158d57f553adfca172fbcca86a8798
+version	2025041402.10
+=== FIX DB version to match disk ===
+Rows affected: 0
+=== DB CONFIG AFTER FIX ===
+name	value
+allversionshash	630a1d3cc8158d57f553adfca172fbcca86a8798
+version	2025041402.1
+=== CHECK moodle_needs_upgrading ===
+Needs upgrade: YES
+Exit: 0
+=== Re-enable cron ===
+* * * * * /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+=== Speed test ===
+HTTP:303 T:0.019938s
+HTTP:303 T:0.012317s
+=== D-state check ===
+=== DONE ===
+

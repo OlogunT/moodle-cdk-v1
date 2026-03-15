@@ -1,0 +1,2 @@
+Command ID: b28a56dd-d192-4350-bdbd-cfd08410a329
+{     "S": "Success",     "O": "computed_hash=37158af4f6a915609afc17e5c20321917db7d3d0\nstored_hash=37158af4f6a915609afc17e5c20321917db7d3d0\nmatch=YES\nEXIT_CODE=0\n",     "E": "" }

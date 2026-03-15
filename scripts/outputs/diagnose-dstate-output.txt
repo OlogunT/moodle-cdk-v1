@@ -1,0 +1,122 @@
+Sending SSM command...
+CommandId: d35f0f85-60db-425c-9e7d-6d7add09f97a
+Status: Success, RC: 0
+=== UPGRADE PROCESS ===
+PID: 1741046
+State: State:	D (disk sleep)
+Wchan: rpc_wait_bit_killable
+=== STRACE (5 seconds) ===
+openat(AT_FDCWD, "/app/moodle/lib/editor/tiny/lang/en/editor_tiny.php", O_RDONLY) = 6
+fstat(6, {st_mode=S_IFREG|0644, st_size=22872, ...}) = 0
+read(6, "<?php\n// This file is part of Mo"..., 22872) = 22872
+close(6)                                = 0
+access("/data/moodledata/lang/en_local/editor_tiny.php", F_OK) = -1 ENOENT (No such file or directory)
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/classes/plugininfo/tiny.php", {st_mode=S_IFREG|0644, st_size=4727, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/classes/plugininfo", {st_mode=S_IFDIR|0755, st_size=6144, ...}, AT_SYMLINK_NOFOLLOW) = 0
+openat(AT_FDCWD, "/app/moodle/lib/editor/tiny/classes/plugininfo/tiny.php", O_RDONLY) = 6
+fstat(6, {st_mode=S_IFREG|0644, st_size=4727, ...}) = 0
+read(6, "<?php\n// This file is part of Mo"..., 4727) = 4727
+close(6)                                = 0
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker", {st_mode=S_IFDIR|0755, st_size=6144, ...}, 0) = 0
+access("/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang/en/tiny_accessibilitychecker.php", F_OK) = 0
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang/en/tiny_accessibilitychecker.php", {st_mode=S_IFREG|0644, st_size=2435, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang/en", {st_mode=S_IFDIR|0755, st_size=6144, ...}, AT_SYMLINK_NOFOLLOW) = 0
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang", {st_mode=S_IFDIR|0755, st_size=6144, ...}, AT_SYMLINK_NOFOLLOW) = 0
+openat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang/en/tiny_accessibilitychecker.php", O_RDONLY) = 6
+fstat(6, {st_mode=S_IFREG|0644, st_size=2435, ...}) = 0
+read(6, "<?php\n// This file is part of Mo"..., 2435) = 2435
+close(6)                                = 0
+access("/data/moodledata/lang/en_local/tiny_accessibilitychecker.php", F_OK) = -1 ENOENT (No such file or directory)
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker", {st_mode=S_IFDIR|0755, st_size=6144, ...}, 0) = 0
+access("/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang/en/tiny_accessibilitychecker.php", F_OK) = 0
+openat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/accessibilitychecker/lang/en/tiny_accessibilitychecker.php", O_RDONLY) = 6
+fstat(6, {st_mode=S_IFREG|0644, st_size=2435, ...}) = 0
+read(6, "<?php\n// This file is part of Mo"..., 2435) = 2435
+close(6)                                = 0
+access("/data/moodledata/lang/en_local/tiny_accessibilitychecker.php", F_OK) = -1 ENOENT (No such file or directory)
+newfstatat(AT_FDCWD, "/app/moodle/lib/editor/tiny/plugins/aiplacement", strace: Process 1741046 detached
+ <detached ...>
+=== /proc/1741046/stack ===
+[<0>] rpc_wait_bit_killable+0xd/0x70 [sunrpc]
+[<0>] nfs4_run_open_task+0x14d/0x1e0 [nfsv4]
+[<0>] _nfs4_proc_open+0x2d/0x180 [nfsv4]
+[<0>] _nfs4_open_and_get_state+0x6b/0x300 [nfsv4]
+[<0>] _nfs4_do_open.isra.0+0x16c/0x4e0 [nfsv4]
+[<0>] nfs4_do_open+0xcd/0x1f0 [nfsv4]
+[<0>] nfs4_atomic_open+0xf1/0x100 [nfsv4]
+[<0>] nfs4_file_open+0xfe/0x250 [nfsv4]
+[<0>] do_dentry_open+0x15c/0x430
+[<0>] do_open+0x21a/0x450
+[<0>] path_openat+0x111/0x280
+[<0>] do_filp_open+0xb2/0x160
+[<0>] do_sys_openat2+0x9a/0x160
+[<0>] __x64_sys_openat+0x53/0xa0
+[<0>] do_syscall_64+0x35/0x80
+[<0>] entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+=== /proc/1741046/io ===
+rchar: 20785193
+wchar: 0
+syscr: 4864
+syscw: 0
+read_bytes: 0
+write_bytes: 0
+cancelled_write_bytes: 0
+=== fd links ===
+total 0
+dr-x------. 2 root root  0 Mar 13 14:18 .
+dr-xr-xr-x. 9 root root  0 Mar 13 14:18 ..
+lr-x------. 1 root root 64 Mar 13 14:21 0 -> /dev/null
+l-wx------. 1 root root 64 Mar 13 14:21 1 -> /tmp/upgrade-log.txt
+l-wx------. 1 root root 64 Mar 13 14:21 2 -> /tmp/upgrade-log.txt
+lrwx------. 1 root root 64 Mar 13 14:21 3 -> /memfd:opcache_lock (deleted)
+lr-x------. 1 root root 64 Mar 13 14:21 4 -> /app/moodle/admin/cli/upgrade.php
+lrwx------. 1 root root 64 Mar 13 14:21 5 -> socket:[405637852]
+=== MOUNT POINTS ===
+tracefs on /sys/kernel/tracing type tracefs (rw,nosuid,nodev,noexec,relatime,seclabel)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,nosuid,nodev,noexec,relatime)
+sunrpc on /var/lib/nfs/rpc_pipefs type rpc_pipefs (rw,relatime)
+127.0.0.1:/ on /app type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=20952,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
+127.0.0.1:/ on /data type nfs4 (rw,relatime,vers=4.1,rsize=1048576,wsize=1048576,namlen=255,hard,noresvport,proto=tcp,port=21026,timeo=600,retrans=2,sec=sys,clientaddr=127.0.0.1,local_lock=none,addr=127.0.0.1)
+Filesystem      Size  Used Avail Use% Mounted on
+127.0.0.1:/     8.0E  283G  8.0E   1% /data
+Filesystem      Size  Used Avail Use% Mounted on
+127.0.0.1:/     8.0E  9.3G  8.0E   1% /app
+=== DMESG (last 20 NFS/EFS/IO errors) ===
+[    0.000000] Command line: BOOT_IMAGE=(hd0,gpt1)/boot/vmlinuz-6.1.155-176.282.amzn2023.x86_64 root=UUID=6bf6dcc0-0673-443a-b92a-b26a3524cf3b ro console=tty0 console=ttyS0,115200n8 nvme_core.io_timeout=4294967295 rd.emergency=poweroff rd.shell=0 selinux=1 security=selinux quiet
+[    0.015549] Kernel command line: BOOT_IMAGE=(hd0,gpt1)/boot/vmlinuz-6.1.155-176.282.amzn2023.x86_64 root=UUID=6bf6dcc0-0673-443a-b92a-b26a3524cf3b ro console=tty0 console=ttyS0,115200n8 nvme_core.io_timeout=4294967295 rd.emergency=poweroff rd.shell=0 selinux=1 security=selinux quiet
+[    0.051857] APIC: Switch to symmetric I/O mode setup
+[    0.072360] x86/mm: Memory block size: 128MB
+[    0.092145] ACPI: Enabled 2 GPEs in block 00 to 0F
+[    0.193731] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 248)
+[    0.217567] 00:04: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
+[    1.431252] SELinux:  policy capability genfs_seclabel_symlinks=1
+[    2.232814] systemd[1]: Starting nfs-convert.service - Preprocess NFS configuration convertion...
+[    3.633955] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[   40.006092] NFS: Registering the id_resolver key type
+[216755.469279] NFS: 127.0.0.1: lost 4 locks
+=== FILESYSTEM CHECK ===
+  File: /data/moodledata/
+  Size: 6144      	Blocks: 8          IO Block: 1048576 directory
+Device: 2bh/43d	Inode: 12360953748105572204  Links: 17
+Access: (2755/drwxr-sr-x)  Uid: (   48/  apache)   Gid: (   48/  apache)
+Context: system_u:object_r:nfs_t:s0
+Access: 2026-03-13 00:35:01.314000000 +0000
+Modify: 2026-03-13 00:35:01.314000000 +0000
+Change: 2026-03-13 00:35:01.314000000 +0000
+ Birth: -
+  File: /app/moodle/
+  Size: 22528     	Blocks: 40         IO Block: 1048576 directory
+Device: 2ah/42d	Inode: 6492208103535648943  Links: 66
+Access: (0755/drwxr-xr-x)  Uid: (   48/  apache)   Gid: (   48/  apache)
+Context: system_u:object_r:nfs_t:s0
+Access: 2026-02-24 23:10:30.149000000 +0000
+Modify: 2026-02-24 23:10:30.149000000 +0000
+Change: 2026-02-24 23:10:30.149000000 +0000
+ Birth: -
+=== ALL D-STATE PROCESSES ===
+root     1741046  0.6  0.5 494948 84512 ?        D    14:18   0:01 php /app/moodle/admin/cli/upgrade.php --non-interactive
+apache   1741510  2.0  0.3 451452 62720 ?        D    14:21   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+=== KILL UPGRADE PROCESS ===
+Killed 1741046
+=== DONE ===
+

@@ -1,0 +1,4 @@
+{
+    "S": "Success",
+    "O": "TEST\nlogin: HTTP=303 Time=1.612868s\nhome: HTTP=303 Time=0.018374s\ntotal 36\ndrwxr-sr-x.  7 apache apache 6144 Mar 13 15:40 .\ndrwxr-sr-x. 17 apache apache 6144 Mar 13 00:35 ..\n-rw-rw-rw-.  1 root   apache    0 Mar 13 15:33 .lastpurged\n-rw-rw-rw-.  1 apache apache  385 Mar 13 15:33 bootstrap.php\ndrwxrwsrwx.  2 apache apache 6144 Mar 13 15:38 di\ndrwxrwsrwx.  3 apache apache 6144 Mar 13 15:40 htmlpurifier\ndrwxrwsrwx.  2 apache apache 6144 Mar 13 15:40 js\ndrwxrwsrwx.  3 apache apache 6144 Mar 13 15:35 mustache\ndrwxrwsrwx.  2 apache apache 6144 Mar 13 15:40 theme\n"
+}

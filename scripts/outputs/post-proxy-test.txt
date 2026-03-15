@@ -1,0 +1,27 @@
+=== Local DNS ===
+Server:  mynetwork.home
+Address:  192.168.2.1
+
+Name:    elearning.tsin.ca
+Address:  6.6.1.199
+
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+
+=== Google DNS ===
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+Server:  dns.google
+Address:  8.8.8.8
+
+Name:    elearning.tsin.ca
+Address:  6.6.1.199
+
+
+=== Test homepage ===
+
+[7mHTTP[0m/1.1 200 OK
+[7mServer[0m: Apache/2.4.65 (Amazon Linux)
+
+=== Test login page ===
+login: HTTP=200 Time=0.324436s
