@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "=== 1. Test localhost reachability ===\nLogin page: HTTP 303 in 27.560543s\nLogin form NOT found in response\nResponse snippet: HTTP/1.1 303 See Other\r\nDate: Mon, 16 Mar 2026 20:04:48 GMT\r\nServer: Apache/2.4.65 (Amazon Linux)\r\nX-Redirect-By: Moodle /lib/setuplib.php:694\r\nContent-Language: en\r\nX-Content-Type-Options: nosniff\r\nX-Frame-Options: SAMEORIGIN\r\nLocation: https://elearning.tsin.ca/login/index.php\r\nTransfer-Encoding: chunked\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n<!DOCTYPE html>\n<html  lang=\"en\" xml:lang=\"en\">\n    <head>\n        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n            \n\nAll tests complete\nEXIT=0\n",
+    "E": ""
+}

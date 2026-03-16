@@ -1,0 +1,6 @@
+CMD: c5d34c3c-a7e1-4d26-bab0-b0b50d98fef7
+{
+    "S": "Success",
+    "O": "=== 1. Create lock directory ===\nCreated: /data/moodledata/lock\nPermissions set\n\n=== 2. Test lock directory writability ===\nLock dir is writable\n\n=== 3. Check current config.php for lock_factory ===\nNo lock_factory in config.php - adding DB lock factory\nAdded db_record_lock_factory to config.php\n\n=== 4. Verify config.php ===\n  lock_factory = '\\\\core\\\\lock\\\\db_record_lock_factory';\n\n=== 5. Purge caches ===\nCaches purged\n\n=== 6. Restart PHP-FPM ===\nDone - restart PHP-FPM separately\nPHP-FPM restarted\nEXIT=0\n",
+    "E": ""
+}
