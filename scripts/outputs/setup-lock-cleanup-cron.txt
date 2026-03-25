@@ -1,0 +1,6 @@
+CMD: a5041cfb-b826-4cb4-a621-b065c3c55860
+{
+    "S": "Failed",
+    "O": "Created /app/moodle/local/cleanup_stale_locks.php\nScript test: exit code=\\True\n",
+    "E": "/var/lib/amazon/ssm/i-011c65cd247389ee6/document/orchestration/a5041cfb-b826-4cb4-a621-b065c3c55860/awsrunShellScript/0.awsrunShellScript/_script.sh: line 17: syntax error near unexpected token `)'\n/var/lib/amazon/ssm/i-011c65cd247389ee6/document/orchestration/a5041cfb-b826-4cb4-a621-b065c3c55860/awsrunShellScript/0.awsrunShellScript/_script.sh: line 17: `    (crontab -l 2>/dev/null; echo \"\\\") | crontab -'\nfailed to run commands: exit status 2"
+}

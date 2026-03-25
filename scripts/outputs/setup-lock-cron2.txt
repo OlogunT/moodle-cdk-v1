@@ -1,0 +1,6 @@
+CMD: 0576ae6c-6a31-436e-949e-e3969c424fba
+{
+    "S": "Success",
+    "O": "Cron installed\n*/5 * * * * php /app/moodle/local/cleanup_stale_locks.php > /dev/null 2>&1\n=== Verify PHP script ===\n<?php\n// /app/moodle/local/cleanup_stale_locks.php\n// Automatically cleans stale DB locks that accumulate from stuck cron/PHP processes\ndefine('CLI_SCRIPT', true);\nrequire(__DIR__ . '/../config.php');\n...\n=== Test run ===\nExit: 0\nEXIT=0\n",
+    "E": ""
+}
