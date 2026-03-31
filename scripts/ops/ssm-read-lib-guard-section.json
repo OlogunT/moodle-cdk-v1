@@ -1,0 +1,18 @@
+{
+  "Comment": "Restore lib.php from backup and read the guard section verbatim",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "LIB='/app/moodle/course/format/menutopic/lib.php'",
+      "BACKUP=$(ls -t /app/moodle/course/format/menutopic/lib.php.bak.* 2>/dev/null | head -1)",
+      "echo \"Using backup: $BACKUP\"",
+      "cp \"$BACKUP\" \"$LIB\"",
+      "php -l \"$LIB\" && echo 'Backup is clean' || echo 'Backup also broken'",
+      "echo '=== Lines 115-150 of restored lib.php (cat -A shows hidden chars) ==='",
+      "sed -n '115,150p' \"$LIB\" | cat -A"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

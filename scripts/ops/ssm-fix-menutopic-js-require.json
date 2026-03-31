@@ -1,0 +1,28 @@
+{
+  "Comment": "Remove defunct topics/format.js require from menutopic/format.php (Moodle 4.x compat)",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "FORMAT_PHP='/app/moodle/course/format/menutopic/format.php'",
+      "echo '=== Patch 4: Remove topics/format.js require from menutopic/format.php ==='",
+      "if [ ! -f \"$FORMAT_PHP\" ]; then echo 'ERROR: format.php not found'; exit 1; fi",
+      "if grep -q \"requires->js.*topics/format.js\" \"$FORMAT_PHP\"; then",
+      "  cp \"$FORMAT_PHP\" \"${FORMAT_PHP}.bak.$(date +%s)\"",
+      "  sed -i \"/requires->js.*topics\\/format\\.js/d\" \"$FORMAT_PHP\"",
+      "  echo '✓ Removed defunct topics/format.js require line'",
+      "else",
+      "  echo '✓ Already clean — topics/format.js require not present'",
+      "fi",
+      "echo '=== Verify line is gone ==='",
+      "grep -n 'topics/format.js' \"$FORMAT_PHP\" && echo 'STILL PRESENT - check manually' || echo 'Confirmed: line absent'",
+      "echo '=== Restart PHP-FPM to flush OPcache ==='",
+      "systemctl restart php-fpm && echo 'php-fpm restarted' || echo 'restart failed'",
+      "sleep 3",
+      "HTTP=$(curl -s -o /dev/null -w '%{http_code}' http://localhost/health || echo '000')",
+      "echo \"Health: $HTTP\""
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

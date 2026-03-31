@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "echo '=== menutopic lib.php lines 100-160 ==='",
+    "sed -n '100,160p' /app/moodle/course/format/menutopic/lib.php",
+    "echo '=== menutopic lib.php lines 1-50 (class definition) ==='",
+    "sed -n '1,50p' /app/moodle/course/format/menutopic/lib.php",
+    "echo '=== modinfolib.php line 600-615 (build_course_cache context) ==='",
+    "sed -n '595,615p' /app/moodle/lib/modinfolib.php",
+    "echo '=== modinfolib.php line 760-780 (acquire_lock context) ==='",
+    "sed -n '760,785p' /app/moodle/lib/modinfolib.php",
+    "echo '=== DONE ==='"
+  ]
+}
+

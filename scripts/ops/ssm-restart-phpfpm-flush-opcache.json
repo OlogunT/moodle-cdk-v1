@@ -1,0 +1,33 @@
+{
+  "Comment": "Restart PHP-FPM to flush OPcache and activate menutopic patches",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": [
+    "i-08cfb0d5a27e77adb",
+    "i-00af3adb301e601f8"
+  ],
+  "Parameters": {
+    "commands": [
+      "echo '=== PHP-FPM OPcache flush + restart ==='",
+      "echo 'Before restart — verify menutopic lib.php patch is on disk:'",
+      "grep -n 'in_set_sectionnum' /app/moodle/course/format/menutopic/lib.php | head -5 || echo 'PATCH NOT FOUND ON DISK'",
+      "echo 'Stopping PHP-FPM gracefully...'",
+      "systemctl stop php-fpm",
+      "sleep 2",
+      "echo 'Starting PHP-FPM (OPcache cleared on start)...'",
+      "systemctl start php-fpm",
+      "sleep 2",
+      "systemctl is-active php-fpm && echo 'php-fpm: ACTIVE' || echo 'php-fpm: FAILED'",
+      "echo 'Reloading Apache to clear its state...'",
+      "systemctl reload httpd || systemctl restart httpd",
+      "echo '=== Verify patch is active on disk ==='",
+      "grep -c 'in_set_sectionnum' /app/moodle/course/format/menutopic/lib.php && echo 'Guard found in lib.php' || echo 'GUARD MISSING'",
+      "echo '=== Health check ==='",
+      "sleep 3",
+      "HTTP=$(curl -s -o /dev/null -w '%{http_code}' http://localhost/health || echo '000')",
+      "echo \"Health: $HTTP\"",
+      "echo '=== Done ==='"
+    ],
+    "executionTimeout": ["120"]
+  }
+}
+

@@ -1,0 +1,43 @@
+{
+  "Comment": "Verify current lib.php state and restore from backup if needed",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "LIB='/app/moodle/course/format/menutopic/lib.php'",
+      "echo '=== Current PHP syntax check ==='",
+      "php -l \"$LIB\"",
+      "echo '=== Current line count ==='",
+      "grep -c '' \"$LIB\"",
+      "echo '=== Guard lines present ==='",
+      "grep -n 'in_set_sectionnum' \"$LIB\"",
+      "echo '=== Any debugging() calls remaining ==='",
+      "grep -n 'format_menutopic: set_sectionnum' \"$LIB\" && echo 'STILL PRESENT' || echo 'Clean'",
+      "echo '=== If syntax error, list available backups ==='",
+      "ls -lt /app/moodle/course/format/menutopic/lib.php.bak.* 2>/dev/null | head -5 || echo 'No backups found'",
+      "echo '=== Restore from most recent backup if syntax is broken ==='",
+      "if ! php -l \"$LIB\" 2>/dev/null; then",
+      "  BACKUP=$(ls -t /app/moodle/course/format/menutopic/lib.php.bak.* 2>/dev/null | head -1)",
+      "  if [ -n \"$BACKUP\" ]; then",
+      "    echo \"Restoring from: $BACKUP\"",
+      "    cp \"$BACKUP\" \"$LIB\"",
+      "    php -l \"$LIB\" && echo 'Restored OK'",
+      "    echo 'Re-applying Patch 5 cleanly from this single instance...'",
+      "    perl -i -0pe \"s/[ \\t]*debugging\\(\\s*\\n\\s*'format_menutopic:[^;]*\\);\\n?//g\" \"$LIB\"",
+      "    perl -i -0pe 's/[ \\t]*\\} else \\{\\s*\\}[ \\t]*\\n?//g' \"$LIB\"",
+      "    php -l \"$LIB\" && echo 'Patch 5 re-applied, syntax OK' || echo 'STILL BROKEN'",
+      "  else",
+      "    echo 'ERROR: No backup found to restore from'",
+      "  fi",
+      "else",
+      "  echo 'File is syntactically valid — no restore needed'",
+      "fi",
+      "echo '=== Final health check ==='",
+      "systemctl restart php-fpm",
+      "sleep 3",
+      "curl -s -o /dev/null -w 'Health: %{http_code}' http://localhost/health"
+    ],
+    "executionTimeout": ["90"]
+  }
+}
+

@@ -1,0 +1,17 @@
+{
+  "Comment": "View menutopic format.php around the offending JS require line",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== menutopic/format.php full content ==='",
+      "cat -n /app/moodle/course/format/menutopic/format.php",
+      "echo '=== Check if topics/format.js actually exists ==='",
+      "ls -la /app/moodle/course/format/topics/format.js 2>/dev/null || echo 'FILE DOES NOT EXIST'",
+      "echo '=== Check what JS files topics format has ==='",
+      "ls /app/moodle/course/format/topics/*.js 2>/dev/null || echo 'No .js files in topics format root'"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

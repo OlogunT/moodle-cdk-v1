@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "echo '=== Last 10 entries in www-slow.log ==='",
+    "tail -40 /var/log/php-fpm/www-slow.log 2>/dev/null | grep -E 'Mar-2026 1[3-9]:|Apr-2026|course/view' | tail -20 || echo 'no recent slow entries'",
+    "echo '=== Recent errors in www-error.log ==='",
+    "tail -20 /var/log/php-fpm/www-error.log 2>/dev/null | grep -v 'invalidsesskey' || echo 'no recent errors'",
+    "echo '=== menutopic lib.php patch context (lines 75-145) ==='",
+    "sed -n '75,145p' /app/moodle/course/format/menutopic/lib.php",
+    "echo '=== php-fpm child RSS ==='",
+    "ps -o pid,rss,comm --sort=-rss | awk 'NR==1 || /php-fpm/' | head -8",
+    "echo '=== DONE ==='"
+  ]
+}
+

@@ -252,6 +252,91 @@ if [ -f "/app/moodle/config.php" ]; then
   [ -s /tmp/configure-moodle-ses-email.sh ] && chmod +x /tmp/configure-moodle-ses-email.sh && /tmp/configure-moodle-ses-email.sh || true
 fi
 
+# ============================================================================
+# MENUTOPIC PLUGIN PATCHES (idempotent — safe to run on every boot)
+# ============================================================================
+echo "=== MENUTOPIC PLUGIN PATCHES ==="
+MENUTOPIC_LIB="/app/moodle/course/format/menutopic/lib.php"
+MENUTOPIC_CONTENT="/app/moodle/course/format/menutopic/classes/output/courseformat/content.php"
+if [ -f "$MENUTOPIC_LIB" ]; then
+  # Patch 1: Static reentrancy guard to prevent recursive build_course_cache() / OOM
+  if ! grep -q 'in_set_sectionnum' "$MENUTOPIC_LIB"; then
+    echo "Applying menutopic reentrancy guard (lib.php)..."
+    _PATCH="/tmp/fix-menutopic-recursion.php"
+    aws s3 cp "s3://$SCRIPT_BUCKET/ops/fix-menutopic-recursion.php" "$_PATCH" 2>/dev/null || true
+    if [ -s "$_PATCH" ]; then
+      php "$_PATCH" && echo "✓ Menutopic reentrancy guard applied" || echo "⚠ Menutopic lib.php patch failed (non-fatal)"
+    else
+      echo "⚠ Could not download menutopic patch from S3 — skipping"
+    fi
+    rm -f "$_PATCH"
+  else
+    echo "✓ Menutopic reentrancy guard already in place"
+  fi
+  # Patch 2: content.php private → protected visibility fix (prevents PHP fatal)
+  if [ -f "$MENUTOPIC_CONTENT" ]; then
+    if grep -q 'private function get_sections_to_display' "$MENUTOPIC_CONTENT"; then
+      sed -i 's/private function get_sections_to_display/protected function get_sections_to_display/' "$MENUTOPIC_CONTENT"
+      echo "✓ Menutopic content.php: private → protected on get_sections_to_display()"
+    else
+      echo "✓ Menutopic content.php visibility already correct"
+    fi
+  fi
+  # Patch 3: Deprecation fix — get_section_number() removed in Moodle 4.4+, use get_sectionnum() (MDL-80248).
+  _DEPRECATED_COUNT=$(find /app/moodle/course/format/menutopic/ -name '*.php' \
+    ! -name '*.bak*' ! -name '*.backup*' \
+    | xargs grep -l 'get_section_number' 2>/dev/null | wc -l)
+  if [ "$_DEPRECATED_COUNT" -gt 0 ]; then
+    echo "Applying deprecated get_section_number → get_sectionnum in $_DEPRECATED_COUNT file(s)..."
+    find /app/moodle/course/format/menutopic/ -name '*.php' \
+      ! -name '*.bak*' ! -name '*.backup*' \
+      | xargs grep -l 'get_section_number' 2>/dev/null \
+      | while read _f; do
+          sed -i 's/->get_section_number()/->get_sectionnum()/g' "$_f"
+          echo "  ✓ Patched: $_f"
+        done
+  else
+    echo "✓ Menutopic: no get_section_number() calls found (already fixed)"
+  fi
+
+  # Patch 4: Remove defunct topics/format.js require from format.php.
+  # Moodle 4.x removed /course/format/topics/format.js (replaced by AMD modules).
+  # menutopic inherited this call and never cleaned it up — it throws a fatal
+  # "Attempt to require a JavaScript file that does not exist" on every page load.
+  _FORMAT_PHP="/app/moodle/course/format/menutopic/format.php"
+  if [ -f "$_FORMAT_PHP" ]; then
+    if grep -q "requires->js.*topics/format\.js" "$_FORMAT_PHP"; then
+      sed -i "/requires->js.*topics\/format\.js/d" "$_FORMAT_PHP"
+      echo "✓ Menutopic format.php: removed defunct topics/format.js require"
+    else
+      echo "✓ Menutopic format.php: topics/format.js require already absent"
+    fi
+  fi
+
+  # Patch 5: Remove noisy debugging() calls from the reentrancy guard in lib.php.
+  # The guard is correct, but debugging() fires on every course page load (the recursive
+  # constructor is an expected code path, not an error). Use exact Python string replacement
+  # (perl regex is too greedy across multi-line blocks on shared EFS).
+  if grep -q "format_menutopic: set_sectionnum skipped" "$MENUTOPIC_LIB" 2>/dev/null; then
+    aws s3 cp s3://moodle-scripts-483382415631-ca-central-1/fix_menutopic_debug.py /tmp/fix_menutopic_debug.py --region ca-central-1 2>/dev/null \
+      && python3 /tmp/fix_menutopic_debug.py \
+      && rm -f /tmp/fix_menutopic_debug.py \
+      && echo "✓ Menutopic lib.php: removed debugging() calls from reentrancy guard" \
+      || echo "⚠ Menutopic lib.php: Patch 5 download/apply failed — check S3 access"
+  else
+    echo "✓ Menutopic lib.php: no debugging() calls to remove"
+  fi
+else
+  echo "Menutopic plugin not found — skipping patches"
+fi
+
+# Always restart PHP-FPM after the patch block so OPcache recompiles the
+# patched files. opcache.validate_timestamps=0 means file changes on EFS
+# are invisible to running workers until the process restarts.
+echo "Restarting PHP-FPM to flush OPcache and activate menutopic patches..."
+systemctl restart php-fpm && echo "✓ PHP-FPM restarted" || echo "⚠ PHP-FPM restart failed"
+echo "=== MENUTOPIC PLUGIN PATCHES DONE ==="
+
 echo "=== FINAL VERIFICATION ==="
 systemctl is-active --quiet httpd && echo "httpd active" || echo "httpd NOT active"
 systemctl is-active --quiet php-fpm && echo "php-fpm active" || echo "php-fpm NOT active"

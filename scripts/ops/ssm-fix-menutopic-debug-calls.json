@@ -1,0 +1,35 @@
+{
+  "Comment": "Remove debugging() log calls from menutopic reentrancy guard in lib.php",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "LIB='/app/moodle/course/format/menutopic/lib.php'",
+      "echo '=== Patch 5: Remove debugging() calls from reentrancy guard ==='",
+      "if [ ! -f \"$LIB\" ]; then echo 'ERROR: lib.php not found'; exit 1; fi",
+      "echo 'Lines before patch:'; grep -c '' \"$LIB\"",
+      "if grep -q \"format_menutopic: set_sectionnum skipped\" \"$LIB\"; then",
+      "  cp \"$LIB\" \"${LIB}.bak.$(date +%s)\"",
+      "  perl -i -0pe \"s/[ \\t]*debugging\\(\\s*\\n\\s*'format_menutopic:[^;]*\\);\\n?//g\" \"$LIB\"",
+      "  perl -i -0pe 's/[ \\t]*\\} else \\{\\s*\\}[ \\t]*\\n?//g' \"$LIB\"",
+      "  echo '✓ Removed debugging() calls from reentrancy guard'",
+      "else",
+      "  echo '✓ Already clean — no debugging() calls to remove'",
+      "fi",
+      "echo 'Lines after patch:'; grep -c '' \"$LIB\"",
+      "echo '=== Verify guard still intact ==='",
+      "grep -n 'in_set_sectionnum' \"$LIB\" | head -6",
+      "echo '=== Verify no format_menutopic debugging lines remain ==='",
+      "grep -n 'format_menutopic: set_sectionnum' \"$LIB\" && echo 'STILL PRESENT' || echo 'Confirmed: gone'",
+      "echo '=== PHP syntax check ==='",
+      "php -l \"$LIB\" && echo 'Syntax OK' || echo 'SYNTAX ERROR'",
+      "echo '=== Restart PHP-FPM to flush OPcache ==='",
+      "systemctl restart php-fpm && echo 'php-fpm restarted' || echo 'restart failed'",
+      "sleep 3",
+      "HTTP=$(curl -s -o /dev/null -w '%{http_code}' http://localhost/health || echo '000')",
+      "echo \"Health: $HTTP\""
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

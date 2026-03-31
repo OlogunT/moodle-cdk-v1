@@ -1,0 +1,21 @@
+{
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "DocumentName": "AWS-RunShellScript",
+  "Parameters": {
+    "commands": [
+      "echo '=== PHP-FPM memory usage ==='",
+      "ps aux --sort=-%mem | awk 'NR==1 || /php-fpm/' | head -20",
+      "echo '=== Recent OOM errors (last 30) ==='",
+      "grep -i 'memory size.*exhausted\\|Allowed memory' /var/log/php-fpm/www-error.log 2>/dev/null | tail -30 || grep -i 'memory size.*exhausted\\|Allowed memory' /var/log/httpd/moodle_error.log 2>/dev/null | tail -30 || echo 'no oom in standard logs'",
+      "echo '=== Full stack trace around redis OOM ==='",
+      "grep -A 20 'redis/lib.php on line 431' /var/log/php-fpm/www-error.log 2>/dev/null | tail -60 || grep -A 20 'redis/lib.php on line 431' /var/log/httpd/moodle_error.log 2>/dev/null | tail -60 || echo 'not found'",
+      "echo '=== redis/lib.php line 425-440 ==='",
+      "sed -n '425,440p' /app/moodle/cache/stores/redis/lib.php",
+      "echo '=== Redis memory info ==='",
+      "redis-cli -h moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com info memory 2>/dev/null | grep -E 'used_memory_human|maxmemory_human|mem_fragmentation' || echo 'redis-cli not available'",
+      "echo '=== Largest Redis keys (MUC) ==='",
+      "redis-cli -h moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com --scan --pattern 'MoodleCache/*' 2>/dev/null | head -5 | while read k; do size=$(redis-cli -h moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com strlen \"$k\" 2>/dev/null); echo \"$size $k\"; done | sort -rn | head -10 || echo 'scan skipped'"
+    ]
+  }
+}
+

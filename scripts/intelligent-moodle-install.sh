@@ -488,10 +488,16 @@ fi
 PHP_INI_ADD=/etc/php.d/99-moodle.ini
 cat > "$PHP_INI_ADD" <<'PHPINI'
 max_input_vars = 5000
-post_max_size = 128M
-upload_max_filesize = 128M
-max_execution_time = 120
-memory_limit = 512M
+post_max_size = 1024M
+upload_max_filesize = 1024M
+max_execution_time = 600
+max_input_time = 900
+memory_limit = 4096M
+opcache.memory_consumption = 256
+opcache.interned_strings_buffer = 16
+opcache.max_accelerated_files = 20000
+opcache.validate_timestamps = 0
+opcache.save_comments = 1
 PHPINI
 systemctl restart php-fpm || true
 systemctl restart httpd || true
@@ -741,6 +747,105 @@ rm -rf /data/moodledata/cache/* /data/moodledata/localcache/* /data/moodledata/s
 if [ -f "/app/moodle/config.php" ] && mariadb -h "$DB_ENDPOINT" -u "$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "SELECT 1;" 2>/dev/null; then
   mariadb -h "$DB_ENDPOINT" -u "$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "UPDATE mdl_config SET value=\"$WWWROOT\" WHERE name=\"wwwroot\";" 2>/dev/null && echo "✓ Database wwwroot synchronized" || echo "ℹ Database wwwroot sync not needed"
 fi
+
+# ============================================================================
+# MENUTOPIC PLUGIN PATCHES (idempotent — safe to run on every boot)
+# Ensures fixes survive fresh installs, plugin upgrades, and EFS replacement.
+# ============================================================================
+echo "=== MENUTOPIC PLUGIN PATCHES ==="
+MENUTOPIC_LIB="/app/moodle/course/format/menutopic/lib.php"
+MENUTOPIC_CONTENT="/app/moodle/course/format/menutopic/classes/output/courseformat/content.php"
+
+# Derive script bucket if not already exported by caller (bootstrap-moodle.sh sets it)
+if [ -z "${SCRIPT_BUCKET:-}" ]; then
+  _ACCT=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .accountId 2>/dev/null || \
+          aws sts get-caller-identity --region "$REGION" --query Account --output text 2>/dev/null || echo "")
+  SCRIPT_BUCKET="moodle-scripts-${_ACCT}-${REGION}"
+fi
+
+if [ -f "$MENUTOPIC_LIB" ]; then
+  # Patch 1: Static reentrancy guard — prevents recursive build_course_cache()
+  # deadlock that causes 10+ second hangs and eventual OOM at url.php:207.
+  if ! grep -q 'in_set_sectionnum' "$MENUTOPIC_LIB"; then
+    echo "Applying menutopic reentrancy guard (lib.php)..."
+    _PATCH="/tmp/fix-menutopic-recursion.php"
+    aws s3 cp "s3://$SCRIPT_BUCKET/ops/fix-menutopic-recursion.php" "$_PATCH" 2>/dev/null || true
+    if [ -s "$_PATCH" ]; then
+      php "$_PATCH" && echo "✓ Menutopic reentrancy guard applied" || echo "⚠ Menutopic lib.php patch failed (non-fatal)"
+    else
+      echo "⚠ Could not download menutopic patch from S3 — skipping"
+    fi
+    rm -f "$_PATCH"
+  else
+    echo "✓ Menutopic reentrancy guard already in place"
+  fi
+
+  # Patch 2: Visibility fix — content.php declares get_sections_to_display() as
+  # private but Moodle core requires protected (or weaker). Fatal if wrong.
+  if [ -f "$MENUTOPIC_CONTENT" ]; then
+    if grep -q 'private function get_sections_to_display' "$MENUTOPIC_CONTENT"; then
+      sed -i 's/private function get_sections_to_display/protected function get_sections_to_display/' "$MENUTOPIC_CONTENT"
+      echo "✓ Menutopic content.php: private → protected on get_sections_to_display()"
+    else
+      echo "✓ Menutopic content.php visibility already correct"
+    fi
+  fi
+
+  # Patch 3: Deprecation fix — get_section_number() removed in Moodle 4.4+, use get_sectionnum().
+  # Affects edition.php, content.php, and content/section.php (MDL-80248).
+  _DEPRECATED_COUNT=$(find /app/moodle/course/format/menutopic/ -name '*.php' \
+    ! -name '*.bak*' ! -name '*.backup*' \
+    | xargs grep -l 'get_section_number' 2>/dev/null | wc -l)
+  if [ "$_DEPRECATED_COUNT" -gt 0 ]; then
+    echo "Applying deprecated get_section_number → get_sectionnum in $_DEPRECATED_COUNT file(s)..."
+    find /app/moodle/course/format/menutopic/ -name '*.php' \
+      ! -name '*.bak*' ! -name '*.backup*' \
+      | xargs grep -l 'get_section_number' 2>/dev/null \
+      | while read _f; do
+          sed -i 's/->get_section_number()/->get_sectionnum()/g' "$_f"
+          echo "  ✓ Patched: $_f"
+        done
+  else
+    echo "✓ Menutopic: no get_section_number() calls found (already fixed)"
+  fi
+
+  # Patch 4: Remove defunct topics/format.js require from format.php.
+  # Moodle 4.x removed /course/format/topics/format.js (replaced by AMD modules).
+  # menutopic inherited this call and never cleaned it up — it throws a fatal
+  # "Attempt to require a JavaScript file that does not exist" on every page load.
+  _FORMAT_PHP="/app/moodle/course/format/menutopic/format.php"
+  if [ -f "$_FORMAT_PHP" ]; then
+    if grep -q "requires->js.*topics/format\.js" "$_FORMAT_PHP"; then
+      sed -i "/requires->js.*topics\/format\.js/d" "$_FORMAT_PHP"
+      echo "✓ Menutopic format.php: removed defunct topics/format.js require"
+    else
+      echo "✓ Menutopic format.php: topics/format.js require already absent"
+    fi
+  fi
+
+  # Patch 5: Remove noisy debugging() calls from the reentrancy guard in lib.php.
+  # The guard is correct, but debugging() fires on every course page load (the recursive
+  # constructor is an expected code path, not an error). Use exact Python string replacement
+  # (perl regex is too greedy across multi-line blocks on shared EFS).
+  if grep -q "format_menutopic: set_sectionnum skipped" "$MENUTOPIC_LIB" 2>/dev/null; then
+    aws s3 cp s3://moodle-scripts-483382415631-ca-central-1/fix_menutopic_debug.py /tmp/fix_menutopic_debug.py --region ca-central-1 2>/dev/null \
+      && python3 /tmp/fix_menutopic_debug.py \
+      && rm -f /tmp/fix_menutopic_debug.py \
+      && echo "✓ Menutopic lib.php: removed debugging() calls from reentrancy guard" \
+      || echo "⚠ Menutopic lib.php: Patch 5 download/apply failed — check S3 access"
+  else
+    echo "✓ Menutopic lib.php: no debugging() calls to remove"
+  fi
+else
+  echo "Menutopic plugin not found — skipping patches (plugin may not be installed yet)"
+fi
+
+# Always restart PHP-FPM after the patch block so OPcache recompiles the
+# patched files. opcache.validate_timestamps=0 means file changes on EFS
+# are invisible to running workers until the process restarts.
+echo "Restarting PHP-FPM to flush OPcache and activate menutopic patches..."
+systemctl restart php-fpm && echo "✓ PHP-FPM restarted" || echo "⚠ PHP-FPM restart failed"
+echo "=== MENUTOPIC PLUGIN PATCHES DONE ==="
 
 echo "=== INTELLIGENT INSTALLATION COMPLETE ==="
 echo "Strategy used: $STRATEGY"

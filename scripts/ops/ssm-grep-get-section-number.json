@@ -1,0 +1,11 @@
+{
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "DocumentName": "AWS-RunShellScript",
+  "Parameters": {
+    "commands": [
+      "echo '=== grep get_section_number ==='",
+      "grep -rn 'get_section_number' /app/moodle/course/format/menutopic/ || echo 'NO_MATCHES'"
+    ]
+  }
+}
+
