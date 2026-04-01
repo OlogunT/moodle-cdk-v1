@@ -1,0 +1,21 @@
+{
+  "Comment": "Check lock factory class and full config.php",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== Full config.php ==='",
+      "cat -n /app/moodle/config.php",
+      "echo '=== Does db_record_lock_factory class file exist? ==='",
+      "ls -la /app/moodle/lib/classes/lock/db_record_lock_factory.php 2>/dev/null || echo 'NOT FOUND'",
+      "echo '=== All lock factory PHP files ==='",
+      "ls -la /app/moodle/lib/classes/lock/*.php 2>/dev/null",
+      "echo '=== PHP class_exists check ==='",
+      "php -r \"define('ABSPATH', '/app/moodle'); echo class_exists('core\\\\lock\\\\db_record_lock_factory') ? 'EXISTS' : 'NOT FOUND';\" 2>&1 || echo 'php check failed'",
+      "echo '=== Recent Moodle/PHP errors mentioning lock ==='",
+      "find /var/log -name '*.log' 2>/dev/null | xargs grep -l 'lock_factory\\|Lock Factory' 2>/dev/null | head -3"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

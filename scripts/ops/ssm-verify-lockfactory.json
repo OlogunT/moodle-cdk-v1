@@ -1,0 +1,19 @@
+{
+  "Comment": "Verify lock_factory removed from config.php on both instances",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "echo '=== lock_factory check ==='",
+      "grep -n 'lock_factory' /app/moodle/config.php && echo 'STILL PRESENT' || echo 'CLEAN - not found'",
+      "echo '=== PHP syntax ==='",
+      "php -l /app/moodle/config.php",
+      "echo '=== php-fpm status ==='",
+      "systemctl is-active php-fpm",
+      "echo '=== health ==='",
+      "curl -s -o /dev/null -w 'HTTP:%{http_code}' http://localhost/health || echo HTTP:000"
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

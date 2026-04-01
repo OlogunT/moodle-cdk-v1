@@ -1,0 +1,16 @@
+{
+  "Comment": "Restart php-fpm on instance 2 to flush OPcache after EFS config change",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "echo '=== Restarting php-fpm on instance 2 ==='",
+      "systemctl restart php-fpm && echo 'php-fpm restarted OK'",
+      "sleep 3",
+      "HTTP=$(curl -s -o /dev/null -w '%{http_code}' http://localhost/health 2>/dev/null || echo '000')",
+      "echo \"Health: $HTTP\""
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+
