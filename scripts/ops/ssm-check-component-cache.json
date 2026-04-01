@@ -1,0 +1,24 @@
+{
+  "Comment": "Check core_component.php cache and instance 2 error log",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== 1. core_component.php lines mentioning lock_factory ==='",
+      "grep -n 'lock_factory\\|lock_config\\|coreock' /data/moodledata/cache/core_component.php 2>/dev/null | head -30 || echo NOT_FOUND",
+      "echo '=== 2. Size and last-modified of core_component.php ==='",
+      "stat /data/moodledata/cache/core_component.php 2>/dev/null",
+      "echo '=== 3. Instance 2 error log check via php-fpm ==='",
+      "grep -h 'lock_factory' /var/log/php-fpm/error.log /var/log/nginx/error.log 2>/dev/null | tail -20 || echo NO_LOCK_FACTORY_INSTANCE1_LOG",
+      "echo '=== 4. Check /data/moodledata for any files with coreock (garbled name) ==='",
+      "grep -rl 'coreock' /data/moodledata/cache/ 2>/dev/null | head -10 || echo NOT_FOUND_GARBLED",
+      "echo '=== 5. Delete core_component.php so Moodle regenerates it cleanly ==='",
+      "rm -f /data/moodledata/cache/core_component.php && echo DELETED || echo DELETE_FAILED",
+      "echo '=== 6. Trigger Moodle to regenerate component cache ==='",
+      "php /app/moodle/admin/cli/purge_caches.php && echo CACHES_PURGED",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["45"]
+  }
+}
+

@@ -1,0 +1,23 @@
+{
+  "Comment": "Cat full config.php, purge caches, fix lock_factory on instance 1",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo \"=== FULL config.php ===\"",
+      "cat /app/moodle/config.php",
+      "echo \"=== OTHER config files under /app/moodle (depth 2) ===\"",
+      "find /app/moodle -maxdepth 2 -name 'config*.php' 2>/dev/null",
+      "echo \"=== Purge all Moodle caches (clears admin notifications too) ===\"",
+      "php /app/moodle/admin/cli/purge_caches.php && echo CACHES_PURGED || echo PURGE_FAILED",
+      "echo \"=== php-fpm restart to flush OPcache ===\"",
+      "systemctl restart php-fpm && echo FPM_RESTARTED || echo FPM_FAILED",
+      "echo \"=== Health ===\"",
+      "sleep 3",
+      "curl -s -o /dev/null -w HTTP_CODE:%{http_code} http://localhost/health || echo HTTP_CODE:000",
+      "echo \"=== DONE ===\""
+    ],
+    "executionTimeout": ["120"]
+  }
+}
+

@@ -1,0 +1,20 @@
+{
+  "Comment": "Query DB for lock_factory config and search only key dirs",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== mdl_config lock entries ==='",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT name,value FROM mdl_config WHERE name LIKE '%lock%' OR value LIKE '%lock_factory%';\" 2>&1",
+      "echo '=== mdl_config_plugins lock entries ==='",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT plugin,name,value FROM mdl_config_plugins WHERE name LIKE '%lock%' OR value LIKE '%lock_factory%';\" 2>&1",
+      "echo '=== grep lock_factory in local/ and theme/ only ==='",
+      "grep -rn 'lock_factory' /app/moodle/local/ /app/moodle/theme/ /app/moodle/admin/ --include='*.php' 2>/dev/null | grep -v '^Binary' | head -20 || echo NONE",
+      "echo '=== config-local.php or local_config.php check ==='",
+      "find /app /etc /var -name 'config-local.php' -o -name 'local_config.php' 2>/dev/null | head -10 || echo NONE",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

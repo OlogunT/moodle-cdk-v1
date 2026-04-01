@@ -1,0 +1,22 @@
+{
+  "Comment": "Check mdl_notifications, Redis MUC keys, and live page for lock_factory",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== 1. mdl_notifications with lock_factory ==='",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT id,subject,LEFT(fullmessage,200) FROM mdl_notifications WHERE fullmessage LIKE '%lock_factory%' LIMIT 5;\" 2>&1",
+      "echo '=== 2. mdl_task_log with lock_factory ==='",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT classname,LEFT(output,300) FROM mdl_task_log WHERE output LIKE '%lock_factory%' ORDER BY timestart DESC LIMIT 5;\" 2>&1",
+      "echo '=== 3. Redis keys matching lock_factory ==='",
+      "redis-cli -h moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com -p 6379 --scan --pattern '*lock_factory*' 2>&1 | head -20 || echo REDIS_SCAN_DONE",
+      "echo '=== 4. Flush all Redis MUC cache (not sessions) ==='",
+      "redis-cli -h moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com -p 6379 --scan --pattern 'MoodleCache/*' 2>/dev/null | xargs -r redis-cli -h moo-mo-isf4hcml1bjy.cgt4zg.0001.cac1.cache.amazonaws.com -p 6379 DEL 2>&1 | tail -3 || echo NO_MUC_KEYS",
+      "echo '=== 5. Test live page for error ==='",
+      "curl -s -L -A 'Mozilla/5.0' 'https://elearning.tsin.ca/' 2>/dev/null | grep -o 'lock_factory[^<\"]*' | head -5 || echo NOT_FOUND_IN_PAGE",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["45"]
+  }
+}
+

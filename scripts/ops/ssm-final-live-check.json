@@ -1,0 +1,24 @@
+{
+  "Comment": "Final live check - curl the live site with session and check for lock_factory",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "INST=$(hostname); echo \"=== INSTANCE: $INST ===\"",
+      "echo '=== 1. config.php lock_factory check ==='",
+      "grep -c 'lock_factory' /app/moodle/config.php 2>/dev/null && echo 'FOUND_IN_CONFIG - BAD' || echo 'NOT_IN_CONFIG - OK'",
+      "echo '=== 2. Curl front page for lock_factory ==='",
+      "curl -s -L -k 'http://localhost/' 2>/dev/null | grep -o 'lock_factory[^<\"&]*\\|coreock[^<\"&]*' | head -5 || echo NOT_FOUND_FRONTPAGE",
+      "echo '=== 3. Curl admin/index.php (unauthenticated - just checks if PHP crashes) ==='",
+      "curl -s -k -o /dev/null -w 'HTTP:%{http_code}' 'http://localhost/admin/index.php' 2>/dev/null",
+      "echo ''",
+      "echo '=== 4. Moodle site data - check $CFG->lock_factory via PHP ==='",
+      "php -r \"define('CLI_SCRIPT', true); require '/app/moodle/config.php'; echo 'lock_factory=' . (isset(\\$CFG->lock_factory) ? \\$CFG->lock_factory : 'NOT_SET') . PHP_EOL;\" 2>&1",
+      "echo '=== 5. Check mdl_config table for lock_factory ==='",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT name,value FROM mdl_config WHERE name LIKE '%lock%';\" 2>&1 || echo DB_CHECK_FAILED",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

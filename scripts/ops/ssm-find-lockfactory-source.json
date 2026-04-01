@@ -1,0 +1,20 @@
+{
+  "Comment": "Find where lock_factory is being set in code or DB",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo \"=== 1. grep lock_factory ASSIGNMENTS in all PHP files ===\"",
+      "grep -rn CFG.*lock_factory /app/moodle/ --include=*.php 2>/dev/null | grep -v Binary | grep -v \".php:#\" | head -40",
+      "echo \"=== 2. check mdl_config in DB for lock_factory ===\"",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT name,value FROM mdl_config WHERE name LIKE '%lock%';\" 2>&1",
+      "echo \"=== 3. check mdl_config_plugins for lock_factory ===\"",
+      "MYSQL_PWD='<9Om(L#GG8{F2k9wlfsIjl3dCkuxY.H~' mysql -h moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com -u moodleuser moodle --connect-timeout=10 -e \"SELECT plugin,name,value FROM mdl_config_plugins WHERE name LIKE '%lock%';\" 2>&1",
+      "echo \"=== 4. check local plugins dir for any config setting lock_factory ===\"",
+      "find /app/moodle/local -name '*.php' 2>/dev/null | xargs grep -l lock_factory 2>/dev/null || echo NONE_IN_LOCAL",
+      "echo \"=== DONE ===\""
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

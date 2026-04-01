@@ -1,0 +1,6 @@
+ParserError: C:\github\moodle-cdk0\scripts\ops\fix-cache-lock-factory.ps1:38:160
+Line |
+  38 |  . factory = \"\\\\\\\\core\\\\\\\\lock\\\\\\\\db_record_lock_factory\"; .
+     |                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Unexpected token '\\\\\\\\core\\\\\\\\lock\\\\\\\\db_record_lock_factory\";' /app/moodle/config.php
+     | && echo 'Added db_record_lock_factory to config.php'; }; "' in expression or statement.

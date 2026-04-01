@@ -1,0 +1,25 @@
+{
+  "Comment": "Get PHP error log and check what page triggers lock_factory error",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "INST=$(hostname)",
+      "echo \"=== INSTANCE: $INST ===\"",
+      "echo '=== 1. PHP error log (last 50 lines, grepping lock_factory) ==='",
+      "find /var/log -name 'php*error*' -o -name 'php-fpm*error*' 2>/dev/null | head -3",
+      "grep -h 'lock_factory' /var/log/php-fpm/error.log /var/log/php_errors.log /var/log/nginx/error.log 2>/dev/null | tail -20 || echo NO_LOCK_FACTORY_IN_PHP_LOGS",
+      "echo '=== 2. Recent PHP errors (all types, last 20 lines) ==='",
+      "tail -20 /var/log/php-fpm/error.log 2>/dev/null || tail -20 /var/log/php_errors.log 2>/dev/null || echo NO_PHP_LOG_FOUND",
+      "echo '=== 3. Moodle PHP error log location from php.ini ==='",
+      "php -r \"echo ini_get('error_log') . PHP_EOL;\"",
+      "echo '=== 4. Check lock_factory in Moodle dataroot cache ==='",
+      "grep -rl 'lock_factory' /data/moodledata/cache/ 2>/dev/null | head -10 || echo NOT_IN_DATAROOT_CACHE",
+      "echo '=== 5. Check if config.php is being modified by any process ==='",
+      "stat /app/moodle/config.php",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+
