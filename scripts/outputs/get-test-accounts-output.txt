@@ -1,0 +1,9 @@
+Sending SSM command...
+CommandId: 9e98bce3-d4b1-48fd-9649-d0b25dde0483
+Status: Success
+=== TEST/ADMIN ACCOUNTS ===
+id	username	email	firstname	lastname	auth	lastlogin
+3676	tsin-admin	it@tsin.ca	TSIN	Administrator	manual	2026-01-20 20:23:00
+2	admin	moodle.admin@lambdasolutions.net	Admin	User	manual	2025-09-20 21:04:12
+3	lambdaadmin	test@lambdasolutions.net	lambda	admin	manual	2025-09-05 01:47:43
+

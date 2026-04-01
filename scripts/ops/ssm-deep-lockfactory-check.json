@@ -1,0 +1,24 @@
+{
+  "Comment": "Deep check: find lock_factory source on each instance",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "echo \"=== INSTANCE: $(hostname) ===\"",
+      "echo \"--- 1. grep lock_factory in config.php (plain) ---\"",
+      "grep -n lock_factory /app/moodle/config.php && echo FOUND || echo NOT_FOUND",
+      "echo \"--- 2. hexdump any line mentioning factory in config.php ---\"",
+      "grep -a factory /app/moodle/config.php | xxd | head -20 || echo NO_FACTORY_LINES",
+      "echo \"--- 3. last 35 lines of config.php ---\"",
+      "tail -35 /app/moodle/config.php",
+      "echo \"--- 4. find any local config overrides ---\"",
+      "find /app/moodle -maxdepth 2 -name 'config*.php' 2>/dev/null",
+      "find /etc/php.d /etc/php -name '*.ini' 2>/dev/null | head -10",
+      "echo \"--- 5. php-fpm status ---\"",
+      "systemctl is-active php-fpm && echo PHP_FPM_ACTIVE || echo PHP_FPM_DOWN",
+      "echo \"=== DONE ===\""
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

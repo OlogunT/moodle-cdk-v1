@@ -1,0 +1,2 @@
+Command ID: d0d4eefd-56f9-47c6-823a-cb7846496922
+{     "S": "Success",     "O": "disk_version=2025041402.1\ndisk_release=5.0.2+ (Build: 20250916)\ndb_allversionshash=37158af4f6a915609afc17e5c20321917db7d3d0\ndb_version=2025041402.1\ncfg_version=(not set)\ncomputed_hash=37158af4f6a915609afc17e5c20321917db7d3d0\nversion_compare=EQUAL\nadminsetuppending=(not set)\nthemedesignermode=(not set)\nupgradekey=(not set)\nEXIT_CODE=0\n",     "E": "" }

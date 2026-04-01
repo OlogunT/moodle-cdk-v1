@@ -1,0 +1,20 @@
+=: The term '=' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+Error parsing parameter '--parameters': Unable to load paramfile file://C:\Users\TEMIDA~1.OLO\AppData\Local\Temp\reset-pw-params.json: [Errno 2] No such file or directory: 'C:\\Users\\TEMIDA~1.OLO\\AppData\\Local\\Temp\\reset-pw-params.json'
+InvalidOperation: 
+Line |
+   3 |   = (aws --profile tsin-account --region ca-central-1 ssm send-command .
+     |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | You cannot call a method on a null-valued expression.
+CommandId: 
+
+usage: aws [options] <command> <subcommand> [<subcommand> ...] [parameters]
+To see help text, you can run:
+
+  aws help
+  aws <command> help
+  aws <command> <subcommand> help
+
+aws.exe: error: argument --command-id: expected one argument
+

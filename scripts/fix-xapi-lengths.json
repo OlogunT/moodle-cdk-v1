@@ -1,0 +1,23 @@
+{
+  "commands": [
+    "set -e",
+    "cd /app/moodle",
+    "echo === Adjust xapi_states column lengths ===",
+    "cat > /tmp/fix_xapi.php <<'PHP'",
+    "<?php",
+    "define('CLI_SCRIPT', true);",
+    "chdir('/app/moodle');",
+    "require 'config.php';",
+    "$pdo = new PDO('mysql:host=' . $CFG->dbhost . ';dbname=' . $CFG->dbname . ';charset=utf8mb4', $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);",
+    "$prefix = $CFG->prefix;",
+    "$pdo->exec('ALTER TABLE ' . $prefix . 'xapi_states MODIFY COLUMN id INT(10) NOT NULL AUTO_INCREMENT');",
+    "$pdo->exec('ALTER TABLE ' . $prefix . 'xapi_states MODIFY COLUMN userid INT(10) NULL');",
+    "$pdo->exec('ALTER TABLE ' . $prefix . 'xapi_states MODIFY COLUMN itemid INT(10) NOT NULL');",
+    "$pdo->exec('ALTER TABLE ' . $prefix . 'xapi_states MODIFY COLUMN timecreated INT(10) NOT NULL');",
+    "$pdo->exec('ALTER TABLE ' . $prefix . 'xapi_states MODIFY COLUMN timemodified INT(10) NULL');",
+    "PHP",
+    "sudo -u apache php /tmp/fix_xapi.php",
+    "echo === Done ==="
+  ]
+}
+

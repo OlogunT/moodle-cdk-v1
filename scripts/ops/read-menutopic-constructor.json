@@ -1,0 +1,10 @@
+{
+  "commands": [
+    "echo '=== menutopic lib.php lines 50-150 (full constructor) ==='",
+    "sed -n '50,155p' /app/moodle/course/format/menutopic/lib.php",
+    "echo '=== total lines in lib.php ==='",
+    "wc -l /app/moodle/course/format/menutopic/lib.php",
+    "echo '=== DONE ==='"
+  ]
+}
+

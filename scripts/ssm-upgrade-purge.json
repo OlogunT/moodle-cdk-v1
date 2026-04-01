@@ -1,0 +1,12 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Upgrade and purge caches'",
+    "cd /app/moodle",
+    "if [ -x /usr/bin/php ]; then PHP=/usr/bin/php; elif [ -x /usr/bin/php80 ]; then PHP=/usr/bin/php80; else PHP=php; fi",
+    "sudo -u apache $PHP admin/cli/upgrade.php --non-interactive || true",
+    "sudo -u apache $PHP admin/cli/purge_caches.php || true",
+    "echo 'Upgrade+purge done'"
+  ]
+}
+

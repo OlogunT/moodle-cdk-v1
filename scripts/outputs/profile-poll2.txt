@@ -1,0 +1,4 @@
+{
+    "S": "Success",
+    "O": "config.php: 5.64s\nadminlib.php: 2.03s\nmoodle_needs_upgrading: NO in 13.78s\nadmin_get_root(lite): 12.71s\nadmin_get_root(full): 2.13s\nTotal: 36.29s\nEXIT=0\n"
+}

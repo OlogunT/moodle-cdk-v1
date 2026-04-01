@@ -1,0 +1,17 @@
+Sending SSM command...
+CommandId: bf07d7f9-c4cb-43ee-b0e4-ae85d4497bb9
+Status: Success, RC: 0
+STEP1: Kill ALL PHP CLI processes
+STEP2: Disable cron completely
+Cron removed
+no crontab for apache
+No crontab (good)
+STEP3: Restart services
+STEP4: Check processes
+No PHP CLI processes
+STEP5: Clear DB locks
+Lock cleared
+STEP6: Test
+HTTP: 000 Time: 15.001938s
+DONE
+

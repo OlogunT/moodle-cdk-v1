@@ -1,0 +1,6 @@
+CMD: 7ee5f3ce-b012-404c-a7cb-6eaf31594802
+{
+    "S": "Success",
+    "O": "=== 1. Current DB locks ===\nTotal DB locks: 162\n\n=== 2. Clear ALL expired locks ===\nExpired locks (expires < 1773758182): 0\n\n=== 3. Clear ALL locks (force) ===\nRemaining locks: 162\nForce-deleted all 162 remaining locks\n\n=== 4. Verify ===\nFinal lock count: 0\n\n=== 5. Test lock acquisition ===\nLock factory: core\\lock\\db_record_lock_factory\nLock acquired OK\nLock released OK\n\n=== 6. Purge caches ===\nCaches purged\n\nDone\nPHP-FPM restarted\nEXIT=0\n",
+    "E": ""
+}

@@ -1,0 +1,22 @@
+{
+    "CommandId": "af43e4c4-a576-401b-96a2-d3c0b83d3dcb",
+    "InstanceId": "i-011c65cd247389ee6",
+    "Comment": "",
+    "DocumentName": "AWS-RunShellScript",
+    "DocumentVersion": "$DEFAULT",
+    "PluginName": "aws:runShellScript",
+    "ResponseCode": 0,
+    "ExecutionStartDateTime": "2026-03-13T02:00:44.672Z",
+    "ExecutionElapsedTime": "PT2M30.007S",
+    "ExecutionEndDateTime": "2026-03-13T02:03:14.672Z",
+    "Status": "Success",
+    "StatusDetails": "Success",
+    "StandardOutputContent": "=== CURRENT MENUTOPIC VERSION ON DISK ===\nDisk version: 2023050703.01\n=== CURRENT MENUTOPIC VERSION IN DB ===\nDB version: 2025062301\n=== UPDATING DB VERSION TO MATCH DISK ===\nUpdate done\n=== VERIFYING DB UPDATE ===\nplugin\tname\tvalue\nformat_menutopic\tversion\t2023050703\n=== RUNNING MOODLE UPGRADE CLI ===\nEXIT:True\nUpdate done\n=== VERIFYING DB UPDATE ===\nplugin\tname\tvalue\nformat_menutopic\tversion\t2023050703\n=== RUNNING MOODLE UPGRADE CLI ===\n",
+    "StandardOutputUrl": "",
+    "StandardErrorContent": "",
+    "StandardErrorUrl": "",
+    "CloudWatchOutputConfig": {
+        "CloudWatchLogGroupName": "",
+        "CloudWatchOutputEnabled": false
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "ResourceRecordSets": [
+        {
+            "Name": "elearning.tsin.ca.",
+            "Type": "A",
+            "AliasTarget": {
+                "HostedZoneId": "ZQSVJUPU6J1EY",
+                "DNSName": "dualstack.moodle-moodl-jabjsdocuhdn-677156032.ca-central-1.elb.amazonaws.com.",
+                "EvaluateTargetHealth": true
+            }
+        },
+        {
+            "Name": "elearning.tsin.ca.",
+            "Type": "NS",
+            "TTL": 172800,
+            "ResourceRecords": [
+                {
+                    "Value": "ns-71.awsdns-08.com."
+                },
+                {
+                    "Value": "ns-644.awsdns-16.net."
+                },
+                {
+                    "Value": "ns-1773.awsdns-29.co.uk."
+                },
+                {
+                    "Value": "ns-1105.awsdns-10.org."
+                }
+            ]
+        },
+        {
+            "Name": "elearning.tsin.ca.",
+            "Type": "SOA",
+            "TTL": 900,
+            "ResourceRecords": [
+                {
+                    "Value": "ns-71.awsdns-08.com. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
+                }
+            ]
+        },
+        {
+            "Name": "_2c22166666deaecf1ee1a8362616dd38.elearning.tsin.ca.",
+            "Type": "CNAME",
+            "TTL": 300,
+            "ResourceRecords": [
+                {
+                    "Value": "_d90520dd17d1d317562b686a40798bf2.xlfgrmvvlj.acm-validations.aws."
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+bash: line 1: aws: command not found

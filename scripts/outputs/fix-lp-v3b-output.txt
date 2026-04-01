@@ -1,0 +1,11 @@
+Instance: i-011c65cd247389ee6
+Sending SSM command...
+CommandId: 97903755-e72c-41f1-8882-dceaf7180cfd
+  status=Success
+=== FINAL RESULT ===
+{
+    "Status": "Success",
+    "RC": 0,
+    "Out": "=== alive Fri Mar 13 01:23:35 UTC 2026 ===\nH=moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com N=moodle\nping\n1\nDB OK\n=== SYSTEM CAPS ===\nshortname\tcapability\tpermission\neditingteacher\tmoodle/course:changesummary\t1\neditingteacher\tmoodle/course:update\t1\neditingteacher\tmoodle/course:visibility\t1\nlambdastorerolea\tmoodle/course:changesummary\t1\nlambdastorerolea\tmoodle/course:update\t1\nlambdastorerolea\tmoodle/course:visibility\t1\nlambdastoreroleb\tmoodle/course:changesummary\t1\nlambdastoreroleb\tmoodle/course:update\t1\nlambdastoreroleb\tmoodle/course:visibility\t1\nlambdastorerolec\tmoodle/course:changesummary\t1\nlambdastorerolec\tmoodle/course:update\t1\nlambdastorerolec\tmoodle/course:visibility\t1\nlambdastorerolefree\tmoodle/course:changesummary\t1\nlambdastorerolefree\tmoodle/course:update\t1\nlambdastorerolefree\tmoodle/course:visibility\t1\nmanager\tmoodle/course:changesummary\t1\nmanager\tmoodle/course:update\t1\nmanager\tmoodle/course:visibility\t1\n=== PROHIBIT/PREVENT COUNT ===\ncount=0\n=== ROLE ARCHETYPES ===\nshortname\tname\tarchetype\ncoursecreator\t\tcoursecreator\neditingteacher\t\teditingteacher\nmanager\t\tmanager\n=== CAT 33 + COURSES ===\nid\tname\tvisible\tformat\n115\tAdditional Module 1\t1\tweeks\n116\tAdditional Module 2\t1\tweeks\n113\tAdvanced Module2026\t1\tweeks\n111\tCanadian Medicine Primer Asynchronous2026\t1\ttopics\n112\tFoundations Module2026\t1\tweeks\n70\tPhysician Facilitator Training \t1\tmenutopic\n114\tWelcome/Orientation Module\t1\tweeks\n=== DONE ===\n",
+    "Err": ""
+}

@@ -1,0 +1,5 @@
+CMD: 899a64eb-f28c-44bb-9174-3519789bf37b
+{
+    "S": "Success",
+    "O": "=== Admin page test (180s timeout) ===\nHTTP: 303 Time: 130.470068s\n\n=== Admin output first 5 lines ===\n<!DOCTYPE html>\n<html  lang=\"en\" xml:lang=\"en\">\n    <head>\n        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n                <title>Redirect</title>\n\n=== Check if redirect ===\n                <title>Redirect</title>\n                <h1>Redirect</h1>\n                <div style=\"margin-top: 3em; margin-left:auto; margin-right:auto; text-align:center;\">This page should automatically redirect. If nothing is happening please use the continue link below.<br /><a href=\"https://elearning.tsin.ca/admin/index.php\">Continue</a></div>                            </div>\n"
+}

@@ -1,0 +1,6 @@
+{
+    "Status": "InProgress",
+    "RC": -1,
+    "Out": "",
+    "Err": ""
+}

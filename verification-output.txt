@@ -1,0 +1,13 @@
+Checking command status...
+Status: Success
+
+Command completed successfully!
+
+Sending verification command...
+Verify command ID: 8891be36-3583-4699-bb2f-2a53ef699d15
+
+=== Verification Output ===
+total 0
+Filesystem      Size  Used Avail Use% Mounted on
+127.0.0.1:/     8.0E  2.0M  8.0E   1% /data
+

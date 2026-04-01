@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "echo '=== www-error.log tail ==='",
+    "tail -80 /var/log/php-fpm/www-error.log 2>/dev/null || echo 'no www-error.log'",
+    "echo '=== course 70 section and module count ==='",
+    "php -r 'define(\"CLI_SCRIPT\",true); require(\"/app/moodle/config.php\"); $s=$DB->count_records(\"course_sections\",[\"course\"=>70]); $m=$DB->count_records(\"course_modules\",[\"course\"=>70]); echo \"Sections: $s\\nModules: $m\\n\";' 2>&1",
+    "echo '=== coursemodinfo file cache for course 70 ==='",
+    "find /data/moodledata/localcache -name '*.php' 2>/dev/null | xargs grep -l 'course.*70\\b' 2>/dev/null | head -3 | xargs ls -lh 2>/dev/null || echo 'no localcache match'",
+    "echo '=== php-fpm child memory usage ==='",
+    "ps aux --sort=-%mem | grep php-fpm | grep -v grep | head -10",
+    "echo '=== total RAM ==='",
+    "free -h",
+    "echo '=== DONE ==='"
+  ]
+}
+

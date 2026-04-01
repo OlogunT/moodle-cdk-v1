@@ -1,0 +1,8 @@
+Sending SSM command...
+CommandId: 864aff99-bf2f-428c-a09d-f63345ee0ead
+Waiting 40s for command to complete...
+Status: InProgress
+RC: -1
+
+=== STDOUT ===
+

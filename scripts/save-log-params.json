@@ -1,0 +1,10 @@
+{
+  "commands": [
+    "cat /tmp/fix-efs-download.log | tr -cd '\\11\\12\\15\\40-\\176' > /tmp/clean-log.txt",
+    "echo Log cleaned and saved to /tmp/clean-log.txt",
+    "wc -l /tmp/clean-log.txt",
+    "echo --- LAST 150 LINES ---",
+    "tail -150 /tmp/clean-log.txt"
+  ]
+}
+

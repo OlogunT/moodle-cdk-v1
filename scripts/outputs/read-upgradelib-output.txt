@@ -1,0 +1,7 @@
+CID: d62537aa-8bfb-4a15-9df0-96345b118948
+S: Success RC: 0
+=== Search ===
+/app/moodle/lib/moodlelib.php:7662:function moodle_needs_upgrading($checkupgradeflag = true) {
+=== grep2 ===
+=== DONE ===
+

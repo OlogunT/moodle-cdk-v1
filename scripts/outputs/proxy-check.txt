@@ -1,0 +1,5 @@
+[31;1m[0m
+[31;1mAn error occurred (InvalidAddress.NotFound) when calling the DescribeAddresses operation: Address '6.6.1.199' not found.[0m
+---ALB DNS---
+awseb-AWSEB-15ZES05AX1ZWP-1813285034.ca-central-1.elb.amazonaws.com
+---CURL HEADERS---

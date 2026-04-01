@@ -1,0 +1,6 @@
+CMD: 127a10e7-866c-44ca-ae53-2413b78a9ffb
+{
+    "S": "Failed",
+    "O": "=== 1. Check student role definition ===\nStudent role ID: 5\nmoodle/course:view permission: Prohibit\n\n=== 2. Check all overrides for moodle/course:view on student role ===\nDefault exception handler: ERROR: Mixed types of sql query parameters!! Debug: \nError code: mixedtypesqlparam\n* line 939 of /lib/dml/moodle_database.php: dml_exception thrown\n* line 1359 of /lib/dml/mysqli_native_moodle_database.php: call to moodle_database->fix_sql_params()\n* line 23 of /tmp/fix_cap.php: call to mysqli_native_moodle_database->get_records_sql()\n\n!!! ERROR: Mixed types of sql query parameters!! !!!\n",
+    "E": "failed to run commands: exit status 1"
+}

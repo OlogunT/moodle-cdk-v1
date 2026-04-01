@@ -1,0 +1,24 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "REGION=ca-central-1",
+    "HOST=$(aws ssm get-parameter --name /moodle/redis/endpoint --region $REGION --query Parameter.Value --output text 2>/dev/null || echo '')",
+    "echo Using Redis host: $HOST",
+    "if [ -z \"$HOST\" ]; then echo 'No Redis endpoint found in SSM; aborting'; exit 1; fi",
+    "sudo bash -lc \"echo '\\$CFG->session_handler_class = '\''\\\\core\\\\session\\\\redis'\'';' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->session_redis_host = '\''$HOST'\'';' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->session_redis_port = 6379;' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->session_redis_database = 0;' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->session_redis_prefix = '\''moodle_sess_'\'';' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->cachestore_redis_servers = array(' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '  0 => array('\\''server'\\'' => '\''$HOST'\''\\'' , '\''port'\\'' => 6379, '\''password'\\'' => '\'''\'' , '\''database'\\'' => 1, '\''prefix'\\'' => '\''muc_'\''),' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo ');' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->cachestore_redis_prefix = '\''muc_'\'';' >> /app/moodle/config.php\"",
+    "sudo bash -lc \"echo '\\$CFG->cachestore_redis_serializer_use_igbinary = 0;' >> /app/moodle/config.php\"",
+    "sudo systemctl restart php-fpm || true",
+    "sudo systemctl restart httpd || true",
+    "php /app/moodle/admin/cli/purge_caches.php || true",
+    "grep -nE 'session_redis_host|cachestore_redis_servers' /app/moodle/config.php | tail -n +1 || true"
+  ]
+}
+

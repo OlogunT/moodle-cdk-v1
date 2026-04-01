@@ -1,0 +1,47 @@
+=== CDK ALB target health ===
+{
+    "TargetHealthDescriptions": [
+        {
+            "Target": {
+                "Id": "i-011c65cd247389ee6",
+                "Port": 80
+            },
+            "HealthCheckPort": "80",
+            "TargetHealth": {
+                "State": "healthy"
+            }
+        },
+        {
+            "Target": {
+                "Id": "i-0c386871e2eb20f71",
+                "Port": 80
+            },
+            "HealthCheckPort": "80",
+            "TargetHealth": {
+                "State": "healthy"
+            }
+        }
+    ]
+}
+
+=== CDK cert domain ===
+{
+    "Domain": "learning.tsin.ca",
+    "SANs": [
+        "learning.tsin.ca",
+        "elearning.tsin.ca"
+    ],
+    "Status": "ISSUED"
+}
+
+=== EB cert domain ===
+{
+    "Domain": "portaldev-be.tsin.ca",
+    "SANs": [
+        "portaldev-be.tsin.ca"
+    ],
+    "Status": "ISSUED"
+}
+
+=== CDK ALB timeout ===
+60

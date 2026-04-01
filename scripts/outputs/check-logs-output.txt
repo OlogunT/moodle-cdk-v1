@@ -1,0 +1,124 @@
+Sending SSM command...
+CommandId: 3f91c71d-9fc8-4af4-a69c-5bd4d77e762d
+Status: Success, RC: 0
+=== PHP-FPM ERROR LOG ===
+[12-Mar-2026 09:51:06 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[12-Mar-2026 09:58:25 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[12-Mar-2026 10:40:22 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[12-Mar-2026 11:32:22 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[12-Mar-2026 11:47:46 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/120.0.0.0
+[12-Mar-2026 13:04:34 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[12-Mar-2026 14:19:40 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[12-Mar-2026 15:24:14 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/120.0.0.0
+[12-Mar-2026 18:50:12 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36
+[12-Mar-2026 20:23:38 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[12-Mar-2026 21:37:57 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[12-Mar-2026 22:32:50 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[12-Mar-2026 22:34:10 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[12-Mar-2026 23:54:32 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[13-Mar-2026 00:04:33 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[13-Mar-2026 00:10:16 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/120.0.0.0
+[13-Mar-2026 00:34:50 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[13-Mar-2026 00:43:16 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[13-Mar-2026 01:46:35 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 02:44:23 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[13-Mar-2026 03:24:00 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[13-Mar-2026 03:41:37 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 03:49:39 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 03:49:56 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 04:41:46 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 04:52:30 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15
+[13-Mar-2026 05:45:57 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 06:38:16 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0
+[13-Mar-2026 06:43:56 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+[13-Mar-2026 07:00:48 America/Toronto] [client 103.59.160.210]  https://elearning.tsin.ca  Suspended Login:  admin  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+=== PHP-FPM SLOW LOG ===
+[13-Mar-2026 14:05:43]  [pool www] pid 1738217
+script_filename = /app/moodle/login/index.php
+[0x00007ff004413d90] __construct() /app/moodle/lib/classes/component.php:1111
+[0x00007ff004413c60] load_classes() /app/moodle/lib/classes/component.php:1118
+[0x00007ff004413b30] load_classes() /app/moodle/lib/classes/component.php:1045
+[0x00007ff004413a40] fill_classmap_cache() /app/moodle/lib/classes/component.php:660
+[0x00007ff0044139a0] fill_all_caches() /app/moodle/lib/classes/component.php:600
+[0x00007ff004413920] get_cache_content() /app/moodle/lib/classes/component.php:453
+[0x00007ff004413820] init() /app/moodle/lib/classes/component.php:229
+[0x00007ff0044136f0] classloader() /app/moodle/lib/navigationlib.php:51
+[0x00007ff004413690] [INCLUDE_OR_EVAL]() /app/moodle/lib/setup.php:627
+[0x00007ff004413370] [INCLUDE_OR_EVAL]() /app/moodle/config.php:41
+[0x00007ff004413300] [INCLUDE_OR_EVAL]() /app/moodle/login/index.php:27
+
+[13-Mar-2026 14:08:11]  [pool www] pid 1738724
+script_filename = /app/moodle/login/index.php
+[0x00007fa604214ba0] [INCLUDE_OR_EVAL]() /app/moodle/lib/weblib.php:1076
+[0x00007fa6042149e0] purify_html() /app/moodle/lib/weblib.php:965
+[0x00007fa604214940] clean_text() /app/moodle/lib/weblib.php:2176
+[0x00007fa6042147e0] redirect() /app/moodle/lib/setuplib.php:694
+[0x00007fa604214690] initialise_fullme() /app/moodle/lib/setup.php:840
+[0x00007fa604214370] [INCLUDE_OR_EVAL]() /app/moodle/config.php:41
+[0x00007fa604214300] [INCLUDE_OR_EVAL]() /app/moodle/login/index.php:27
+
+[13-Mar-2026 14:08:25]  [pool www] pid 1738729
+script_filename = /app/moodle/index.php
+[0x00007fa604214790] get_plugin_list_with_file() /app/moodle/lib/moodlelib.php:7286
+[0x00007fa604214570] get_plugins_with_function() /app/moodle/lib/setup.php:896
+[0x00007fa604214250] [INCLUDE_OR_EVAL]() /app/moodle/config.php:41
+[0x00007fa6042141e0] [INCLUDE_OR_EVAL]() /app/moodle/index.php:30
+=== APACHE ERROR LOG ===
+[Sun Mar 08 00:00:01.486307 2026] [lbmethod_heartbeat:notice] [pid 3906217:tid 3906217] AH02282: No slotmem from mod_heartmonitor
+[Sun Mar 08 00:00:01.486966 2026] [systemd:notice] [pid 3906217:tid 3906217] AH10497: SELinux is enabled; httpd running as context system_u:system_r:httpd_t:s0
+[Sun Mar 08 00:00:01.489946 2026] [mpm_event:notice] [pid 3906217:tid 3906217] AH00489: Apache/2.4.65 (Amazon Linux) configured -- resuming normal operations
+[Sun Mar 08 00:00:01.489970 2026] [core:notice] [pid 3906217:tid 3906217] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Fri Mar 13 13:41:08.197819 2026] [mpm_event:notice] [pid 3906217:tid 3906217] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Mar 13 13:41:09.381851 2026] [suexec:notice] [pid 1733538:tid 1733538] AH01232: suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Fri Mar 13 13:41:09.389096 2026] [lbmethod_heartbeat:notice] [pid 1733538:tid 1733538] AH02282: No slotmem from mod_heartmonitor
+[Fri Mar 13 13:41:09.389736 2026] [systemd:notice] [pid 1733538:tid 1733538] AH10497: SELinux is enabled; httpd running as context system_u:system_r:httpd_t:s0
+[Fri Mar 13 13:41:09.391739 2026] [mpm_event:notice] [pid 1733538:tid 1733538] AH00489: Apache/2.4.65 (Amazon Linux) configured -- resuming normal operations
+[Fri Mar 13 13:41:09.391773 2026] [core:notice] [pid 1733538:tid 1733538] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+[Fri Mar 13 14:07:50.716119 2026] [mpm_event:notice] [pid 1733538:tid 1733538] AH00492: caught SIGWINCH, shutting down gracefully
+[Fri Mar 13 14:07:52.700236 2026] [suexec:notice] [pid 1738739:tid 1738739] AH01232: suEXEC mechanism enabled (wrapper: /usr/sbin/suexec)
+[Fri Mar 13 14:07:52.707917 2026] [lbmethod_heartbeat:notice] [pid 1738739:tid 1738739] AH02282: No slotmem from mod_heartmonitor
+[Fri Mar 13 14:07:52.708495 2026] [systemd:notice] [pid 1738739:tid 1738739] AH10497: SELinux is enabled; httpd running as context system_u:system_r:httpd_t:s0
+[Fri Mar 13 14:07:52.710515 2026] [mpm_event:notice] [pid 1738739:tid 1738739] AH00489: Apache/2.4.65 (Amazon Linux) configured -- resuming normal operations
+[Fri Mar 13 14:07:52.710529 2026] [core:notice] [pid 1738739:tid 1738739] AH00094: Command line: '/usr/sbin/httpd -D FOREGROUND'
+=== APACHE ACCESS LOG (recent) ===
+=== DB CONNECTIVITY TEST ===
+test
+1
+=== DB SLOW QUERIES ===
+Id	User	Host	db	Command	Time	State	Info	Progress
+691723	rdsadmin	localhost	mysql	Sleep	6		NULL	0.000
+799309	rdsadmin	localhost	NULL	Sleep	23		NULL	0.000
+808539	moodleuser	10.0.3.100:47566	moodle	Sleep	8		NULL	0.000
+808544	moodleuser	10.0.3.100:43138	moodle	Query	0	starting	SHOW PROCESSLIST	0.000
+=== PHP-FPM STATUS ===
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>404 Not Found</title>
+</head><body>
+<h1>Not Found</h1>
+<p>The requested URL was not found on this server.</p>
+</body></html>
+=== PHP-FPM WORKERS ===
+11
+apache   1738724  0.2  0.1 446168 31376 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738725  0.0  0.0 445776 13268 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738726  0.0  0.0 445776 13096 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738727  0.0  0.0 445776 13044 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738728  0.0  0.0 445776 13048 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738729  0.6  0.3 453624 63284 ?        R    14:07   0:00 php-fpm: pool www
+apache   1738730  0.0  0.0 445776 12488 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738731  0.0  0.0 445776 12488 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738732  0.0  0.0 445776 12488 ?        S    14:07   0:00 php-fpm: pool www
+apache   1738733  0.0  0.0 445776 12488 ?        S    14:07   0:00 php-fpm: pool www
+=== MEMORY/CPU ===
+               total        used        free      shared  buff/cache   available
+Mem:           15697         735       13495          68        1466       14545
+Swap:              0           0           0
+ 14:09:06 up 146 days, 10:46,  7 users,  load average: 2.77, 2.98, 3.13
+=== DONE ===
+
+STDERR: 
+real	0m0.009s
+user	0m0.000s
+sys	0m0.004s
+

@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "=== 1. Optimize OPcache settings ===\nOPcache config updated\n\n=== 2. Restart PHP-FPM ===\nPHP-FPM restarted\n\n=== 3. Warmup login page ===\nwarmup 1: HTTP=303 Time=0.226600s\nwarmup 2: HTTP=303 Time=0.012848s\nwarmup 3: HTTP=303 Time=0.012490s\n\n=== 4. Warmup homepage ===\nwarmup 1: HTTP=303 Time=0.015694s\nwarmup 2: HTTP=303 Time=0.011853s\nwarmup 3: HTTP=303 Time=0.012006s\n\n=== 5. OPcache usage after warmup ===\nPHP Warning:  Trying to access array offset on false in Command line code on line 1\n\nPHP Warning:  Trying to access array offset on false in Command line code on line 1\n\n=== 6. Test admin page ===\nadmin: HTTP=303 Time=133.796991s\nDONE\n",
+    "E": ""
+}

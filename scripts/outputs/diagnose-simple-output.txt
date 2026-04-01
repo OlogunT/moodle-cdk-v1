@@ -1,0 +1,86 @@
+Sending SSM command...
+CommandId: 2c3f300b-e414-4538-90cc-c1ba1dc00165
+Status: Success, RC: 0
+=== DB CONFIG FLAGS ===
+name	value
+allversionshash	37158af4f6a915609afc17e5c20321917db7d3d0
+release	5.0.2+ (Build: 20250916)
+version	2025041402.1
+=== MENUTOPIC PLUGIN VERSION IN DB ===
+plugin	name	value
+format_menutopic	anchortomenutree	1
+format_menutopic	defaultsectionsnavigation	courseindex
+format_menutopic	globalstyle	boots
+format_menutopic	shownavbarbrand	1
+format_menutopic	version	2023050703.01
+=== MENUTOPIC DISK VERSION ===
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2023050703.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022041904; // Requires this Moodle version.
+=== CORE VERSION FROM version.php ===
+$version  = 2025041402.10;              // 20250414      = branching date YYYYMMDD - do not modify!
+$release  = '5.0.2+ (Build: 20250916)';    // Human-friendly version name
+=== ANY STUCK PHP PROCS ===
+apache   1734135  0.0  0.0 222964  3388 ?        Ss   13:43   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1734136  0.3  0.6 459648 97120 ?        S    13:43   0:01 php /app/moodle/admin/cli/cron.php (Mar 13, 09:49:48 Waiting for next scheduled task)
+apache   1734311  0.0  0.0 222964  3364 ?        Ss   13:44   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1734312  0.1  0.3 455552 57220 ?        D    13:44   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1734485  0.0  0.0 222964  3404 ?        Ss   13:45   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1734486  0.1  0.2 449404 38444 ?        D    13:45   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1734657  0.0  0.0 222964  3392 ?        Ss   13:46   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1734658  0.0  0.2 449404 38180 ?        D    13:46   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1734813  0.0  0.0 222964  3364 ?        Ss   13:47   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1734815  0.1  0.2 449404 38472 ?        D    13:47   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1735008  0.0  0.0 222964  3356 ?        Ss   13:48   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1735009  0.1  0.2 449404 38440 ?        D    13:48   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+apache   1735180  0.0  0.0 222964  3352 ?        Ss   13:49   0:00 /bin/sh -c /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+apache   1735181  0.3  0.3 451456 49264 ?        D    13:49   0:00 /usr/bin/php /app/moodle/admin/cli/cron.php
+=== CURL LOGIN (30s max) ===
+HTTP: 200 Size: 19229 Time: 6.396843s
+=== CURL LOCAL LOGIN (30s max) ===
+HTTP: 303 Size: 1505 Time: 16.392831s
+=== PHP-FPM SLOW LOG ===
+[0x00007fdf138132e0] clean_param() /app/moodle/lib/classes/param.php:1060
+[0x00007fdf13813240] clean_param_value_localurl() /app/moodle/lib/classes/param.php:420
+[0x00007fdf13813190] clean() /app/moodle/lib/classes/param.php:452
+[0x00007fdf13813120] required_param() /app/moodle/lib/moodlelib.php:657
+[0x00007fdf138130a0] required_param() /app/moodle/theme/switchdevice.php:29
+
+[13-Mar-2026 13:43:46]  [pool www] pid 1733514
+script_filename = /app/moodle/login/index.php
+[0x00007fdf13813ec0] isDir() /app/moodle/lib/classes/component.php:1116
+[0x00007fdf13813d90] load_classes() /app/moodle/lib/classes/component.php:1118
+[0x00007fdf13813c60] load_classes() /app/moodle/lib/classes/component.php:1118
+[0x00007fdf13813b30] load_classes() /app/moodle/lib/classes/component.php:1038
+[0x00007fdf13813a40] fill_classmap_cache() /app/moodle/lib/classes/component.php:660
+[0x00007fdf138139a0] fill_all_caches() /app/moodle/lib/classes/component.php:600
+[0x00007fdf13813920] get_cache_content() /app/moodle/lib/classes/component.php:453
+[0x00007fdf13813820] init() /app/moodle/lib/classes/component.php:229
+[0x00007fdf138136f0] classloader() /app/moodle/lib/navigationlib.php:51
+[0x00007fdf13813690] [INCLUDE_OR_EVAL]() /app/moodle/lib/setup.php:627
+[0x00007fdf13813370] [INCLUDE_OR_EVAL]() /app/moodle/config.php:41
+[0x00007fdf13813300] [INCLUDE_OR_EVAL]() /app/moodle/login/index.php:27
+
+[13-Mar-2026 13:50:08]  [pool www] pid 1733522
+script_filename = /app/moodle/login/index.php
+[0x00007fdf13813ba0] [INCLUDE_OR_EVAL]() /app/moodle/lib/weblib.php:1076
+[0x00007fdf138139e0] purify_html() /app/moodle/lib/weblib.php:965
+[0x00007fdf13813940] clean_text() /app/moodle/lib/weblib.php:2176
+[0x00007fdf138137e0] redirect() /app/moodle/lib/setuplib.php:694
+[0x00007fdf13813690] initialise_fullme() /app/moodle/lib/setup.php:840
+[0x00007fdf13813370] [INCLUDE_OR_EVAL]() /app/moodle/config.php:41
+[0x00007fdf13813300] [INCLUDE_OR_EVAL]() /app/moodle/login/index.php:27
+=== MOODLE ERROR LOG (last 10 lines) ===
+No moodle.log
+=== DONE ===
+
+STDERR: 
+real	0m6.402s
+user	0m0.014s
+sys	0m0.000s
+
+real	0m16.396s
+user	0m0.005s
+sys	0m0.000s
+

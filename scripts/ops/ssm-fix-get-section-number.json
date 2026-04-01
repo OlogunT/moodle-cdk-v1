@@ -1,0 +1,17 @@
+{
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "DocumentName": "AWS-RunShellScript",
+  "Parameters": {
+    "commands": [
+      "echo '=== Active files using get_section_number ==='",
+      "grep -rn 'get_section_number' /app/moodle/course/format/menutopic/ --include='*.php' || echo 'NO_MATCHES'",
+      "echo '=== Applying fix: get_section_number -> get_sectionnum ==='",
+      "find /app/moodle/course/format/menutopic/ -name '*.php' ! -name '*.bak*' ! -name '*.backup*' | xargs grep -l 'get_section_number' 2>/dev/null | while read f; do echo \"Patching $f\"; sed -i 's/->get_section_number()/->get_sectionnum()/g' \"$f\"; done",
+      "echo '=== Verify fix applied ==='",
+      "grep -rn 'get_section_number' /app/moodle/course/format/menutopic/ --include='*.php' || echo 'No more get_section_number calls in active PHP files'",
+      "echo '=== Purging caches ==='",
+      "sudo -u apache php /app/moodle/admin/cli/purge_caches.php && echo 'Caches purged'"
+    ]
+  }
+}
+

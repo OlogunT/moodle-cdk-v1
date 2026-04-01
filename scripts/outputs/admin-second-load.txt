@@ -1,0 +1,5 @@
+CMD: 978e0565-9854-4284-9c02-da336cf31c9b
+{
+    "S": "Success",
+    "O": "=== Second admin page load (caches should be warm) ===\nadmin2: HTTP=303 Time=128.518645s\nDONE\n"
+}

@@ -1,0 +1,4 @@
+Sending SSM command...
+CommandId: 4b644b0a-0911-4dd8-9406-b14611b4ae5c
+Status: InProgress, RC: -1
+

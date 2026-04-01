@@ -1,0 +1,13 @@
+{
+  "commands": [
+    "cd /app/moodle",
+    "echo === Purging caches ===",
+    "sudo -u apache php admin/cli/purge_caches.php",
+    "echo === Disabling maintenance mode ===",
+    "sudo -u apache php admin/cli/maintenance.php --disable",
+    "echo === Running a single cron pass ===",
+    "sudo -u apache php admin/cli/cron.php --verbose || true",
+    "echo === Done ==="
+  ]
+}
+

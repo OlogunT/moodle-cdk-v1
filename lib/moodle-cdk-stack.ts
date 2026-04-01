@@ -335,6 +335,17 @@ export class MoodleCdkStack extends cdk.Stack {
     });
     internalRedisIngress.cfnOptions.condition = useInternalCond;
 
+    // Additional ingress to allow any host within the VPC CIDR to use Redis (enables sharing across stacks)
+    const internalRedisIngressVpc = new ec2.CfnSecurityGroupIngress(this, 'RedisIngressFromVpcCidr', {
+      ipProtocol: 'tcp',
+      fromPort: 6379,
+      toPort: 6379,
+      groupId: redisSecurityGroup.securityGroupId,
+      cidrIp: vpc.vpcCidrBlock,
+      description: 'Allow Redis from within VPC (shared across Moodle stacks)'
+    });
+    internalRedisIngressVpc.cfnOptions.condition = useInternalCond;
+
     // If using an external Redis, allow inbound from Moodle SG to that external SG
     const externalRedisIngress = new ec2.CfnSecurityGroupIngress(this, 'ExternalRedisIngressFromMoodle', {
       ipProtocol: 'tcp',
@@ -859,7 +870,7 @@ export class MoodleCdkStack extends cdk.Stack {
       'pm.max_requests = 1000',
       '',
       '; Timeouts',
-      'request_terminate_timeout = 300',
+          'request_terminate_timeout = 600',
       'request_slowlog_timeout = 10s',
       '',
       '; Logging',
@@ -881,20 +892,21 @@ export class MoodleCdkStack extends cdk.Stack {
       'chown apache:apache /var/log/php-fpm',
       '',
       '# Configure PHP settings for Moodle',
-      'cat > /etc/php.d/99-moodle.ini <<\'EOFPHPINI\'',
-      'max_execution_time = 300',
-      'max_input_time = 300',
-      'memory_limit = 256M',
-      'post_max_size = 512M',
-      'upload_max_filesize = 512M',
+          'cat > /etc/php.d/99-moodle.ini <<\'EOFPHPINI\'',
+          'max_execution_time = 600',
+          'max_input_time = 900',
+          'memory_limit = 4096M',
+          'post_max_size = 1024M',
+          'upload_max_filesize = 1024M',
       'max_input_vars = 5000',
       'EOFPHPINI',
       '',
       '# Ensure Moodle vhost with PHP-FPM proxy and timeout settings',
       'cat > /etc/httpd/conf.d/moodle.conf <<\'EOFV\'',
       '<VirtualHost *:80>',
-      '  DocumentRoot /app/moodle',
-      '  DirectoryIndex index.php index.html',
+          '  DocumentRoot /app/moodle',
+          '  DirectoryIndex index.php index.html',
+          '  LimitRequestBody 0',
       '',
       '  # PHP-FPM proxy configuration',
       '  <FilesMatch \\.php$>',
@@ -902,8 +914,8 @@ export class MoodleCdkStack extends cdk.Stack {
       '  </FilesMatch>',
       '',
       '  # Timeout settings to prevent 504 errors',
-      '  ProxyTimeout 300',
-      '  Timeout 300',
+          '  ProxyTimeout 600',
+          '  Timeout 600',
       '',
       '  <Directory /app/moodle>',
       '    AllowOverride All',

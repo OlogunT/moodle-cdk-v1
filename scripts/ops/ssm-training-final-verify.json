@@ -1,0 +1,18 @@
+{
+  "Comment": "Final verification on all training instances after fix",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-0dca2f988e797653f", "i-0527f81ac3fde0ec3", "i-0080670f33aeddd08", "i-03c8a62253d2a10a4"],
+  "Parameters": {
+    "commands": [
+      "INST=$(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || hostname)",
+      "echo \"=== INSTANCE: $INST ===\"",
+      "grep 'lock_factory' /app/moodle/config.php 2>/dev/null && echo STATUS:BAD || echo STATUS:CONFIG_CLEAN",
+      "systemctl is-active php-fpm 2>/dev/null && echo STATUS:PHPFPM_ACTIVE || echo STATUS:PHPFPM_INACTIVE",
+      "curl -s -o /dev/null -w 'STATUS:HTTP_%{http_code}' http://localhost/ 2>/dev/null",
+      "echo ''",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["20"]
+  }
+}
+

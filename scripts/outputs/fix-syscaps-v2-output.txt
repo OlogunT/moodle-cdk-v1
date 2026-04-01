@@ -1,0 +1,22 @@
+Instance: i-011c65cd247389ee6
+Sending SSM command...
+CommandId: 048acba8-46ee-46c9-837a-525c9134c96d
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+  status=InProgress
+=== STDOUT ===
+

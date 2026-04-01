@@ -1,0 +1,17 @@
+=== DNS check ===
+Server:  mynetwork.home
+Address:  192.168.2.1
+
+Name:    moodle-moodl-jabjsdocuhdn-677156032.ca-central-1.elb.amazonaws.com
+Addresses:  3.96.40.253
+	  3.96.30.200
+Aliases:  elearning.tsin.ca
+
+[31;1mNon-authoritative answer:[0m
+[31;1m[0m
+
+=== Test homepage ===
+home: HTTP=200 Time=14.298725s
+
+=== Test login page ===
+login: HTTP=200 Time=0.311621s

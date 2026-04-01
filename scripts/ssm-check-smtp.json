@@ -1,0 +1,25 @@
+{
+  "commands": [
+    "set -e",
+    "CFG=/app/moodle/config.php",
+    "echo '=== SMTP CONFIG CHECK ==='",
+    "if [ -f \"$CFG\" ]; then echo '[OK] config.php exists'; else echo '[FAIL] config.php missing'; fi",
+    "DB_HOST=$(grep -E '^\\s*\\$CFG->dbhost' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "DB_NAME=$(grep -E '^\\s*\\$CFG->dbname' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "DB_USER=$(grep -E '^\\s*\\$CFG->dbuser' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "DB_PASS=$(grep -E '^\\s*\\$CFG->dbpass' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "echo \"DB: $DB_NAME@$DB_HOST\"",
+    "echo '--- moodle mdl_config smtp* ---'",
+    "mariadb -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D \"$DB_NAME\" -e \"SELECT name, CASE WHEN name='smtppass' THEN '***REDACTED***' ELSE value END as value FROM mdl_config WHERE name IN ('smtphosts','smtpuser','smtppass','smtpsecure','smtpport','noreplyaddress','supportemail') ORDER BY name;\" 2>/dev/null || echo 'DB query failed'",
+    "echo",
+    "echo '--- config.php contains smtp mentions ---'",
+    "grep -in 'smtp' \"$CFG\" || echo 'No smtp keys in config.php (usually normal)'",
+    "echo",
+    "TOKEN=$(curl -sS -X PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 21600' || true)",
+    "REGION=$(curl -sS -H \"X-aws-ec2-metadata-token: $TOKEN\" http://169.254.169.254/latest/meta-data/placement/region || echo 'ca-central-1')",
+    "SES=\"email-smtp.$REGION.amazonaws.com\"",
+    "echo \"Testing SES connectivity: $SES:587\"",
+    "if timeout 10 bash -lc \"</dev/tcp/$SES/587\"; then echo '[OK] Port 587 reachable'; else echo '[WARN] Port 587 NOT reachable'; fi"
+  ]
+}
+

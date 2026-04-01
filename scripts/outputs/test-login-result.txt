@@ -1,0 +1,18 @@
+=== Testing login page ===
+HTTP: 200
+Time: 7.189379s
+
+=== Clean up debug files from webroot ===
+Removed debug_hash_check.php
+Cleaned up temp files
+
+=== Test admin page (should not redirect to upgrade) ===
+URL: https://elearning.tsin.ca/admin/index.php
+HTTP: 504
+Redirects: 0
+
+=== Check site response time ===
+Request 1: 200 in 27.614337s
+Request 2: 200 in 20.529713s
+Request 3: 200 in 6.993831s
+

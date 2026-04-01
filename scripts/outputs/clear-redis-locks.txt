@@ -1,0 +1,6 @@
+CMD: efedc709-1340-487d-b208-8bfda78a564c
+{
+    "S": "Success",
+    "O": "=== Clear Redis session locks via PHP ===\nPHP Parse error:  syntax error, unexpected token \"=\", expecting end of file in Command line code on line 2\n\n=== Test pages ===\nlogin: HTTP=303 Time=2.075870s\ncourse114: HTTP=303 Time=0.027062s\nDONE\n",
+    "E": ""
+}

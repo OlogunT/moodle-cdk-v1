@@ -1,0 +1,6 @@
+CMD: 68bb6d4f-2f8d-4556-95d8-7f50a40fcb99
+{
+    "S": "Success",
+    "O": "=== User Info ===\nID: 1325\nUsername: c.stanclik\nName: Connie Stanclik\nEmail: c.stanclik@tsin.ca\nAuth: manual\nSuspended: 0\nConfirmed: 1\nLast login: 2026-03-17 11:03:55\n\n=== System-level Role Assignments ===\n  Role: manager (id=1)\n\n=== Site Admin Check ===\nIs site admin: NO\n\n=== Course Enrolments & Roles ===\n\n  Course [98]: Assessment Based on Outcomes_MS (OUtcomes_MS) - active\n    -> Role: student (id=5)\n\n  Course [70]: Physician Facilitator Training  (PFT) - active\n    -> Role: student (id=5)\n\n=== Category-level Roles ===\nNo category-level roles\n\n=== All Role Assignments (any context) ===\n  System (instance=0): manager\n  Course (instance=98): student\n  Course (instance=70): student\n\nTotal role assignments: 3\nEXIT=0\n",
+    "E": ""
+}

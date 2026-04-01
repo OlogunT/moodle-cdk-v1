@@ -1,0 +1,27 @@
+{
+  "Comment": "Diagnose missing JS file error in Moodle",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "echo '=== Recent PHP errors mentioning JS / require ==='",
+      "grep -i 'javascript\\|require.*js\\|amd\\|requirejs\\|\\.js' /var/log/php-fpm/www-error.log 2>/dev/null | tail -30 || true",
+      "echo '=== Recent Apache error log entries mentioning JS ==='",
+      "grep -i 'javascript\\|require.*js\\|amd\\|\\.js' /var/log/httpd/error_log 2>/dev/null | tail -20 || true",
+      "echo '=== Moodle debug log entries (last 50 lines) ==='",
+      "tail -50 /data/moodledata/php_errors.log 2>/dev/null || tail -50 /app/moodledata/php_errors.log 2>/dev/null || echo 'No moodledata error log found'",
+      "echo '=== Check menutopic AMD JS files exist ==='",
+      "find /app/moodle/course/format/menutopic/amd -name '*.js' 2>/dev/null | sort || echo 'No AMD dir'",
+      "echo '=== Check menutopic AMD build dir ==='",
+      "ls -la /app/moodle/course/format/menutopic/amd/build/ 2>/dev/null || echo 'No build dir'",
+      "echo '=== Check menutopic AMD src dir ==='",
+      "ls -la /app/moodle/course/format/menutopic/amd/src/ 2>/dev/null || echo 'No src dir'",
+      "echo '=== Look for any 404s on .js files in Apache access log ==='",
+      "grep '\" 404' /var/log/httpd/access_log 2>/dev/null | grep '\\.js' | tail -20 || true",
+      "echo '=== Moodle JS error in recent PHP-FPM errors ==='",
+      "grep -i 'does not exist\\|not found\\|missing' /var/log/php-fpm/www-error.log 2>/dev/null | tail -20 || true"
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

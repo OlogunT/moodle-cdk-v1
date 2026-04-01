@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "REGION=ca-central-1",
+    "NEWHOST=$(aws ssm get-parameter --name /moodle/redis/endpoint --region $REGION --query Parameter.Value --output text 2>/dev/null || echo '')",
+    "if [ -z \"$NEWHOST\" ]; then echo 'No Redis endpoint found in SSM; aborting'; exit 1; fi",
+    "echo New Redis host: $NEWHOST",
+    "php -r 'define(\'CLI_SCRIPT\', true); require \"/app/moodle/config.php\"; $old=\"shared-redis-ha.kbi0dr.ng.0001.cac1.cache.amazonaws.com\"; $new=getenv(\"NEWHOST\"); $port=isset($CFG->dboptions[\"dbport\"]) ? (int)$CFG->dboptions[\"dbport\"] : 3306; $mysqli=new mysqli($CFG->dbhost,$CFG->dbuser,$CFG->dbpass,$CFG->dbname,$port); if($mysqli->connect_error){ fwrite(STDERR, \"DB connect error: \".$mysqli->connect_error.\"\\n\"); exit(2);} $prefix=$CFG->prefix; $q1=\"UPDATE {$prefix}config_plugins SET value = REPLACE(value, '$old', '$new') WHERE plugin LIKE 'cachestore_redis%'\"; $q2=\"UPDATE {$prefix}config SET value = REPLACE(value, '$old', '$new') WHERE name IN ('session_redis_host','cachestore_redis_servers')\"; $a1=$mysqli->query($q1); $a2=$mysqli->query($q2); echo \"updated_rows=\" . ($mysqli->affected_rows) . \"\\n\"; $mysqli->close();'",
+    "php /app/moodle/admin/cli/purge_caches.php || true",
+    "sudo systemctl restart php-fpm || true",
+    "sudo systemctl restart httpd || true"
+  ]
+}
+

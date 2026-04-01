@@ -1,0 +1,23 @@
+{
+  "Comment": "Check for long-running PHP processes, cron errors, and live error on admin page",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb", "i-00af3adb301e601f8"],
+  "Parameters": {
+    "commands": [
+      "INST=$(hostname); echo \"=== INSTANCE: $INST ===\"",
+      "echo '=== 1. Long-running PHP processes (>30s) ==='",
+      "ps aux | awk '/php/ && !/awk/ {print}' | head -20",
+      "echo '=== 2. PHP CLI OPcache status ==='",
+      "php -r \"echo 'OPcache CLI: '; var_dump(opcache_get_status());\" 2>&1 | head -5 || echo CLI_OPCACHE_OFF",
+      "echo '=== 3. cron.php last exit / current running ==='",
+      "ps aux | grep -i cron | grep -v grep | head -10 || echo NO_CRON_RUNNING",
+      "echo '=== 4. Test admin page for lock_factory error ==='",
+      "curl -s -k 'http://localhost/admin/index.php' 2>/dev/null | grep -o 'lock_factory[^<\"&]*\\|coreock[^<\"&]*' | head -10 || echo NOT_FOUND_IN_ADMIN",
+      "echo '=== 5. nginx/apache access log last 5 lock-factory requests ==='",
+      "grep -h 'lock_factory\\|coreock' /var/log/nginx/access.log /var/log/httpd/access_log 2>/dev/null | tail -10 || echo NOT_IN_ACCESSLOG",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

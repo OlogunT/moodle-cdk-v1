@@ -1,0 +1,38 @@
+Sending SSM command...
+CommandId: 73314548-29bf-4926-9b2f-8e857cd5220f
+Status: Success, RC: 0
+=== NGINX STATUS ===
+inactive
+Redirecting to /bin/systemctl status nginx.service
+Unit nginx.service could not be found.
+=== PHP-FPM STATUS ===
+apache   1519759  0.0  0.5 451916 82448 ?        S    Mar12   0:02 php-fpm: pool www
+apache   1523533  0.0  0.5 452588 80720 ?        S    Mar12   0:02 php-fpm: pool www
+apache   1533269  0.0  0.5 452244 90668 ?        S    Mar12   0:03 php-fpm: pool www
+apache   1584441  0.0  0.4 452016 69396 ?        S    Mar12   0:01 php-fpm: pool www
+apache   1585787  0.0  0.3 452644 58240 ?        S    00:07   0:00 php-fpm: pool www
+=== PHP-FPM PROCESSES ===
+21
+=== NGINX ERROR LOG (last 20 lines) ===
+No nginx error log found
+=== PHP-FPM LOG (last 20 lines) ===
+No php-fpm log found
+=== DISK USAGE ===
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p1  8.0G  3.2G  4.8G  41% /
+=== MEMORY USAGE ===
+               total        used        free      shared  buff/cache   available
+Mem:           15697         876       13335         128        1485       14343
+Swap:              0           0           0
+=== LOAD AVERAGE ===
+ 13:22:55 up 146 days,  9:59,  7 users,  load average: 0.26, 0.38, 0.43
+=== LOCAL HTTP CHECK ===
+HTTP Status: 303
+Time: 0.023259s
+=== MOODLE MAINTENANCE MODE ===
+Unrecognised options:
+  --status
+Please use --help option.
+
+Could not check maintenance mode
+

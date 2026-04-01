@@ -1,0 +1,63 @@
+Instance: i-011c65cd247389ee6
+Sending SSM command...
+CommandId: 084381fb-c318-4560-a39f-67eb5d9a2dba
+Polling (each AWS call takes ~40s)...
+  status=Success
+=== OUTPUT ===
+=== CONTEXT IDs FOR CAT 33 AND ITS COURSES ===
+contextid	contextlevel	instanceid	name
+6224	40	33	Learning Programs
+8475	50	70	Physician Facilitator Training 
+16551	50	111	Canadian Medicine Primer Asynchronous2026
+16600	50	112	Foundations Module2026
+16697	50	113	Advanced Module2026
+16742	50	114	Welcome/Orientation Module
+16835	50	115	Additional Module 1
+16854	50	116	Additional Module 2
+=== ROLE CAPABILITY OVERRIDES AT CAT 33 ===
+=== ROLE CAPABILITY OVERRIDES AT COURSE LEVEL (CAT 33 COURSES) ===
+=== ROLE ASSIGNMENTS IN CAT 33 COURSES ===
+course_id	course_name	role	assignments
+115	Additional Module 1	manager	3
+115	Additional Module 1	teacher	1
+116	Additional Module 2	manager	1
+113	Advanced Module2026	manager	2
+113	Advanced Module2026	student	1
+111	Canadian Medicine Primer Asynchronous202	editingteacher	1
+111	Canadian Medicine Primer Asynchronous202	manager	4
+112	Foundations Module2026	manager	1
+112	Foundations Module2026	student	3
+70	Physician Facilitator Training 	manager	2
+70	Physician Facilitator Training 	student	85
+114	Welcome/Orientation Module	manager	2
+=== ROLE ASSIGNMENTS AT SYSTEM/CATEGORY LEVEL FOR MANAGER ===
+contextlevel	instanceid	shortname	user_sample
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+10	0	manager	
+=== MOODLE SITE CONFIG (relevant settings) ===
+name	value
+auth	email
+enableavailability	1
+enablecompletion	1
+enrol_plugins_enabled	manual,guest,self,cohort
+mnet_dispatcher_mode	off
+=== CHECK IF COURSES ARE LOCKED (in-progress backup) ===
+--------------
+SELECT bc.courseid, LEFT(c.fullname,40) AS course_name, bc.status, bc.operation, bc.type
+FROM mdl_backup_controllers bc
+JOIN mdl_course c ON c.id=bc.courseid
+WHERE c.category=33 AND bc.status NOT IN (0, 1000)
+ORDER BY bc.courseid
+--------------
+
+ERROR 1054 (42S22) at line 1: Unknown column 'bc.courseid' in 'SELECT'
+=== DONE ===
+

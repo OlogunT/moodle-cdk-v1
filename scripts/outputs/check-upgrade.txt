@@ -1,0 +1,6 @@
+CMD: 2f503a25-f673-4ea4-b835-0f42db6fa2e3
+{
+    "S": "Success",
+    "O": "communication table exists: NO\nMoodle version (disk): 2025041402.1\nMoodle version (db): 2025041402.1\nVersions match\nEXIT=0\n",
+    "E": ""
+}

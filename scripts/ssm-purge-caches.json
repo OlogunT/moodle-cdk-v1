@@ -1,0 +1,11 @@
+{
+  "commands": [
+    "set -e",
+    "if [ -x /usr/bin/php ]; then PHP=/usr/bin/php; elif [ -x /usr/bin/php80 ]; then PHP=/usr/bin/php80; else PHP=php; fi",
+    "echo Using PHP=$PHP",
+    "sudo -u apache $PHP /app/moodle/admin/cli/purge_caches.php || true",
+    "find /app/moodle/cache -maxdepth 1 -type f -delete 2>/dev/null || true",
+    "echo 'Caches purged.'"
+  ]
+}
+

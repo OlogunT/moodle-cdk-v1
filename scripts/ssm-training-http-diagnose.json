@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "set -e",
+    "echo '=== DNS ==='",
+    "getent hosts training.tsin.ca || echo 'no getent-training'",
+    "getent hosts Traini-Train-gDNwhrGVvy0B-1466546903.ca-central-1.elb.amazonaws.com || echo 'no getent-alb'",
+    "echo '=== HTTP codes ==='",
+    "curl -s -o /dev/null -w 'EXT_TRAINING=%{http_code}\\n' https://training.tsin.ca/ || echo 'EXT_TRAINING=ERR'",
+    "curl -s -o /dev/null -w 'ROOT=%{http_code}\\n' http://localhost/ || echo 'ROOT=ERR'",
+    "curl -s -o /dev/null -w 'LOGIN=%{http_code}\\n' http://localhost/login/index.php || echo 'LOGIN=ERR'",
+    "curl -s -o /dev/null -w 'HEALTH=%{http_code}\\n' http://localhost/health.php || echo 'HEALTH=ERR'",
+    "echo '=== httpd error_log (last 40) ==='",
+    "tail -n 40 /var/log/httpd/error_log || echo 'no error_log'",
+    "echo '=== php-fpm log (last 40) ==='",
+    "tail -n 40 /var/log/php-fpm/error.log || tail -n 40 /var/log/php-fpm/www-error.log || echo 'no php-fpm log'"
+  ]
+}
+

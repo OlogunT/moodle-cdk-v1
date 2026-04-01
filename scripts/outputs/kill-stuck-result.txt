@@ -1,0 +1,22 @@
+{
+    "CommandId": "38c3af67-0c40-4c92-8a3e-89540ce33c28",
+    "InstanceId": "i-011c65cd247389ee6",
+    "Comment": "",
+    "DocumentName": "AWS-RunShellScript",
+    "DocumentVersion": "$DEFAULT",
+    "PluginName": "aws:runShellScript",
+    "ResponseCode": 0,
+    "ExecutionStartDateTime": "2026-03-13T13:41:01.895Z",
+    "ExecutionElapsedTime": "PT18.86S",
+    "ExecutionEndDateTime": "2026-03-13T13:41:19.895Z",
+    "Status": "Success",
+    "StatusDetails": "Success",
+    "StandardOutputContent": "=== KILLING STUCK upgrade.php AND cron.php PROCESSES ===\nKilled upgrade.php\nKilled cron.php processes\n=== VERIFYING KILLS ===\nroot     1733498  0.0  0.0 221380  1000 ?        S    13:41   0:00 timeout 20 php /app/moodle/admin/cli/cron.php\nroot     1733500  6.5  0.3 449404 48276 ?        D    13:41   0:00 php /app/moodle/admin/cli/cron.php\n=== RESTARTING PHP-FPM ===\nroot     1733511  0.6  0.2 445776 33472 ?        Ss   13:41   0:00 php-fpm: master process (/etc/php-fpm.conf)\n=== RESTARTING APACHE ===\nactive\n=== CLEARING MOODLE UPGRADE LOCK FROM DB ===\nUpgrade lock cleared\nname\tvalue\nversion\t2025041402.1\n=== QUICK CURL TEST (10s max) ===\nHTTP: 200 Time: 2.688791s\n=== DONE ===\n",
+    "StandardOutputUrl": "",
+    "StandardErrorContent": "",
+    "StandardErrorUrl": "",
+    "CloudWatchOutputConfig": {
+        "CloudWatchLogGroupName": "",
+        "CloudWatchOutputEnabled": false
+    }
+}

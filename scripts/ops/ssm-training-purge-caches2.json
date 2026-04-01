@@ -1,0 +1,20 @@
+{
+  "Comment": "Purge Moodle caches on training.tsin.ca and verify",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-0527f81ac3fde0ec3"],
+  "Parameters": {
+    "commands": [
+      "echo '=== Purge Moodle caches ==='",
+      "php /app/moodle/admin/cli/purge_caches.php",
+      "echo \"Exit: $?\"",
+      "echo '=== Confirm lock_factory not in config.php ==='",
+      "grep 'lock_factory' /app/moodle/config.php && echo BAD || echo CONFIRMED_CLEAN",
+      "echo '=== Check live site for error ==='",
+      "curl -s -o /dev/null -w 'HTTP:%{http_code}' http://localhost/ || true",
+      "echo ''",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["150"]
+  }
+}
+

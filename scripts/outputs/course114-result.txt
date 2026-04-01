@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "=== 1. Check course 114 via PHP ===\nCourse found: Welcome/Orientation Module\nFormat: weeks\nCategory: 33\nVisible: 1\n\n=== 2. Check course format options ===\nhiddensections = 0\ncoursedisplay = 0\nautomaticenddate = 1\n\n=== 3. Check for menutopic format ===\nEXIT=255\n",
+    "E": ""
+}

@@ -1,0 +1,13 @@
+CID: 0ae2c6aa-fbe1-4533-a6a9-356a7f91e1fb
+S: Success RC: 0
+Correct hash: 37158af4f6a915609afc17e5c20321917db7d3d0
+Updated DB
+DB hash now: 37158af4f6a915609afc17e5c20321917db7d3d0
+Match: YES
+moodle_needs_upgrading: YES
+Exit: 0
+=== Speed test ===
+HTTP:303 T:0.020718s
+HTTP:303 T:0.014081s
+=== DONE ===
+

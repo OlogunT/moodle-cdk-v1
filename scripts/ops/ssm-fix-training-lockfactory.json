@@ -1,0 +1,36 @@
+{
+  "Comment": "Fix lock_factory in training.tsin.ca config.php and restart php-fpm on all instances",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-0dca2f988e797653f", "i-0527f81ac3fde0ec3", "i-0080670f33aeddd08", "i-03c8a62253d2a10a4"],
+  "Parameters": {
+    "commands": [
+      "INST=$(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || hostname)",
+      "echo \"=== INSTANCE: $INST ===\"",
+      "echo '=== 1. Before: check lock_factory in config.php ==='",
+      "grep 'lock_factory' /app/moodle/config.php 2>/dev/null || echo NOT_PRESENT",
+      "echo '=== 2. Remove lock_factory line (only writes if present) ==='",
+      "if grep -q 'lock_factory' /app/moodle/config.php 2>/dev/null; then",
+      "  cp /app/moodle/config.php /app/moodle/config.php.bak.training.$(date +%s)",
+      "  sed -i '/lock_factory/d' /app/moodle/config.php",
+      "  echo REMOVED",
+      "else",
+      "  echo ALREADY_CLEAN",
+      "fi",
+      "echo '=== 3. Verify PHP syntax ==='",
+      "php -l /app/moodle/config.php",
+      "echo '=== 4. Confirm lock_factory gone ==='",
+      "grep 'lock_factory' /app/moodle/config.php 2>/dev/null && echo 'STILL_PRESENT_BAD' || echo 'CONFIRMED_CLEAN'",
+      "echo '=== 5. Restart php-fpm to flush OPcache ==='",
+      "systemctl restart php-fpm && echo PHP_FPM_RESTARTED || service php-fpm restart && echo PHP_FPM_RESTARTED",
+      "sleep 3",
+      "echo '=== 6. Verify php-fpm running ==='",
+      "systemctl is-active php-fpm 2>/dev/null || service php-fpm status 2>/dev/null | head -3",
+      "echo '=== 7. Health check ==='",
+      "curl -s -o /dev/null -w 'HTTP:%{http_code}' http://localhost/health 2>/dev/null || curl -s -o /dev/null -w 'HTTP:%{http_code}' http://localhost/ 2>/dev/null",
+      "echo ''",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

@@ -1,0 +1,11 @@
+Instance: i-011c65cd247389ee6
+Sending SSM command...
+CommandId: d040dffc-f702-4d28-8743-5248297a4e7c
+  status=Success
+=== FINAL RESULT ===
+{
+    "Status": "Success",
+    "RC": 0,
+    "Out": "=== alive Fri Mar 13 01:21:19 UTC 2026 ===\nH=$CFG->dbhost= N=$CFG->dbname=\nERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)\nDB OK\n=== SYSTEM CAPS ===\nERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)\n=== PROHIBIT/PREVENT COUNT ===\ncount=ERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)\n=== ROLE ARCHETYPES ===\nERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)\n=== CAT 33 + COURSES ===\nERROR 2005 (HY000): Unknown MySQL server host '$CFG->dbhost=' (-2)\n=== DONE ===\n",
+    "Err": ""
+}

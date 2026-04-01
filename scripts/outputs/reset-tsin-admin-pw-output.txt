@@ -1,0 +1,5 @@
+Sending SSM command...
+CommandId: 5c649e95-b324-4e20-b693-488219369738
+Status: Success, RC: 0
+Password changed
+

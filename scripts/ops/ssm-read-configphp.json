@@ -1,0 +1,12 @@
+{
+  "Comment": "Read Moodle config.php lock and cache settings",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "grep -n 'lock_factory\\|lock_\\|redis\\|session\\|cache' /app/moodle/config.php 2>/dev/null | head -40"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

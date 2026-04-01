@@ -1,0 +1,15 @@
+{
+  "commands": [
+    "set -e",
+    "REGION=ca-central-1",
+    "NEWHOST=$(aws ssm get-parameter --name /moodle/redis/endpoint --region $REGION --query Parameter.Value --output text 2>/dev/null || echo '')",
+    "if [ -z \"$NEWHOST\" ]; then echo 'No Redis endpoint found in SSM; aborting'; exit 1; fi",
+    "getent hosts \"$NEWHOST\" >/dev/null 2>&1 || { echo 'Could not resolve new Redis IP'; exit 1; }",
+    "sudo sed -i.bak '/shared-redis-ha.kbi0dr.ng.0001.cac1.cache.amazonaws.com/d' /etc/hosts || true",
+    "getent hosts \"$NEWHOST\" | head -n1 | sed 's/ .*$//' | awk '{print $0 \" shared-redis-ha.kbi0dr.ng.0001.cac1.cache.amazonaws.com\"}' | sudo tee -a /etc/hosts >/dev/null",
+    "nc -z -w2 shared-redis-ha.kbi0dr.ng.0001.cac1.cache.amazonaws.com 6379 >/dev/null 2>&1 && echo 'Old hostname now reachable' || echo 'Still unreachable'",
+    "sudo systemctl restart php-fpm || true",
+    "sudo systemctl restart httpd || true"
+  ]
+}
+

@@ -1,0 +1,20 @@
+Sending SSM command...
+CommandId: d2e397ca-61b7-43e2-8646-6bfb288a8f98
+Waiting 180s for completion...
+Status: Failed, RC: 124
+=== STEP 1: Kill ALL stuck cron.php processes ===
+Killed cron.php
+=== STEP 2: Disable cron temporarily ===
+Current crontab:
+* * * * * /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+Modified crontab:
+#DISABLED# * * * * * /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1
+=== STEP 3: Clear upgrade lock ===
+Cleared
+=== STEP 4: Clear allversionshash to force recalc ===
+Cleared hash
+=== STEP 5: Restart PHP-FPM to free workers ===
+PHP-FPM restarted
+=== STEP 6: Run upgrade.php ===
+
+STDERR: failed to run commands: exit status 124

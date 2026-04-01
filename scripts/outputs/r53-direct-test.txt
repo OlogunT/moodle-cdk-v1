@@ -1,0 +1,15 @@
+=== Query Route 53 child zone NS directly ===
+Resolve-DnsName: 
+Line |
+   2 |  Resolve-DnsName elearning.tsin.ca -Server ns-71.awsdns-08.com -Type A .
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | elearning.tsin.ca : This operation returned because the timeout period expired.
+
+=== Query parent zone for NS delegation ===
+Resolve-DnsName: 
+Line |
+   5 |  Resolve-DnsName elearning.tsin.ca -Server ns-180.awsdns-22.com -Type  .
+     |  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | elearning.tsin.ca : This operation returned because the timeout period expired.
+
+=== Check parent zone NS record ===

@@ -1,0 +1,6 @@
+CMD: 8b936610-50fe-4901-b651-58aa7bf53b25
+{
+    "S": "Success",
+    "O": "=== 1. Current lock config ===\n  version = 2025041400\n\n=== 2. Check lock directory ===\nLock dir: /data/moodledata/lock\nExists: NO\n\n=== 3. Check moodledata/localcache ===\nlocalcachedir: /data/moodledata/localcache\nExists: YES\n\n=== 4. Clear stale lock files ===\n\n=== 5. Check /tmp for lock files ===\nTemp lock files: 0\nCleared temp lock files\n\n=== 6. Check config.php for lock settings ===\nFound 2 lock references in config.php\n\n=== 7. Purge all caches ===\nCaches purged\n\n=== 8. Check cache config ===\nMUC config exists: YES\n\nDone\nEXIT=0\n",
+    "E": ""
+}

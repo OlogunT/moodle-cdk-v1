@@ -1,0 +1,3 @@
+Command ID: 90345205-9714-475f-9cda-ab8fd9d1a19f
+Waiting 150 seconds...
+{     "S": "Success",     "O": "=== Current PHP max_execution_time ===\n0\n=== Updating PHP timeout to 120s ===\nPHP ini: /etc/php.ini\nUpdated max_execution_time\n=== Updating Apache timeout ===\nNo Timeout in httpd.conf\nApache timeout set to 120s\n=== Restarting services ===\nServices restarted\n=== Testing admin page (120s timeout) ===\nHTTP: 504 Time: 60.016256s URL: https://elearning.tsin.ca/admin/index.php\n=== Done ===\n",     "E": "" }

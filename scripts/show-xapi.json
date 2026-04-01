@@ -1,0 +1,21 @@
+{
+  "commands": [
+    "cd /app/moodle",
+    "cat > /tmp/show_xapi.php <<'PHP'",
+    "<?php",
+    "define('CLI_SCRIPT', true);",
+    "chdir('/app/moodle');",
+    "require 'config.php';",
+    "$pdo = new PDO('mysql:host=' . $CFG->dbhost . ';dbname=' . $CFG->dbname . ';charset=utf8mb4', $CFG->dbuser, $CFG->dbpass, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);",
+    "$prefix = $CFG->prefix;",
+    "$table = $prefix . 'xapi_states';",
+    "$stmt = $pdo->query('SHOW COLUMNS FROM ' . $table);",
+    "while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { echo $row['Field'] . '\\t' . $row['Type'] . \"\\n\"; }",
+    "$stmt = $pdo->query('SHOW CREATE TABLE ' . $table);",
+    "$row = $stmt->fetch(PDO::FETCH_ASSOC);",
+    "echo \"\\nCREATE:\\n\" . $row['Create Table'] . \"\\n\";",
+    "PHP",
+    "sudo -u apache php /tmp/show_xapi.php"
+  ]
+}
+

@@ -1,0 +1,5 @@
+CID: e48d3ff0-9506-4a5e-b5e7-defc4e3958c6
+S: Success RC: 0
+=== moodle_needs_upgrading source ===
+=== END ===
+

@@ -1,0 +1,30 @@
+Sending SSM command...
+CommandId: 435fba33-9582-4b4f-b326-e728ed625aa8
+Status: Success, RC: 0
+=== CLIMAINTENANCE FILE ===
+No climaintenance.html (good)
+=== MOODLE WWWROOT ===
+$CFG->wwwroot = 'https://elearning.tsin.ca';
+=== PHP MAX EXECUTION TIME ===
+0=== PHP-FPM POOL CONFIG (timeouts) ===
+pm.max_children = 50
+pm.start_servers = 10
+pm.min_spare_servers = 5
+pm.max_spare_servers = 20
+pm.max_requests = 1000
+request_terminate_timeout = 600
+pm.status_path = /php-fpm-status
+=== APACHE TIMEOUT CONFIG ===
+/etc/httpd/conf.d/moodle.conf:  ProxyTimeout 600
+/etc/httpd/conf.d/moodle.conf.bak.1769733213:  ProxyTimeout 300
+/etc/httpd/conf.d/moodle.conf.bak.1769733710:  ProxyTimeout 600
+=== RECENT APACHE ACCESS LOG (last 10) ===
+=== MOODLE UPGRADE PENDING CHECK ===
+DB version: 2025041402.1
+=== MOODLE DATAROOT SESSIONS ===
+0
+=== MOODLE LOCALCACHE ===
+No localcache dir
+=== CURL TEST TO LOCALHOST LOGIN ===
+HTTP: 303 Time: 2.012467s
+

@@ -1,0 +1,31 @@
+{
+  "Comment": "Diagnose lock_factory config error in Moodle",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== CFG lock_factory setting ==='",
+      "grep -n 'lock_factory\\|lock_' /var/www/moodledata/config.php 2>/dev/null || grep -n 'lock_factory\\|lock_' /app/moodledata/config.php 2>/dev/null || echo 'config.php not in standard location'",
+      "echo '=== Find config.php ==='",
+      "find /app /var/www -name 'config.php' -path '*/moodle/config.php' 2>/dev/null | head -3",
+      "CFG_PHP=$(find /app /var/www -name 'config.php' -path '*/moodle/config.php' 2>/dev/null | head -1)",
+      "echo \"Found: $CFG_PHP\"",
+      "echo '=== lock_factory lines in config.php ==='",
+      "grep -n 'lock_factory\\|lock_' \"$CFG_PHP\" 2>/dev/null || echo 'None found'",
+      "echo '=== Full lock-related CFG ==='",
+      "grep -n 'lock\\|redis\\|cache' \"$CFG_PHP\" 2>/dev/null | head -30",
+      "echo '=== Check if lock factory class exists ==='",
+      "LOCK_CLASS=$(grep 'lock_factory' \"$CFG_PHP\" 2>/dev/null | grep -oP \"'[^']+factory[^']*'\" | tr -d \"'\" | head -1)",
+      "echo \"Lock factory class: $LOCK_CLASS\"",
+      "if [ -n \"$LOCK_CLASS\" ]; then",
+      "  LOCK_FILE=$(echo \"$LOCK_CLASS\" | tr '\\\\\\\\' '/' | sed 's|^core_|lib/|')",
+      "  echo \"Looking for class file hint: $LOCK_FILE\"",
+      "  find /app/moodle /var/www/html/moodle -name '*.php' 2>/dev/null | xargs grep -l \"class $LOCK_CLASS\" 2>/dev/null | head -3 || echo 'Class file not found'",
+      "fi",
+      "echo '=== Recent PHP error log (lock errors) ==='",
+      "grep -i 'lock.*factory\\|factory.*not.*exist\\|lock_factory' /var/log/php-fpm/error.log /var/log/httpd/error_log /tmp/php-error.log 2>/dev/null | tail -20 || echo 'No matching log entries'"
+    ],
+    "executionTimeout": ["60"]
+  }
+}
+

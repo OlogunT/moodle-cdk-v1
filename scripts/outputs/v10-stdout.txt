@@ -1,0 +1,115 @@
+=== CURRENT MENUTOPIC FORMAT DIR ===
+menutopic
+menutopic.incompatible.1773366402
+=== CURRENT MENUTOPIC VERSION.PHP ===
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2023050703.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022041904; // Requires this Moodle version.
+$plugin->release = 'michelle-4.0.2';
+=== FORMAT DIRS WITH menutopic IN NAME ===
+/app/moodle/course/format/menutopic
+/app/moodle/course/format/menutopic.incompatible.1773366402
+=== CHECKING IF INCOMPATIBLE DIR EXISTS ===
+/app/moodle/course/format/menutopic.incompatible.1773366402
+Incompatible dir exists - v9 ran successfully
+=== IF INCOMPATIBLE EXISTS, VERIFY ITS VERSION ===
+Incompatible dir: /app/moodle/course/format/menutopic.incompatible.1773366402
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2025062301; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2025021400; // Requires this Moodle version.
+$plugin->release = 'michelle-5.0.1';
+$plugin->supported = [500, 500];
+=== IF NOT RESTORED YET, DO IT NOW ===
+Current menutopic release: michelle-4.0.2
+menutopic appears to be a compatible version already
+=== PURGING MOODLE CACHES (background) ===
+Cache purge PID: 1605362
+Cache purge still running after 5s (that's OK, it's in background)
+=== MOODLE DB PLUGIN VERSION FOR MENUTOPIC ===
+plugin	name	value
+format_menutopic	anchortomenutree	1
+format_menutopic	defaultsectionsnavigation	courseindex
+format_menutopic	globalstyle	boots
+format_menutopic	shownavbarbrand	1
+format_menutopic	version	2025062301
+=== MANAGER ROLE ID ===
+Manager role ID: 1
+=== ROLE ASSIGNMENTS FOR CAT 33 COURSES ===
+id	shortname	format	userid	contextlevel
+70	PFT	menutopic	3024	50
+70	PFT	menutopic	3632	50
+111	CMP26	topics	3633	50
+111	CMP26	topics	2115	50
+111	CMP26	topics	3632	50
+111	CMP26	topics	3024	50
+112	FD26	weeks	3632	50
+113	AD26	weeks	3633	50
+113	AD26	weeks	3024	50
+114	Wel26	weeks	3633	50
+114	Wel26	weeks	3024	50
+115	AD1	weeks	3633	50
+115	AD1	weeks	3632	50
+115	AD1	weeks	3024	50
+116	AD2	weeks	3632	50
+=== DONE ===
+56
+=== CURRENT MENUTOPIC FORMAT DIR ===
+menutopic
+menutopic.incompatible.1773366402
+=== CURRENT MENUTOPIC VERSION.PHP ===
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2023050703.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022041904; // Requires this Moodle version.
+$plugin->release = 'michelle-4.0.2';
+=== FORMAT DIRS WITH menutopic IN NAME ===
+/app/moodle/course/format/menutopic
+/app/moodle/course/format/menutopic.incompatible.1773366402
+=== CHECKING IF INCOMPATIBLE DIR EXISTS ===
+/app/moodle/course/format/menutopic.incompatible.1773366402
+Incompatible dir exists - v9 ran successfully
+=== IF INCOMPATIBLE EXISTS, VERIFY ITS VERSION ===
+Incompatible dir: /app/moodle/course/format/menutopic.incompatible.1773366402
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2025062301; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2025021400; // Requires this Moodle version.
+$plugin->release = 'michelle-5.0.1';
+$plugin->supported = [500, 500];
+=== IF NOT RESTORED YET, DO IT NOW ===
+Current menutopic release: michelle-4.0.2
+menutopic appears to be a compatible version already
+=== PURGING MOODLE CACHES (background) ===
+Cache purge PID: 1605362
+Cache purge still running after 5s (that's OK, it's in background)
+=== MOODLE DB PLUGIN VERSION FOR MENUTOPIC ===
+plugin	name	value
+format_menutopic	anchortomenutree	1
+format_menutopic	defaultsectionsnavigation	courseindex
+format_menutopic	globalstyle	boots
+format_menutopic	shownavbarbrand	1
+format_menutopic	version	2025062301
+=== MANAGER ROLE ID ===
+Manager role ID: 1
+=== ROLE ASSIGNMENTS FOR CAT 33 COURSES ===
+id	shortname	format	userid	contextlevel
+70	PFT	menutopic	3024	50
+70	PFT	menutopic	3632	50
+111	CMP26	topics	3633	50
+111	CMP26	topics	2115	50
+111	CMP26	topics	3632	50
+111	CMP26	topics	3024	50
+112	FD26	weeks	3632	50
+113	AD26	weeks	3633	50
+113	AD26	weeks	3024	50
+114	Wel26	weeks	3633	50
+114	Wel26	weeks	3024	50
+115	AD1	weeks	3633	50
+115	AD1	weeks	3632	50
+115	AD1	weeks	3024	50
+116	AD2	weeks	3632	50
+=== DONE ===
+56
+

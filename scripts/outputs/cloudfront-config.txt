@@ -1,0 +1,14 @@
+{
+    "Aliases": {
+        "Quantity": 1,
+        "Items": [
+            "web01.tsin.ca"
+        ]
+    },
+    "Origins": [
+        {
+            "Domain": "web01-tsin-ca-1406768212.ca-central-1.elb.amazonaws.com",
+            "Timeout": 30
+        }
+    ]
+}

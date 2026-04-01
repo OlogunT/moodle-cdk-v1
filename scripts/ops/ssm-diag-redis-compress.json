@@ -1,0 +1,23 @@
+{
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "DocumentName": "AWS-RunShellScript",
+  "Parameters": {
+    "commands": [
+      "echo '=== redis/lib.php: uncompress method and compressor constants ==='",
+      "grep -n 'COMPRESSOR\\|uncompress\\|compress\\|zlib\\|zstd\\|gzip' /app/moodle/cache/stores/redis/lib.php | head -40",
+      "echo '=== uncompress() method body ==='",
+      "grep -n -A 20 'function uncompress' /app/moodle/cache/stores/redis/lib.php",
+      "echo '=== compress() method body ==='",
+      "grep -n -A 20 'function compress(' /app/moodle/cache/stores/redis/lib.php",
+      "echo '=== MUC config from DB (which store handles which definition) ==='",
+      "php -r \"\ndefine('CLI_SCRIPT', true);\nrequire('/app/moodle/config.php');\n\\$stores = \\$DB->get_records('config_plugins', ['plugin'=>'core_cache']);\nforeach (\\$stores as \\$s) { echo \\$s->name . ' = ' . substr(\\$s->value,0,200) . PHP_EOL; }\n\" 2>/dev/null | head -40 || echo 'db query failed'",
+      "echo '=== Redis store config (compressor setting) ==='",
+      "php -r \"\ndefine('CLI_SCRIPT', true);\nrequire('/app/moodle/config.php');\n\\$cfg = \\$DB->get_field('config_plugins','value',['plugin'=>'cachestore_redis','name'=>'testconfig']);\necho 'testconfig: '.\\$cfg.PHP_EOL;\n\" 2>/dev/null || echo 'no testconfig'",
+      "echo '=== cache_config file ==='",
+      "cat /data/moodledata/muc/config.php 2>/dev/null | grep -i 'compress\\|redis\\|compressor' | head -20 || echo 'no muc config or no compressor entries'",
+      "echo '=== Full MUC config stores section ==='",
+      "php -r \"\n\\$c = file_get_contents('/data/moodledata/muc/config.php');\npreg_match('/stores.*?=.*?array\\\\s*\\\\(.*?\\\\);/s',\\$c,\\$m);\necho isset(\\$m[0]) ? \\$m[0] : 'no match';\n\" 2>/dev/null | head -60 || cat /data/moodledata/muc/config.php 2>/dev/null | head -80"
+    ]
+  }
+}
+

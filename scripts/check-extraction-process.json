@@ -1,0 +1,29 @@
+{
+  "commands": [
+    "echo === Checking Extraction Process ===",
+    "echo",
+    "echo Step 1: Check if tar process is running",
+    "ps aux | grep tar | grep -v grep || echo No tar process found",
+    "echo",
+    "echo Step 2: Check /data/moodledata directory",
+    "if [ -d /data/moodledata ]; then",
+    "  echo Directory exists",
+    "  CURRENT_SIZE=$(du -sh /data/moodledata 2>/dev/null | cut -f1 || echo 0)",
+    "  FILE_COUNT=$(find /data/moodledata -type f 2>/dev/null | wc -l || echo 0)",
+    "  echo   Current size: $CURRENT_SIZE",
+    "  echo   Files extracted: $FILE_COUNT",
+    "else",
+    "  echo Directory does not exist",
+    "fi",
+    "echo",
+    "echo Step 3: Check system load",
+    "uptime",
+    "echo",
+    "echo Step 4: Check disk I/O",
+    "iostat -x 1 2 | tail -20 || echo iostat not available",
+    "echo",
+    "echo Step 5: List recent files in /data/moodledata",
+    "find /data/moodledata -type f -mmin -5 2>/dev/null | head -10 || echo No recent files"
+  ]
+}
+

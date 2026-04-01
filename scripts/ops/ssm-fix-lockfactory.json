@@ -1,0 +1,27 @@
+{
+  "Comment": "Remove lock_factory from config.php and restart php-fpm",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "echo '=== Current lock_factory lines in config.php ==='",
+      "grep -n 'lock_factory' /app/moodle/config.php && echo 'Found (will remove)' || echo 'None found (already clean)'",
+      "echo '=== Backing up config.php ==='",
+      "cp /app/moodle/config.php \"/app/moodle/config.php.bak.lockfix.$(date +%s)\" && echo 'Backup created'",
+      "echo '=== Removing lock_factory lines ==='",
+      "sed -i '/lock_factory/d' /app/moodle/config.php && echo 'sed done'",
+      "echo '=== Verify removed ==='",
+      "grep -n 'lock_factory' /app/moodle/config.php && echo 'STILL PRESENT - check manually' || echo 'Removed OK'",
+      "echo '=== PHP syntax check ==='",
+      "php -l /app/moodle/config.php && echo 'config.php syntax OK' || echo 'SYNTAX ERROR'",
+      "echo '=== Restart PHP-FPM on this instance ==='",
+      "systemctl restart php-fpm && echo 'php-fpm restarted OK'",
+      "sleep 3",
+      "HTTP=$(curl -s -o /dev/null -w '%{http_code}' http://localhost/health 2>/dev/null || echo '000')",
+      "echo \"Health check: $HTTP\""
+    ],
+    "executionTimeout": ["120"]
+  }
+}
+
+

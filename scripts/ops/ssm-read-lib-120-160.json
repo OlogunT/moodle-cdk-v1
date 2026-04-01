@@ -1,0 +1,15 @@
+{
+  "Comment": "Read lines 120-160 of lib.php from the restored backup",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-08cfb0d5a27e77adb"],
+  "Parameters": {
+    "commands": [
+      "LIB='/app/moodle/course/format/menutopic/lib.php'",
+      "echo '=== Lines 120-160 (cat -A) ==='",
+      "sed -n '120,160p' \"$LIB\" | cat -A",
+      "echo '=== END ==='"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

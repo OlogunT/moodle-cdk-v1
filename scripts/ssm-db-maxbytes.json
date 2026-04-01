@@ -1,0 +1,7 @@
+{
+  "commands": [
+    "set -e",
+    "if [ -f /app/moodle/config.php ]; then DBHOST=$(awk -F\"'\" '/\\$CFG->dbhost/{print $2}' /app/moodle/config.php); DBNAME=$(awk -F\"'\" '/\\$CFG->dbname/{print $2}' /app/moodle/config.php); DBUSER=$(awk -F\"'\" '/\\$CFG->dbuser/{print $2}' /app/moodle/config.php); DBPASS=$(awk -F\"'\" '/\\$CFG->dbpass/{print $2}' /app/moodle/config.php); VAL=$(mariadb -h \"$DBHOST\" -u \"$DBUSER\" -p\"$DBPASS\" -D \"$DBNAME\" -N -B -e \"SELECT value FROM mdl_config WHERE name='maxbytes';\" 2>/dev/null || true); echo \"maxbytes=${VAL:-unknown}\"; else echo \"maxbytes=unknown\"; fi"
+  ]
+}
+

@@ -1,0 +1,16 @@
+{
+  "commands": [
+    "echo '=== www-slow.log (full stack traces) ==='",
+    "tail -200 /var/log/php-fpm/www-slow.log 2>/dev/null || echo 'no www-slow.log'",
+    "echo '=== recent url.php OOM in www-error.log ==='",
+    "grep 'url.php' /var/log/php-fpm/www-error.log 2>/dev/null | tail -20 || echo 'none'",
+    "echo '=== recent OOM errors (all) ==='",
+    "grep -i 'memory exhausted\\|Allowed memory' /var/log/php-fpm/www-error.log 2>/dev/null | tail -20 || echo 'none'",
+    "echo '=== current php-fpm child RSS (MB) ==='",
+    "ps -o pid,rss,vsz,comm --sort=-rss | awk 'NR==1 || /php-fpm/' | head -15",
+    "echo '=== total RAM and swap ==='",
+    "free -h",
+    "echo '=== DONE ==='"
+  ]
+}
+

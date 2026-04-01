@@ -1,0 +1,6 @@
+CMD: 432ef061-7e80-499b-af84-e6de48a28748
+{
+    "S": "Failed",
+    "O": "=== 1. Site info ===\nwwwroot: https://elearning.tsin.ca\ndbhost: moodlecdkstack-moodledatabase37183653-oof63nhyshh3.crx38jxk1vhe.ca-central-1.rds.amazonaws.com\ndataroot: /data/moodledata\n\n=== 2. Test DB connectivity ===\nTotal users: 3765\n\n=== 3. Authenticate tsin-admin ===\nLOGIN SUCCESS\nUser ID: 3676\nEmail: it@tsin.ca\nName: TSIN Administrator\n\n=== 4. Test course 114 access ===\nCourse: Welcome/Orientation Module\nFormat: weeks\nVisible: 1\nContext ID: 16742\nDefault exception handler: Exception - Call to undefined function course_get_format() Debug: \nError code: generalexceptionmessage\n* line 42 of /tmp/test_login2.php: Error thrown\n\n!!! Exception - Call to undefined function course_get_format() !!!\n",
+    "E": "failed to run commands: exit status 1"
+}

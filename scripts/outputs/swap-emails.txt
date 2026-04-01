@@ -1,0 +1,6 @@
+CMD: bbdf6163-e2ae-4371-9f19-542cc6010480
+{
+    "S": "Success",
+    "O": "=== Before ===\nc.stanclik  (id=1325): c.stanclik@tsin.ca\nc.stanclik2 (id=3766): c.stanclik2@tsin.ca\n\n=== After ===\nc.stanclik  (id=1325): c.stanclik2@tsin.ca\nc.stanclik2 (id=3766): c.stanclik@tsin.ca\n\nDone\nEXIT=0\n",
+    "E": ""
+}

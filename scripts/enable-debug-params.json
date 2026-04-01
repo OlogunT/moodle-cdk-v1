@@ -1,0 +1,51 @@
+{
+  "InstanceIds": [
+    "i-0e3919a9c020e1a20"
+  ],
+  "DocumentName": "AWS-RunShellScript",
+  "Parameters": {
+    "commands": [
+      "#!/bin/bash",
+      "set -e",
+      "CONFIG_FILE='/app/moodle/config.php'",
+      "echo 'Enabling Debug Mode on Training Moodle'",
+      "echo ''",
+      "if [ ! -f \"$CONFIG_FILE\" ]; then",
+      "  echo 'ERROR: config.php not found'",
+      "  exit 1",
+      "fi",
+      "echo 'Step 1: Backing up config.php...'",
+      "cp \"$CONFIG_FILE\" \"$CONFIG_FILE.backup.$(date +%s)\"",
+      "echo 'Backup created'",
+      "echo ''",
+      "echo 'Step 2: Removing old debug settings...'",
+      "sed -i '/\\$CFG->debug/d' \"$CONFIG_FILE\"",
+      "sed -i '/\\$CFG->debugdisplay/d' \"$CONFIG_FILE\"",
+      "sed -i '/\\$CFG->debugstringkeys/d' \"$CONFIG_FILE\"",
+      "sed -i '/\\$CFG->debugpageinfo/d' \"$CONFIG_FILE\"",
+      "sed -i '/^\\/ Debug settings$/d' \"$CONFIG_FILE\"",
+      "echo 'Old settings removed'",
+      "echo ''",
+      "echo 'Step 3: Adding new debug settings...'",
+      "sed -i '/require_once.*lib\\/setup\\.php/i \\",
+      "// Debug settings\\",
+      "\\$CFG->debug = (E_ALL | E_STRICT);\\",
+      "\\$CFG->debugdisplay = 1;\\",
+      "\\$CFG->debugstringkeys = true;\\",
+      "\\$CFG->debugpageinfo = true;' \"$CONFIG_FILE\"",
+      "echo 'Debug settings added'",
+      "echo ''",
+      "echo 'Step 4: Purging Moodle caches...'",
+      "cd /app/moodle",
+      "sudo -u apache php admin/cli/purge_caches.php 2>&1 | head -10",
+      "echo ''",
+      "echo 'SUCCESS: Debug mode enabled!'",
+      "echo ''",
+      "echo 'Debug settings enabled:'",
+      "echo '  - \\$CFG->debug = (E_ALL | E_STRICT)'",
+      "echo '  - \\$CFG->debugdisplay = 1'",
+      "echo '  - \\$CFG->debugstringkeys = true'",
+      "echo '  - \\$CFG->debugpageinfo = true'"
+    ]
+  }
+}

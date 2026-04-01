@@ -1,0 +1,17 @@
+Sending SSM command...
+CommandId: 1b46c38a-06a7-4bab-84e6-2b60c45cdeeb
+Waiting 200s...
+Status: Success, RC: 0
+=== Clear any upgrade lock ===
+=== Run upgrade.php ===
+Terminated: 15
+Exit: 124
+=== DB state after upgrade ===
+name	value
+version	2025041402.10
+=== Test upgrade status ===
+Needs upgrade: YES
+=== Speed test ===
+HTTP: 200 Time: 6.687105s
+=== DONE ===
+

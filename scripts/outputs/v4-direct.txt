@@ -1,0 +1,22 @@
+{
+    "CommandId": "084381fb-c318-4560-a39f-67eb5d9a2dba",
+    "InstanceId": "i-011c65cd247389ee6",
+    "Comment": "",
+    "DocumentName": "AWS-RunShellScript",
+    "DocumentVersion": "$DEFAULT",
+    "PluginName": "aws:runShellScript",
+    "ResponseCode": 0,
+    "ExecutionStartDateTime": "2026-03-13T01:27:47.147Z",
+    "ExecutionElapsedTime": "PT0.068S",
+    "ExecutionEndDateTime": "2026-03-13T01:27:47.147Z",
+    "Status": "Success",
+    "StatusDetails": "Success",
+    "StandardOutputContent": "=== CONTEXT IDs FOR CAT 33 AND ITS COURSES ===\ncontextid\tcontextlevel\tinstanceid\tname\n6224\t40\t33\tLearning Programs\n8475\t50\t70\tPhysician Facilitator Training \n16551\t50\t111\tCanadian Medicine Primer Asynchronous2026\n16600\t50\t112\tFoundations Module2026\n16697\t50\t113\tAdvanced Module2026\n16742\t50\t114\tWelcome/Orientation Module\n16835\t50\t115\tAdditional Module 1\n16854\t50\t116\tAdditional Module 2\n=== ROLE CAPABILITY OVERRIDES AT CAT 33 ===\n=== ROLE CAPABILITY OVERRIDES AT COURSE LEVEL (CAT 33 COURSES) ===\n=== ROLE ASSIGNMENTS IN CAT 33 COURSES ===\ncourse_id\tcourse_name\trole\tassignments\n115\tAdditional Module 1\tmanager\t3\n115\tAdditional Module 1\tteacher\t1\n116\tAdditional Module 2\tmanager\t1\n113\tAdvanced Module2026\tmanager\t2\n113\tAdvanced Module2026\tstudent\t1\n111\tCanadian Medicine Primer Asynchronous202\teditingteacher\t1\n111\tCanadian Medicine Primer Asynchronous202\tmanager\t4\n112\tFoundations Module2026\tmanager\t1\n112\tFoundations Module2026\tstudent\t3\n70\tPhysician Facilitator Training \tmanager\t2\n70\tPhysician Facilitator Training \tstudent\t85\n114\tWelcome/Orientation Module\tmanager\t2\n=== ROLE ASSIGNMENTS AT SYSTEM/CATEGORY LEVEL FOR MANAGER ===\ncontextlevel\tinstanceid\tshortname\tuser_sample\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n10\t0\tmanager\t\n=== MOODLE SITE CONFIG (relevant settings) ===\nname\tvalue\nauth\temail\nenableavailability\t1\nenablecompletion\t1\nenrol_plugins_enabled\tmanual,guest,self,cohort\nmnet_dispatcher_mode\toff\n=== CHECK IF COURSES ARE LOCKED (in-progress backup) ===\n--------------\nSELECT bc.courseid, LEFT(c.fullname,40) AS course_name, bc.status, bc.operation, bc.type\nFROM mdl_backup_controllers bc\nJOIN mdl_course c ON c.id=bc.courseid\nWHERE c.category=33 AND bc.status NOT IN (0, 1000)\nORDER BY bc.courseid\n--------------\n\nERROR 1054 (42S22) at line 1: Unknown column 'bc.courseid' in 'SELECT'\n=== DONE ===\n",
+    "StandardOutputUrl": "",
+    "StandardErrorContent": "",
+    "StandardErrorUrl": "",
+    "CloudWatchOutputConfig": {
+        "CloudWatchLogGroupName": "",
+        "CloudWatchOutputEnabled": false
+    }
+}

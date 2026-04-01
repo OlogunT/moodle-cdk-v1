@@ -1,0 +1,9 @@
+{
+  "commands": [
+    "echo HOME LOCAL",
+    "curl -s -o /dev/null -w '%{http_code}\n' http://localhost/",
+    "echo HOME ALB",
+    "curl -s -k -o /dev/null -w 'HTTP %{http_code} %{url_effective}\n' https://traini-train-gdnwhrgvvy0b-1466546903.ca-central-1.elb.amazonaws.com/"
+  ]
+}
+

@@ -1,0 +1,57 @@
+=== MOODLE VERSION ===
+value
+2025041402.1
+=== MANAGER ROLE: TOTAL CAPABILITY COUNT AT SYSTEM LEVEL ===
+total_caps	allow_count	prevent_count	prohibit_count
+680	680	0	0
+=== EDITINGTEACHER ROLE: TOTAL CAPABILITY COUNT AT SYSTEM LEVEL ===
+total_caps	allow_count	prevent_count	prohibit_count
+573	573	0	0
+=== KEY COURSE EDITING CAPABILITIES FOR MANAGER ===
+capability	permission
+moodle/course:activityvisibility	1
+moodle/course:ignoreavailabilityrestrictions	1
+moodle/course:manageactivities	1
+moodle/course:movesections	1
+moodle/course:sectionvisibility	1
+moodle/course:setforcedlanguage	1
+moodle/course:update	1
+moodle/course:viewhiddensections	1
+moodle/site:accessallgroups	1
+=== MANAGER CAPABILITIES MISSING VS EDITINGTEACHER ===
+=== SITE ADMIN USER IDS ===
+value
+816,3676
+=== USERS WITH MANAGER ROLE AT SYSTEM LEVEL ===
+id	username	firstname	lastname
+1325	c.stanclik	Connie	Stanclik
+2054	d.costa@tsin.ca	David	Costa
+1079	j.mottola	Joe	Mottola
+1328	j.zisis	Jen	Zisis
+3632	k.gies@tsin.ca	Krystal	Gies
+1327	k.huszar@tsin.ca	Karen	Huszar
+2978	r.rashid@tsin.ca	Rubaiyat	Rashid
+2926	ronaldapuritch	Ronalda	Puritch
+3709	s.nguyentsin@gmail.com	Simon	Test Account
+2976	wendyyen	Wendy	Yen
+=== CHECK mdl_backup_controllers COLUMNS ===
+Field	Type	Null	Key	Default	Extra
+id	bigint(20)	NO	PRI	NULL	auto_increment
+backupid	varchar(32)	NO	UNI		
+operation	varchar(20)	NO		backup	
+type	varchar(10)	NO	MUL		
+itemid	bigint(20)	NO		NULL	
+format	varchar(20)	NO			
+interactive	smallint(6)	NO		NULL	
+purpose	smallint(6)	NO		NULL	
+userid	bigint(20)	NO	MUL	NULL	
+status	smallint(6)	NO		NULL	
+execution	smallint(6)	NO		NULL	
+executiontime	bigint(20)	NO		NULL	
+checksum	varchar(32)	NO			
+timecreated	bigint(20)	NO		NULL	
+timemodified	bigint(20)	NO		NULL	
+progress	decimal(15,14)	NO		0.00000000000000	
+controller	longtext	NO		NULL	
+=== DONE ===
+

@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "=== 1. Check menutopic plugin ===\ntotal 424\ndrwxr-xr-x.  8 apache apache  6144 Mar 13 13:06 .\ndrwxr-xr-x. 14 apache apache  6144 Mar 13 01:46 ..\n-rw-r--r--.  1 apache apache 35122 Sep 20 11:35 LICENSE\n-rw-r--r--.  1 apache apache  2585 Sep 20 11:35 README.md\n\n=== 2. Check format plugins in DB ===\n\n=== 3. Simulate course edit page ===\nCourse: Welcome/Orientation Module\nFormat: weeks\nForms loaded OK\nContext: 16742\nCustom fields: 0\nEnrol instances: 1\nAll checks passed\nEXIT=0\n",
+    "E": ""
+}

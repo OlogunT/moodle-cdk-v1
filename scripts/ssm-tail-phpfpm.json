@@ -1,0 +1,9 @@
+{
+  "commands": [
+    "echo '--- PHP-FPM ERROR LOG (last 120) ---'",
+    "tail -n 120 /var/log/php-fpm/error.log || true",
+    "echo '--- APACHE ACCESS LOG (last 40) ---'",
+    "tail -n 40 /var/log/httpd/access_log || true"
+  ]
+}
+

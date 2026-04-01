@@ -1,0 +1,3 @@
+Instance: i-011c65cd247389ee6
+Sending SSM command...
+CommandId: bd4a4f21-e5a1-4d8c-817e-a7e28d10ad53

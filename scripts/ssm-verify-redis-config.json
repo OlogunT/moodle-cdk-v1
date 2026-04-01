@@ -1,0 +1,12 @@
+{
+  "commands": [
+    "set -euo pipefail",
+    "echo '--- session_redis_host ---'",
+    "grep -n '^\\s*\\$CFG->session_redis_host' /app/moodle/config.php || echo 'session_redis_host not found'",
+    "echo '--- cachestore_redis_servers ---'",
+    "grep -n 'cachestore_redis_servers' /app/moodle/config.php || echo 'cachestore_redis_servers not found'",
+    "echo '--- first redis host mention ---'",
+    "grep -nE 'cache\\.amazonaws\\.com' /app/moodle/config.php | head -n1 || true"
+  ]
+}
+

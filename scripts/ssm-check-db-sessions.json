@@ -1,0 +1,15 @@
+{
+  "commands": [
+    "set -e",
+    "CFG=/app/moodle/config.php",
+    "if [ ! -f \"$CFG\" ]; then echo 'config.php missing'; exit 2; fi",
+    "DB_HOST=$(grep -E '^\\s*\\$CFG->dbhost' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "DB_NAME=$(grep -E '^\\s*\\$CFG->dbname' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "DB_USER=$(grep -E '^\\s*\\$CFG->dbuser' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "DB_PASS=$(grep -E '^\\s*\\$CFG->dbpass' \"$CFG\" | sed -E \"s/.*=\\s*['\\\"]([^'\\\"]*)['\\\"].*/\\1/\")",
+    "echo DB:$DB_NAME@$DB_HOST",
+    "echo 'Recent sessions in last 10 minutes:'",
+    "mariadb -h \"$DB_HOST\" -u \"$DB_USER\" -p\"$DB_PASS\" -D \"$DB_NAME\" -e \"SELECT COUNT(*) AS recent_10min FROM mdl_sessions WHERE timemodified > (UNIX_TIMESTAMP() - 600);\" 2>/dev/null || echo 'DB query failed'"
+  ]
+}
+

@@ -1,0 +1,33 @@
+{
+  "commands": [
+    "echo === Instance Diagnostics ===",
+    "echo",
+    "echo --- EFS Mount Status ---",
+    "mountpoint /app && echo /app: MOUNTED || echo /app: NOT MOUNTED",
+    "mountpoint /data && echo /data: MOUNTED || echo /data: NOT MOUNTED",
+    "echo",
+    "echo --- Disk Usage ---",
+    "df -h",
+    "echo",
+    "echo --- Mount Points ---",
+    "mount | grep -E 'efs|nfs4' || echo No EFS/NFS4 mounts found",
+    "echo",
+    "echo --- EFS IDs from Environment ---",
+    "env | grep EFS || echo No EFS environment variables",
+    "echo",
+    "echo --- Bootstrap Log last 100 lines ---",
+    "tail -100 /var/log/bootstrap-moodle.log 2>/dev/null || echo Bootstrap log not found",
+    "echo",
+    "echo --- User Data Log last 50 lines ---",
+    "tail -50 /var/log/user-data.log 2>/dev/null || echo User data log not found",
+    "echo",
+    "echo --- Check /data directory ---",
+    "ls -la /data 2>/dev/null || echo /data does not exist",
+    "echo",
+    "echo --- Check /app directory ---",
+    "ls -la /app 2>/dev/null || echo /app does not exist",
+    "echo",
+    "echo === End Diagnostics ==="
+  ]
+}
+

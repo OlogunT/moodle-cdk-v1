@@ -1,0 +1,26 @@
+=== CURRENT MENUTOPIC VERSION IN DB ===
+plugin	name	value
+format_menutopic	anchortomenutree	1
+format_menutopic	defaultsectionsnavigation	courseindex
+format_menutopic	globalstyle	boots
+format_menutopic	shownavbarbrand	1
+format_menutopic	version	2025062301
+=== CHECKING BACKUP MENUTOPIC DIR ===
+Backup dir: /app/moodle/course/format/menutopic.bak.1768942117
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2023050703.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022041904; // Requires this Moodle version.
+$plugin->release = 'michelle-4.0.2';
+=== RESTORING MENUTOPIC FROM BACKUP ===
+Renamed menutopic -> menutopic.incompatible.1773366402
+Renamed /app/moodle/course/format/menutopic.bak.1768942117 -> menutopic
+=== RESTORED MENUTOPIC VERSION ===
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+$plugin->version = 2023050703.01; // The current plugin version (Date: YYYYMMDDXX).
+$plugin->requires  = 2022041904; // Requires this Moodle version.
+$plugin->release = 'michelle-4.0.2';
+=== PURGING MOODLE CACHES ===
+Terminated: 15
+

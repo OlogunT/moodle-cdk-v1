@@ -1,0 +1,14 @@
+CID: f7ac5514-43e7-4538-b0d1-bd3607d15c12
+S: Success RC: 0
+Disk core: 2025041402.1
+DB core: 2025041402.1
+Core needs upgrade: NO
+
+DB hash: 630a1d3cc8158d57f553adfca172fbcca86a8798
+Calc hash: 37158af4f6a915609afc17e5c20321917db7d3d0
+Hash match: NO
+
+Hash mismatch - finding differences...
+!!! Exception - Call to undefined function get_component_version() !!!
+Exit: 1
+

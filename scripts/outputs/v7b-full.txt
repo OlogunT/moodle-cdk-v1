@@ -1,0 +1,188 @@
+=== THEME ===
+value
+boost
+=== FORMAT PLUGINS ===
+README.txt
+UPGRADING.md
+amd
+classes
+formatlegacy.php
+grid
+lib.php
+menutopic
+menutopic.bak.1768942117
+singleactivity
+social
+templates
+tests
+topcoll
+topics
+update.php
+upgrade.txt
+weeks
+=== COURSE SETTINGS CAT 33 ===
+id	shortname	format	lang	theme	visible
+70	PFT	menutopic			1
+111	CMP26	topics			1
+112	FD26	weeks			1
+113	AD26	weeks			1
+114	Wel26	weeks			1
+115	AD1	weeks			1
+116	AD2	weeks			1
+=== DELETIONINPROGRESS MODULES ===
+=== BACKUP CONTROLLERS CAT 33 ===
+type	itemid	status	operation
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	70	1000	backup
+course	111	1000	restore
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	111	1000	backup
+course	112	1000	restore
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	112	1000	backup
+course	113	1000	restore
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	113	1000	backup
+course	114	1000	restore
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	114	1000	backup
+course	115	1000	restore
+course	115	1000	backup
+course	115	1000	backup
+course	115	1000	backup
+course	115	1000	backup
+course	115	1000	backup
+course	115	1000	backup
+course	115	1000	backup
+course	116	1000	restore
+course	116	1000	backup
+course	116	1000	backup
+course	116	1000	backup
+course	116	1000	backup
+course	116	1000	backup
+course	116	1000	backup
+course	116	1000	backup
+=== CONFIG.PHP WWWROOT ===
+$CFG->wwwroot = 'https://elearning.tsin.ca';
+$CFG->dataroot  = "/data/moodledata";
+=== MAINTENANCE ===
+name	value
+maintenance_enabled	0
+=== DONE ===
+

@@ -1,0 +1,5 @@
+{
+    "S": "Success",
+    "O": "PHP Parse error:  syntax error, unexpected token \"=\", expecting end of file in /tmp/profile_admin.php on line 3\nEXIT=True\n",
+    "E": ""
+}

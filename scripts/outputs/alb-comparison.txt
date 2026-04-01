@@ -1,0 +1,35 @@
+=== EB ALB listeners ===
+[
+    {
+        "Port": 80,
+        "Proto": "HTTP",
+        "Certs": null
+    },
+    {
+        "Port": 443,
+        "Proto": "HTTPS",
+        "Certs": "arn:aws:acm:ca-central-1:483382415631:certificate/c6694d51-387b-47f2-9755-9166d67f573e"
+    }
+]
+
+=== CDK ALB listeners ===
+[
+    {
+        "Port": 80,
+        "Proto": "HTTP",
+        "Certs": null
+    },
+    {
+        "Port": 443,
+        "Proto": "HTTPS",
+        "Certs": "arn:aws:acm:ca-central-1:483382415631:certificate/68d48b38-020c-40b3-bedc-323f52a98663"
+    }
+]
+
+=== CDK ALB target groups ===
+[
+    {
+        "Name": "Moodle-Moodl-DDVNNRQ6U8XD",
+        "Arn": "arn:aws:elasticloadbalancing:ca-central-1:483382415631:targetgroup/Moodle-Moodl-DDVNNRQ6U8XD/f284a032d4246cbd"
+    }
+]

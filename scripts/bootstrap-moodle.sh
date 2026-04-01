@@ -15,7 +15,16 @@ ASG_NAME=$(aws autoscaling describe-auto-scaling-instances --instance-ids "$INST
 
 yum update -y
 # Base tools
-yum install -y amazon-cloudwatch-agent git mariadb105 jq awscli httpd php php-mysqlnd php-gd php-xml php-mbstring php-json php-zip php-curl php-intl php-soap php-ldap php-opcache php-fpm php-redis
+yum install -y amazon-cloudwatch-agent git mariadb105 jq awscli httpd php php-mysqlnd php-gd php-xml php-mbstring php-json php-zip php-curl php-intl php-soap php-ldap php-opcache php-fpm php-redis cronie
+
+# Install and configure cron for Moodle
+echo "=== Installing and configuring cron ==="
+yum install -y cronie
+systemctl start crond
+systemctl enable crond
+# Configure Moodle cron to run every minute as apache user
+echo '* * * * * /usr/bin/php /app/moodle/admin/cli/cron.php >/dev/null 2>&1' | crontab -u apache -
+echo "Cron installed and configured for Moodle"
 
 # Configure PHP-FPM (production)
 cat > /etc/php-fpm.d/www.conf <<'EOFPHP'
@@ -32,7 +41,7 @@ pm.start_servers = 10
 pm.min_spare_servers = 5
 pm.max_spare_servers = 20
 pm.max_requests = 1000
-request_terminate_timeout = 300
+request_terminate_timeout = 600
 request_slowlog_timeout = 10s
 slowlog = /var/log/php-fpm/www-slow.log
 catch_workers_output = yes
@@ -46,11 +55,11 @@ mkdir -p /var/log/php-fpm && chown apache:apache /var/log/php-fpm
 
 # PHP ini
 cat > /etc/php.d/99-moodle.ini <<'EOFPHPINI'
-max_execution_time = 300
-max_input_time = 300
-memory_limit = 256M
-post_max_size = 512M
-upload_max_filesize = 512M
+max_execution_time = 600
+max_input_time = 900
+memory_limit = 4096M
+post_max_size = 1024M
+upload_max_filesize = 1024M
 max_input_vars = 5000
 EOFPHPINI
 
@@ -59,11 +68,12 @@ cat > /etc/httpd/conf.d/moodle.conf <<'EOFV'
 <VirtualHost *:80>
   DocumentRoot /app/moodle
   DirectoryIndex index.php index.html
+  LimitRequestBody 0
   <FilesMatch \.php$>
     SetHandler "proxy:unix:/run/php-fpm/www.sock|fcgi://localhost"
   </FilesMatch>
-  ProxyTimeout 300
-  Timeout 300
+  ProxyTimeout 600
+  Timeout 600
   <Directory /app/moodle>
     AllowOverride All
     Require all granted
@@ -170,22 +180,45 @@ fi
 
 # Post-install: Redis + reverse proxy config
 echo "=== POST-INSTALL CONFIG START ==="
-REDIS_ENDPOINT=$(aws ssm get-parameter --name "/moodle/redis/endpoint" --region "$REGION" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+# Prefer env-provided REDIS_ENDPOINT, fallback to SSM parameter
+if [ -z "${REDIS_ENDPOINT:-}" ]; then
+  REDIS_ENDPOINT=$(aws ssm get-parameter --name "/moodle/redis/endpoint" --region "$REGION" --query "Parameter.Value" --output text 2>/dev/null || echo "")
+fi
 CONFIG_NEEDS_REBUILD=false
+CURRENT_REDIS=""
+if [ -f "/app/moodle/config.php" ]; then
+  CURRENT_REDIS=$(sed -n "s/^\s*\$CFG->session_redis_host\s*=\s*'\(.*\)'.*$/\1/p" /app/moodle/config.php | head -n1 || true)
+fi
 if [ "$INSTALL_SUCCESS" = "true" ] && [ -f "/app/moodle/config.php" ]; then
-  if [ -n "$REDIS_ENDPOINT" ] && ! grep -q "session_handler_class.*redis" /app/moodle/config.php; then CONFIG_NEEDS_REBUILD=true; fi
+  if [ -n "$REDIS_ENDPOINT" ]; then
+    if ! grep -q "session_handler_class.*redis" /app/moodle/config.php; then CONFIG_NEEDS_REBUILD=true; fi
+    if [ -n "$CURRENT_REDIS" ] && [ "$CURRENT_REDIS" != "$REDIS_ENDPOINT" ]; then CONFIG_NEEDS_REBUILD=true; fi
+  fi
 else
   CONFIG_NEEDS_REBUILD=true
 fi
 if [ "$CONFIG_NEEDS_REBUILD" = "true" ] && [ -n "$REDIS_ENDPOINT" ]; then
-  if aws s3 cp "s3://$SCRIPT_BUCKET/rebuild-config-full-from-current.sh" /tmp/rebuild-config-full-from-current.sh 2>/dev/null; then
-    chmod +x /tmp/rebuild-config-full-from-current.sh || true
-    /tmp/rebuild-config-full-from-current.sh || echo "Config rebuild script ran but reported failure"
+  echo "Updating config.php to use Redis: $REDIS_ENDPOINT (previous: ${CURRENT_REDIS:-none})"
+  cp /app/moodle/config.php /app/moodle/config.php.backup.redis.$(date +%s) || true
+  if grep -q "^\s*\$CFG->session_redis_host" /app/moodle/config.php; then
+    sed -i -E "s|^\s*\$CFG->session_redis_host\s*=.*|$CFG->session_redis_host = '$REDIS_ENDPOINT';|" /app/moodle/config.php
   else
-    echo "Rebuild script not found in S3; skipping config rebuild"
+    sed -i "/require_once.*lib\/setup.php/i \
+$CFG->session_handler_class = '\\\\core\\\\session\\\\redis';\
+$CFG->session_redis_host = '$REDIS_ENDPOINT';\
+$CFG->session_redis_port = 6379;\
+$CFG->session_redis_database = 0;\
+$CFG->session_redis_serializer_use_igbinary = 0;\
+$CFG->session_redis_locking = 1;\
+$CFG->session_redis_prefix = 'mdl_sess_';" /app/moodle/config.php
   fi
+  php -l /app/moodle/config.php || echo "PHP syntax error in config.php"
+  sudo -u apache php /app/moodle/admin/cli/purge_caches.php || true
+  systemctl restart php-fpm httpd || true
 elif [ "$CONFIG_NEEDS_REBUILD" = "true" ]; then
   echo "Redis endpoint missing for rebuild; skipping config rebuild"
+else
+  echo "Config already using desired Redis endpoint ($REDIS_ENDPOINT); no rebuild needed"
 fi
 
 # Reverse proxy verification and fix
@@ -218,6 +251,107 @@ if [ -f "/app/moodle/config.php" ]; then
   aws s3 cp "s3://$SCRIPT_BUCKET/configure-moodle-ses-email.sh" /tmp/configure-moodle-ses-email.sh || true
   [ -s /tmp/configure-moodle-ses-email.sh ] && chmod +x /tmp/configure-moodle-ses-email.sh && /tmp/configure-moodle-ses-email.sh || true
 fi
+
+# ============================================================================
+# MENUTOPIC PLUGIN PATCHES (idempotent — safe to run on every boot)
+# ============================================================================
+echo "=== MENUTOPIC PLUGIN PATCHES ==="
+MENUTOPIC_LIB="/app/moodle/course/format/menutopic/lib.php"
+MENUTOPIC_CONTENT="/app/moodle/course/format/menutopic/classes/output/courseformat/content.php"
+if [ -f "$MENUTOPIC_LIB" ]; then
+  # Patch 1: Static reentrancy guard to prevent recursive build_course_cache() / OOM
+  if ! grep -q 'in_set_sectionnum' "$MENUTOPIC_LIB"; then
+    echo "Applying menutopic reentrancy guard (lib.php)..."
+    _PATCH="/tmp/fix-menutopic-recursion.php"
+    aws s3 cp "s3://$SCRIPT_BUCKET/ops/fix-menutopic-recursion.php" "$_PATCH" 2>/dev/null || true
+    if [ -s "$_PATCH" ]; then
+      php "$_PATCH" && echo "✓ Menutopic reentrancy guard applied" || echo "⚠ Menutopic lib.php patch failed (non-fatal)"
+    else
+      echo "⚠ Could not download menutopic patch from S3 — skipping"
+    fi
+    rm -f "$_PATCH"
+  else
+    echo "✓ Menutopic reentrancy guard already in place"
+  fi
+  # Patch 2: content.php private → protected visibility fix (prevents PHP fatal)
+  if [ -f "$MENUTOPIC_CONTENT" ]; then
+    if grep -q 'private function get_sections_to_display' "$MENUTOPIC_CONTENT"; then
+      sed -i 's/private function get_sections_to_display/protected function get_sections_to_display/' "$MENUTOPIC_CONTENT"
+      echo "✓ Menutopic content.php: private → protected on get_sections_to_display()"
+    else
+      echo "✓ Menutopic content.php visibility already correct"
+    fi
+  fi
+  # Patch 3: Deprecation fix — get_section_number() removed in Moodle 4.4+, use get_sectionnum() (MDL-80248).
+  _DEPRECATED_COUNT=$(find /app/moodle/course/format/menutopic/ -name '*.php' \
+    ! -name '*.bak*' ! -name '*.backup*' \
+    | xargs grep -l 'get_section_number' 2>/dev/null | wc -l)
+  if [ "$_DEPRECATED_COUNT" -gt 0 ]; then
+    echo "Applying deprecated get_section_number → get_sectionnum in $_DEPRECATED_COUNT file(s)..."
+    find /app/moodle/course/format/menutopic/ -name '*.php' \
+      ! -name '*.bak*' ! -name '*.backup*' \
+      | xargs grep -l 'get_section_number' 2>/dev/null \
+      | while read _f; do
+          sed -i 's/->get_section_number()/->get_sectionnum()/g' "$_f"
+          echo "  ✓ Patched: $_f"
+        done
+  else
+    echo "✓ Menutopic: no get_section_number() calls found (already fixed)"
+  fi
+
+  # Patch 4: Remove defunct topics/format.js require from format.php.
+  # Moodle 4.x removed /course/format/topics/format.js (replaced by AMD modules).
+  # menutopic inherited this call and never cleaned it up — it throws a fatal
+  # "Attempt to require a JavaScript file that does not exist" on every page load.
+  _FORMAT_PHP="/app/moodle/course/format/menutopic/format.php"
+  if [ -f "$_FORMAT_PHP" ]; then
+    if grep -q "requires->js.*topics/format\.js" "$_FORMAT_PHP"; then
+      sed -i "/requires->js.*topics\/format\.js/d" "$_FORMAT_PHP"
+      echo "✓ Menutopic format.php: removed defunct topics/format.js require"
+    else
+      echo "✓ Menutopic format.php: topics/format.js require already absent"
+    fi
+  fi
+
+  # Patch 5: Remove noisy debugging() calls from the reentrancy guard in lib.php.
+  # The guard is correct, but debugging() fires on every course page load (the recursive
+  # constructor is an expected code path, not an error). Use exact Python string replacement
+  # (perl regex is too greedy across multi-line blocks on shared EFS).
+  if grep -q "format_menutopic: set_sectionnum skipped" "$MENUTOPIC_LIB" 2>/dev/null; then
+    aws s3 cp s3://moodle-scripts-483382415631-ca-central-1/fix_menutopic_debug.py /tmp/fix_menutopic_debug.py --region ca-central-1 2>/dev/null \
+      && python3 /tmp/fix_menutopic_debug.py \
+      && rm -f /tmp/fix_menutopic_debug.py \
+      && echo "✓ Menutopic lib.php: removed debugging() calls from reentrancy guard" \
+      || echo "⚠ Menutopic lib.php: Patch 5 download/apply failed — check S3 access"
+  else
+    echo "✓ Menutopic lib.php: no debugging() calls to remove"
+  fi
+else
+  echo "Menutopic plugin not found — skipping patches"
+fi
+
+# Patch 6: Remove any invalid $CFG->lock_factory override from config.php.
+# The lock_factory was set during an earlier incident to work around a cache
+# deadlock, but the class name was incorrectly escaped, causing
+# "Lock Factory set in $CFG does not exist" on every request.
+# Moodle 4.x defaults to \core\lock\db_record_lock_factory automatically —
+# no explicit config entry is needed or correct here.
+echo "=== PATCH 6: config.php lock_factory cleanup ==="
+_CFG=/app/moodle/config.php
+if [ -f "$_CFG" ] && grep -q 'lock_factory' "$_CFG" 2>/dev/null; then
+  cp "$_CFG" "${_CFG}.bak.lockfix.$(date +%s)" 2>/dev/null || true
+  sed -i '/lock_factory/d' "$_CFG"
+  php -l "$_CFG" && echo "✓ Removed lock_factory from config.php (syntax OK)" || echo "⚠ config.php syntax error after lock_factory removal!"
+else
+  echo "✓ config.php: no lock_factory override present (OK)"
+fi
+
+# Always restart PHP-FPM after the patch block so OPcache recompiles the
+# patched files. opcache.validate_timestamps=0 means file changes on EFS
+# are invisible to running workers until the process restarts.
+echo "Restarting PHP-FPM to flush OPcache and activate menutopic patches..."
+systemctl restart php-fpm && echo "✓ PHP-FPM restarted" || echo "⚠ PHP-FPM restart failed"
+echo "=== MENUTOPIC PLUGIN PATCHES DONE ==="
 
 echo "=== FINAL VERIFICATION ==="
 systemctl is-active --quiet httpd && echo "httpd active" || echo "httpd NOT active"

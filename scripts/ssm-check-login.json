@@ -1,0 +1,10 @@
+{
+  "commands": [
+    "echo LOCAL LOGIN",
+    "curl -s -o /tmp/login.html -w '%{http_code}\\n' http://localhost/login/index.php",
+    "grep -E -i 'name=\\\"username\\\"|name=\\\"password\\\"' -n /tmp/login.html | head -n 2 || true",
+    "echo ALB LOGIN",
+    "curl -s -k -o /dev/null -w 'HTTP %{http_code} %{url_effective}\\n' https://traini-train-gdnwhrgvvy0b-1466546903.ca-central-1.elb.amazonaws.com/login/index.php"
+  ]
+}
+

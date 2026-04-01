@@ -1,0 +1,14 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Enable maintenance and stop services'",
+    "cd /app/moodle",
+    "if [ -x /usr/bin/php ]; then PHP=/usr/bin/php; elif [ -x /usr/bin/php80 ]; then PHP=/usr/bin/php80; else PHP=php; fi",
+    "sudo -u apache $PHP admin/cli/maintenance.php --enable || true",
+    "systemctl stop httpd || true",
+    "systemctl stop php-fpm || systemctl stop php-fpm8.1 || systemctl stop php-fpm8.0 || true",
+    "sleep 2",
+    "echo 'Maintenance enabled and services stopped'"
+  ]
+}
+

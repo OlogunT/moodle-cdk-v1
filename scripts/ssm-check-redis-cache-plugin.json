@@ -1,0 +1,7 @@
+{
+  "commands": [
+    "set -e",
+    "php -r \"define('CLI_SCRIPT', true); require('/app/moodle/config.php'); echo class_exists('\\\\cachestore_redis') ? 'REDIS_CACHE_PLUGIN_OK' : 'REDIS_CACHE_PLUGIN_MISSING';\""
+  ]
+}
+

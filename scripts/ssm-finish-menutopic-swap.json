@@ -1,0 +1,18 @@
+{
+  "commands": [
+    "set -e",
+    "echo 'Finalize Menutopic swap'",
+    "cd /app/moodle/course/format",
+    "if [ -d /tmp/menutopic.new ]; then echo 'Swapping menutopic.new into place'; rm -rf menutopic || true; mv /tmp/menutopic.new menutopic; else echo 'No staging directory found; skipping swap'; fi",
+    "chown -R apache:apache menutopic || true",
+    "cd /app/moodle",
+    "sudo -u apache php admin/cli/maintenance.php --enable || true",
+    "sudo -u apache php admin/cli/upgrade.php --non-interactive || true",
+    "sudo -u apache php admin/cli/purge_caches.php || true",
+    "sudo -u apache php admin/cli/maintenance.php --disable || true",
+    "systemctl restart php-fpm || true",
+    "systemctl restart httpd || true",
+    "echo 'Done'"
+  ]
+}
+

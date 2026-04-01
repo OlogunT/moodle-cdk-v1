@@ -1,0 +1,17 @@
+{
+  "commands": [
+    "echo '=== Quick Cron Verification ==='",
+    "echo ''",
+    "echo '1. Cron service status:'",
+    "systemctl is-active crond && echo '✅ crond is running' || echo '❌ crond is NOT running'",
+    "echo ''",
+    "echo '2. Apache user crontab:'",
+    "crontab -u apache -l 2>/dev/null || echo 'No crontab for apache user'",
+    "echo ''",
+    "echo '3. Check if cron has run recently:'",
+    "ls -lh /var/log/cron* 2>/dev/null | head -5 || echo 'No cron logs found'",
+    "echo ''",
+    "echo 'Verification complete.'"
+  ]
+}
+

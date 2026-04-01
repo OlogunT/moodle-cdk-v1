@@ -1,0 +1,13 @@
+{
+  "commands": [
+    "echo '=== PHP runtime limits ==='",
+    "php -r 'echo \"upload_max_filesize=\".ini_get(\"upload_max_filesize\").\" post_max_size=\".ini_get(\"post_max_size\").\" memory_limit=\".ini_get(\"memory_limit\");' || true",
+    "echo",
+    "echo '=== Apache vhost (moodle.conf) ==='",
+    "grep -nE 'LimitRequestBody|ProxyTimeout|Timeout' /etc/httpd/conf.d/moodle.conf || true",
+    "echo",
+    "echo '=== Moodle site maxbytes (DB) ==='",
+    "MB=$(cd /app/moodle && sudo -u apache php admin/cli/cfg.php --name=maxbytes 2>/dev/null | awk -F'=' '{gsub(/ /, \"\", $2);print $2}' || true); echo \"maxbytes=${MB:-unknown}\""
+  ]
+}
+
