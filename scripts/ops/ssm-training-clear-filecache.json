@@ -1,0 +1,28 @@
+{
+  "Comment": "Clear training Moodle file-based caches directly (faster than CLI purge)",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-0527f81ac3fde0ec3"],
+  "Parameters": {
+    "commands": [
+      "INST=$(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || hostname)",
+      "echo \"=== INSTANCE: $INST ===\"",
+      "echo '=== 1. Confirm config.php is clean ==='",
+      "grep 'lock_factory' /app/moodle/config.php 2>/dev/null && echo BAD_STILL_THERE || echo CONFIRMED_CLEAN",
+      "echo '=== 2. Find moodledata path ==='",
+      "MDATA=$(php -r \"define('CLI_SCRIPT',true); require '/app/moodle/config.php'; echo rtrim(\\$CFG->dataroot,'/');\" 2>/dev/null || echo /data/moodledata)",
+      "echo \"moodledata: $MDATA\"",
+      "echo '=== 3. Delete core_component.php ==='",
+      "rm -fv ${MDATA}/cache/core_component.php 2>/dev/null || echo not_found",
+      "echo '=== 4. Delete MUC local cache dir ==='",
+      "rm -rf ${MDATA}/localcache 2>/dev/null && echo localcache_cleared || echo localcache_not_found",
+      "echo '=== 5. Delete session locks (if file-based) ==='",
+      "rm -rf ${MDATA}/sessions 2>/dev/null && echo sessions_cleared || echo sessions_not_found",
+      "echo '=== 6. Health check ==='",
+      "curl -s -o /dev/null -w 'HTTP:%{http_code}' http://localhost/ || true",
+      "echo ''",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["30"]
+  }
+}
+

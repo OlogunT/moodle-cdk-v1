@@ -1,0 +1,25 @@
+{
+  "Comment": "Find which instances have Moodle installed and check lock_factory",
+  "DocumentName": "AWS-RunShellScript",
+  "Parameters": {
+    "commands": [
+      "INST=$(curl -s http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null || hostname)",
+      "echo \"=== INSTANCE: $INST ===\"",
+      "if [ -f /app/moodle/config.php ]; then",
+      "  echo 'MOODLE_FOUND: /app/moodle/config.php'",
+      "  grep -i 'wwwroot\\|lock_factory\\|dbhost' /app/moodle/config.php | head -10",
+      "elif [ -f /var/www/html/moodle/config.php ]; then",
+      "  echo 'MOODLE_FOUND: /var/www/html/moodle/config.php'",
+      "  grep -i 'wwwroot\\|lock_factory\\|dbhost' /var/www/html/moodle/config.php | head -10",
+      "elif [ -f /var/www/moodle/config.php ]; then",
+      "  echo 'MOODLE_FOUND: /var/www/moodle/config.php'",
+      "  grep -i 'wwwroot\\|lock_factory\\|dbhost' /var/www/moodle/config.php | head -10",
+      "else",
+      "  find / -name 'config.php' -path '*/moodle/*' -maxdepth 8 2>/dev/null | head -3",
+      "  echo 'NO_MOODLE'",
+      "fi"
+    ],
+    "executionTimeout": ["15"]
+  }
+}
+

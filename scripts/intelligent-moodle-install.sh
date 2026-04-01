@@ -840,6 +840,22 @@ else
   echo "Menutopic plugin not found — skipping patches (plugin may not be installed yet)"
 fi
 
+# Patch 6: Remove any invalid $CFG->lock_factory override from config.php.
+# The lock_factory was set during an earlier incident to work around a cache
+# deadlock, but the class name was incorrectly escaped, causing
+# "Lock Factory set in $CFG does not exist" on every request.
+# Moodle 4.x defaults to \core\lock\db_record_lock_factory automatically —
+# no explicit config entry is needed or correct here.
+echo "=== PATCH 6: config.php lock_factory cleanup ==="
+_CFG=/app/moodle/config.php
+if [ -f "$_CFG" ] && grep -q 'lock_factory' "$_CFG" 2>/dev/null; then
+  cp "$_CFG" "${_CFG}.bak.lockfix.$(date +%s)" 2>/dev/null || true
+  sed -i '/lock_factory/d' "$_CFG"
+  php -l "$_CFG" && echo "✓ Removed lock_factory from config.php (syntax OK)" || echo "⚠ config.php syntax error after lock_factory removal!"
+else
+  echo "✓ config.php: no lock_factory override present (OK)"
+fi
+
 # Always restart PHP-FPM after the patch block so OPcache recompiles the
 # patched files. opcache.validate_timestamps=0 means file changes on EFS
 # are invisible to running workers until the process restarts.

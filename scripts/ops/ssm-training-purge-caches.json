@@ -1,0 +1,20 @@
+{
+  "Comment": "Purge Moodle caches on training.tsin.ca - run on one instance (shared EFS)",
+  "DocumentName": "AWS-RunShellScript",
+  "InstanceIds": ["i-0527f81ac3fde0ec3"],
+  "Parameters": {
+    "commands": [
+      "echo '=== 1. Confirm lock_factory NOT in config.php ==='",
+      "php -r \"define('CLI_SCRIPT', true); require '/app/moodle/config.php'; echo 'lock_factory=' . (isset($CFG->lock_factory) ? $CFG->lock_factory : 'NOT_SET') . PHP_EOL;\" 2>&1",
+      "echo '=== 2. Delete core_component.php cache ==='",
+      "rm -f /data/moodledata/cache/core_component.php && echo DELETED || echo NOT_FOUND",
+      "echo '=== 3. Purge all Moodle caches ==='",
+      "php /app/moodle/admin/cli/purge_caches.php && echo CACHES_PURGED",
+      "echo '=== 4. Live site check ==='",
+      "curl -s -L -k 'https://etraining.tsin.ca/' 2>/dev/null | grep -o 'lock_factory[^<\"&]*\\|coreock[^<\"&]*\\|Coding error[^<]*' | head -5 || echo NOT_FOUND_ON_PAGE",
+      "echo '=== DONE ==='"
+    ],
+    "executionTimeout": ["45"]
+  }
+}
+
